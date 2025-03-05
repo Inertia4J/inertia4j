@@ -35,7 +35,7 @@ public ResponseEntity<String> index(WebRequest request) {
 - [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [ ] Exception throwing/handling
 - [x] Create `core` module
-- [ ] Support `.render` without passing `request` 
+- [x] Support `.render` without passing `request` 
     * We can use `RequestContextHolder` for that. Example [here](https://dzone.com/articles/quick-tip-spring-rest-utility).
 - [ ] Create `Inertia` façade 
 - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans

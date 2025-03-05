@@ -5,10 +5,14 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.http.HttpHeaders;
 
 class InertiaRenderer {
@@ -26,17 +30,15 @@ class InertiaRenderer {
         return this.templatePath;
     }
 
-    public <TData> ResponseEntity<String> render(WebRequest request, String component, TData props) {
-        return inertiaPageResponse(request, component, props);
-    }
-
-    private <TData> ResponseEntity<String> inertiaPageResponse(WebRequest request, String component, TData props) {
+    public <TData> ResponseEntity<String> render(String component, TData props) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Inertia", "true");
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        HttpServletRequest request = getCurrentRequest();
+
         String pageObjectString = new PageObject.PageObjectBuilder(component, props)
-                .setUrl(request.getDescription(false))
+                .setUrl(request.getRequestURI())
                 .setVersion("HASH") // TODO: Implement digesting
                 .build()
                 .toString();
@@ -47,6 +49,13 @@ class InertiaRenderer {
         }
 
         return inertiaPageWithHtml(pageObjectString);
+    }
+
+    private HttpServletRequest getCurrentRequest() {
+        final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        Assert.state(requestAttributes != null, "Could not find current request via RequestContextHolder");
+        Assert.isInstanceOf(ServletRequestAttributes.class, requestAttributes);
+        return ((ServletRequestAttributes) requestAttributes).getRequest();
     }
 
     private ResponseEntity<String> inertiaPageWithHtml(String pageObjectData) {
