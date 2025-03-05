@@ -15,7 +15,6 @@ public class Inertia4jSpringApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Inertia4jSpringApplication.class, args);
-
 	}
 
 	@GetMapping("/")

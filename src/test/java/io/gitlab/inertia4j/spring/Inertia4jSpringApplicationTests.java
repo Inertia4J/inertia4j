@@ -1,13 +1,51 @@
 package io.gitlab.inertia4j.spring;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 class Inertia4jSpringApplicationTests {
 
+	@Autowired
+	MockMvc mvc;
+
 	@Test
-	void contextLoads() {
+	void indexPageHtmlRendering() throws Exception {
+		String expectedHtml = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App</title>
+</head>
+<body>
+    <div id="app" data-page='{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"uri=/","version":"HASH","encryptHistory":false,"clearHistory":false}'></div>
+</body>
+</html>
+	""".stripTrailing();
+
+		mvc.perform(get("/"))
+			.andExpect(status().isOk())
+			.andExpect(content().string(expectedHtml));
+	}
+
+	@Test
+	void indexPageJsonRendering() throws Exception {
+		String expectedJson = """
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"uri=/","version":"HASH","encryptHistory":false,"clearHistory":false}
+		""".stripTrailing();
+
+		mvc.perform(get("/").header("X-Inertia", "true"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(expectedJson));
 	}
 
 }

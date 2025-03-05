@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.http.HttpHeaders;
 
-
 class InertiaRenderer {
     private String templatePath;
 
