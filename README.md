@@ -4,25 +4,44 @@ An adapter to use Inertia.js on a Spring backend.
 
 ## Usage
 
-In every Spring controller method, you should initialize the `InertiaRenderer` class
+The simplest way to use Inertia4J is to call `Inertia.render` with the component name and props.
 
-```java
-InertiaRenderer renderer = new InertiaRenderer();
-```
-
-Once you've done it, you can call the renderer's `render()` method, in order to transform your normal response into a response that the frontend adapter can use. Below is an example of a controller using Inertia 4J:
+Below is a controller example:
 
 ```java
 @GetMapping("/records")
-public ResponseEntity<String> index(WebRequest request) {
-    InertiaRenderer renderer = new InertiaRenderer();
-
+public ResponseEntity<String> index() {
     RecordRepository recordRepository = new RecordRepository();
     Set<Record> records = recordRepository.getAllRecords();
 
-    return renderer.render(request, "Records/Index", records);
+    return Inertia.render("Records/Index", records);
 }
 ```
+
+This will instruct the frontend to render the `Records/Index` component with a single prop containing a list of records.
+
+Given no response URL was given, it will be the same of the request URL, which in this case is `/records`. However, you
+can also specify a different URL by passing it as argument to `Inertia.render`:
+
+```java
+@GetMapping("/records")
+public ResponseEntity<String> index() {
+  /* ... */
+  return Inertia.render("/records/all", "Records/Index", records);
+}
+```
+
+### Request headers
+
+TODO: document how the request is obtained internally and how to pass a request argument to `.render`.
+
+### Serialization
+
+TODO: document how to change the serializer.
+
+### HTML template
+
+TODO: document how to use a custom template renderer.
 
 ### TODOS:
 
@@ -37,7 +56,8 @@ public ResponseEntity<String> index(WebRequest request) {
 - [x] Create `core` module
 - [x] Support `.render` without passing `request` 
     * We can use `RequestContextHolder` for that. Example [here](https://dzone.com/articles/quick-tip-spring-rest-utility).
-- [ ] Create `Inertia` façade 
+- [x] Create `Inertia` façade 
+- [ ] Add basic documentation to classes
 - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
 - [ ] Setup CI
 - [ ] Generate TypeScript types for props ([inspiration](https://www.youtube.com/watch?v=LeYF1NE3jQ4))

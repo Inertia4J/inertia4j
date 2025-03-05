@@ -9,10 +9,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-class SpringInertiaRenderer {
+/**
+ * Bridges Spring-specific rendering with the core InertiaRenderer
+ */
+class InertiaSpringRenderer {
     private final InertiaRenderer renderer;
 
-    public SpringInertiaRenderer(
+    public InertiaSpringRenderer(
         PageObjectSerializer serializer,
         String templatePath
     ) throws SpringInertiaException {
@@ -21,6 +24,20 @@ class SpringInertiaRenderer {
         } catch (TemplateRenderingException e) {
             throw new SpringInertiaException(e);
         }
+    }
+
+    public InertiaSpringRenderer(
+        PageObjectSerializer serializer,
+        TemplateRenderer templateRenderer
+    ) throws SpringInertiaException {
+        this.renderer = new InertiaRenderer(serializer, templateRenderer);
+    }
+
+    public <TData> ResponseEntity<String> render(String component, TData props) {
+        HttpServletRequest request = getCurrentRequest();
+        String url = request.getRequestURI();
+
+        return render(getCurrentRequest()::getHeader, url, component, props);
     }
 
     public <TData> ResponseEntity<String> render(
