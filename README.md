@@ -34,7 +34,7 @@ public ResponseEntity<String> index(WebRequest request) {
 - [ ] Fill the `url` response element
 - [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [ ] Exception throwing/handling
-- [ ] Create `core` module
+- [x] Create `core` module
 - [ ] Support `.render` without passing `request` 
     * We can use `RequestContextHolder` for that. Example [here](https://dzone.com/articles/quick-tip-spring-rest-utility).
 - [ ] Create `Inertia` façade 
