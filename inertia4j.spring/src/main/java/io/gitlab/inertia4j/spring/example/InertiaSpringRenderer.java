@@ -1,4 +1,4 @@
-package io.gitlab.inertia4j.spring;
+package io.gitlab.inertia4j.spring.example;
 
 import io.gitlab.inertia4j.core.*;
 import jakarta.servlet.http.HttpServletRequest;

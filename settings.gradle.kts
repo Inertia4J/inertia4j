@@ -7,3 +7,4 @@ rootProject.name = "inertia4j-spring"
 include("inertia4j.core")
 include("inertia4j.jackson")
 include("inertia4j.spring")
+include("inertia4j.spring.example")

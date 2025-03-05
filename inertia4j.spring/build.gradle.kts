@@ -21,7 +21,8 @@ dependencies {
     implementation(project(":inertia4j.core"))
     implementation(project(":inertia4j.jackson"))
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    // TODO: change to depend on more specific Spring modules
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

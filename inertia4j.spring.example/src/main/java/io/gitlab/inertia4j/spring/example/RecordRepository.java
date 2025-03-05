@@ -1,4 +1,4 @@
-package io.gitlab.inertia4j.spring;
+package io.gitlab.inertia4j.spring.example;
 
 import java.util.Set;
 import java.util.SortedSet;

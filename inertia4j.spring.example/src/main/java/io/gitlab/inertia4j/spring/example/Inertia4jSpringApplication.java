@@ -1,4 +1,4 @@
-package io.gitlab.inertia4j.spring;
+package io.gitlab.inertia4j.spring.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package io.gitlab.inertia4j.spring;
+package io.gitlab.inertia4j.spring.example;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
