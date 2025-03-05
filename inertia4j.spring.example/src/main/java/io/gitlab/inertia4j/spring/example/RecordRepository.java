@@ -1,9 +1,12 @@
 package io.gitlab.inertia4j.spring.example;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+@Component
 public class RecordRepository {
     public Set<Record> getAllRecords() {
         SortedSet<Record> records = new TreeSet<>();
