@@ -58,7 +58,7 @@ class InertiaSpringRenderer {
     }
 
     private <TData> ResponseEntity<String> render(
-        HttpRequest request,
+        RequestHeaderGetter headerGetter,
         String url,
         String component,
         TData props
@@ -67,11 +67,11 @@ class InertiaSpringRenderer {
 
         try {
             renderer.render(
-                    request,
-                    inertiaSpringResponse,
-                    url,
-                    component,
-                    props
+                headerGetter,
+                inertiaSpringResponse,
+                url,
+                component,
+                props
             );
         } catch (SerializationException e) {
             throw new SpringInertiaException(e);

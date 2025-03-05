@@ -21,7 +21,7 @@ public class InertiaRenderer {
     }
 
     public void render(
-        HttpRequest request,
+        RequestHeaderGetter headerGetter,
         HttpResponse response,
         String url,
         String componentName,
@@ -32,7 +32,7 @@ public class InertiaRenderer {
         PageObject pageObject = buildPageObject(url, componentName, props);
         String serializedPageObject = pageObjectSerializer.serialize(pageObject);
 
-        String inertiaHeader = request.getHeader("X-Inertia");
+        String inertiaHeader = headerGetter.get("X-Inertia");
         if (inertiaHeader != null && inertiaHeader.equalsIgnoreCase("true")) {
             response.setHeader("Content-Type", "application/json");
             response.writeBody(serializedPageObject);
