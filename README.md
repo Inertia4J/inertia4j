@@ -28,10 +28,10 @@ public ResponseEntity<String> index(WebRequest request) {
 
 - [ ] Test with frontend adapters
 - [ ] Create unit tests
-- [ ] Make the JSON serializer customizable
+- [x] Make the JSON serializer customizable
 - [ ] Support asset versioning
 - [ ] Support the `encryptHistory` and `clearHistory` flags on response
-- [ ] Fill the `url` response element
+- [x] Fill the `url` response element
 - [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [ ] Exception throwing/handling
 - [x] Create `core` module
