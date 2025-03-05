@@ -1,5 +1,6 @@
 package io.gitlab.inertia4j.spring.example;
 
+import io.gitlab.inertia4j.spring.Inertia;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;

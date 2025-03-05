@@ -1,4 +1,4 @@
-package io.gitlab.inertia4j.spring.example;
+package io.gitlab.inertia4j.spring;
 
 import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer;
 import org.springframework.http.ResponseEntity;
