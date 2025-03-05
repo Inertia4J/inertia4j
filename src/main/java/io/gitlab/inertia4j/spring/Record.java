@@ -1,8 +1,8 @@
 package io.gitlab.inertia4j.spring;
 
-public class Record {
-    private int id;
-    private String name;
+public class Record implements Comparable<Record> {
+    private final int id;
+    private final String name;
 
     public Record(int id, String name) {
         this.id = id;
@@ -16,5 +16,9 @@ public class Record {
     public String getName() {
         return name;
     }
-}
 
+    @Override
+    public int compareTo(Record that) {
+        return Integer.compare(this.id, that.id);
+    }
+}
