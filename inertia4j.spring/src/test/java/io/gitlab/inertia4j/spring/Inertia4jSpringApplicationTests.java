@@ -27,10 +27,10 @@ class Inertia4jSpringApplicationTests {
     <title>App</title>
 </head>
 <body>
-    <div id="app" data-page='{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"uri=/","version":"HASH","encryptHistory":false,"clearHistory":false}'></div>
+    <div id="app" data-page='{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/","version":"HASH","encryptHistory":false,"clearHistory":false}'></div>
 </body>
 </html>
-	""".stripTrailing();
+	""";
 
 		mvc.perform(get("/"))
 			.andExpect(status().isOk())
@@ -40,7 +40,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void indexPageJsonRendering() throws Exception {
 		String expectedJson = """
-{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"uri=/","version":"HASH","encryptHistory":false,"clearHistory":false}
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/","version":"HASH","encryptHistory":false,"clearHistory":false}
 		""".stripTrailing();
 
 		mvc.perform(get("/").header("X-Inertia", "true"))

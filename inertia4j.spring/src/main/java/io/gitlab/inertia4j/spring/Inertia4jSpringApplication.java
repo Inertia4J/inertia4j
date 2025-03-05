@@ -1,10 +1,12 @@
 package io.gitlab.inertia4j.spring;
 
+import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.Set;
 
@@ -17,13 +19,16 @@ public class Inertia4jSpringApplication {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<String> index() {
-		InertiaRenderer renderer = new InertiaRenderer();
+	public ResponseEntity<String> index(WebRequest request) {
+		SpringInertiaRenderer renderer = new SpringInertiaRenderer(
+			new JacksonPageObjectSerializer(),
+			"templates/app.html"
+		);
 
 		RecordRepository recordRepository = new RecordRepository();
 		Set<Record> records = recordRepository.getAllRecords();
 
-		return renderer.render("App/Index", records);
+		return renderer.render("/", "App/Index", records);
 	}
 
 }
