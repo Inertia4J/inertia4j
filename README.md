@@ -80,6 +80,7 @@ TODO: document how to use a custom template renderer.
 ### TODOS:
 
 - [ ] Test with frontend adapters
+- [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
 - [ ] Create unit tests
 - [x] Make the JSON serializer customizable
 - [ ] Support asset versioning
