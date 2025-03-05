@@ -24,7 +24,7 @@ public class SimpleTemplateRenderer implements TemplateRenderer {
     ) throws TemplateRenderingException {
         String template = loadTemplate(templatePath);
 
-        this.templateMatcher = Pattern.compile("\\$\\{pageObject}").matcher(template);
+        this.templateMatcher = Pattern.compile("@PageObject@").matcher(template);
     }
 
     /*
