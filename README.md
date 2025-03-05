@@ -40,3 +40,4 @@ public ResponseEntity<String> index(WebRequest request) {
 - [ ] Create `Inertia` façade 
 - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
 - [ ] Setup CI
+- [ ] Generate TypeScript types for props ([inspiration](https://www.youtube.com/watch?v=LeYF1NE3jQ4))
