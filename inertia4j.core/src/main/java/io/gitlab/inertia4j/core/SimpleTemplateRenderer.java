@@ -2,19 +2,23 @@ package io.gitlab.inertia4j.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SimpleTemplateRenderer implements TemplateRenderer {
-    private final String template;
+    private final Matcher templateMatcher;
 
     public SimpleTemplateRenderer(
         String templatePath
     ) throws TemplateRenderingException {
-        this.template = loadTemplate(templatePath);
+        String template = loadTemplate(templatePath);
+
+        this.templateMatcher = Pattern.compile("\\$\\{pageObject}").matcher(template);
     }
 
     @Override
     public String render(String pageObjectJson) {
-        return template.replaceAll("\\$\\{pageObject}", pageObjectJson);
+        return templateMatcher.replaceAll(pageObjectJson);
     }
 
     private String loadTemplate(String path) throws TemplateRenderingException {
