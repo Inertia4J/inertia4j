@@ -1,5 +1,8 @@
 package io.gitlab.inertia4j.core;
 
+/*
+ * Exception thrown by TemplateRenderer.
+ */
 public class TemplateRenderingException extends Exception {
     public TemplateRenderingException(String path) {
         super(path, null);

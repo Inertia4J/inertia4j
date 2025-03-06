@@ -5,20 +5,39 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+/*
+ * Spring implementation of the HttpResponse interface.
+ */
 public class SpringHttpResponse implements HttpResponse {
     private String body;
     private final HttpHeaders headers = new HttpHeaders();
 
+    /*
+     * Sets the HTTP Header on the Response to the value provided.
+     * 
+     * @param name name of the header to set value for
+     * @param value value of the header
+     */
     @Override
     public void setHeader(String name, String value) {
         headers.add(name, value);
     }
 
+    /*
+     * Writes the body content of the HTTP response.
+     * 
+     * @param content the content of the HTTP response
+     */
     @Override
     public void writeBody(String content) {
         body = content;
     }
 
+    /*
+     * Converts the response to a ResponseEntity<String>.
+     * 
+     * @returns an OK ResponseEntity<String> instance
+     */
     public ResponseEntity<String> toResponseEntity() {
         return new ResponseEntity<>(body, headers, HttpStatus.OK);
     }

@@ -57,7 +57,7 @@ TODO: document how to use a custom template renderer.
 - [x] Support `.render` without passing `request` 
     * We can use `RequestContextHolder` for that. Example [here](https://dzone.com/articles/quick-tip-spring-rest-utility).
 - [x] Create `Inertia` façade 
-- [ ] Add basic documentation to classes
+- [x] Add basic documentation to classes
 - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
 - [x] Setup CI
 - [ ] Generate TypeScript types for props ([inspiration](https://www.youtube.com/watch?v=LeYF1NE3jQ4))

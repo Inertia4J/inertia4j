@@ -10,11 +10,30 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 /**
- * Bridges Spring-specific rendering with the core InertiaRenderer
+ * Bridges Spring-specific rendering with the core InertiaRenderer.
  */
 class InertiaSpringRenderer {
     private final InertiaRenderer renderer;
 
+    /*
+     * Constructor for InertiaSpringRenderer.
+     * 
+     * @param serializer PageObjectSerializer implementation used to serialize PageObject
+     * @param templateRenderer renderer for HTML responses
+     */
+    public InertiaSpringRenderer(
+        PageObjectSerializer serializer,
+        TemplateRenderer templateRenderer
+    ) throws SpringInertiaException {
+        this.renderer = new InertiaRenderer(serializer, templateRenderer);
+    }
+
+    /*
+     * Constructor for InertiaSpringRenderer.
+     * 
+     * @param serializer PageObjectSerializer implementation used to serialize PageObject
+     * @param templatePath path to the HTML template to be served
+     */
     public InertiaSpringRenderer(
         PageObjectSerializer serializer,
         String templatePath
@@ -26,13 +45,12 @@ class InertiaSpringRenderer {
         }
     }
 
-    public InertiaSpringRenderer(
-        PageObjectSerializer serializer,
-        TemplateRenderer templateRenderer
-    ) throws SpringInertiaException {
-        this.renderer = new InertiaRenderer(serializer, templateRenderer);
-    }
-
+    /*
+     * Formats the server response to the Inertia response format.
+     * 
+     * @param component name of the component to render in the client
+     * @param props regular response data
+     */
     public <TData> ResponseEntity<String> render(String component, TData props) {
         HttpServletRequest request = getCurrentRequest();
         String url = request.getRequestURI();
@@ -40,6 +58,13 @@ class InertiaSpringRenderer {
         return render(getCurrentRequest()::getHeader, url, component, props);
     }
 
+    /*
+     * Formats the server response to the Inertia response format.
+     * 
+     * @param url value of the URL field in response
+     * @param component name of the component to render in the client
+     * @param props regular response data
+     */
     public <TData> ResponseEntity<String> render(
         String url,
         String component,
@@ -48,6 +73,14 @@ class InertiaSpringRenderer {
         return render(getCurrentRequest()::getHeader, url, component, props);
     }
 
+    /*
+     * Formats the server response to the Inertia response format.
+     * 
+     * @param WebRequest HTTP request
+     * @param url value of the URL field in response
+     * @param component name of the component to render in the client
+     * @param props regular response data
+     */
     public <TData> ResponseEntity<String> render(
         WebRequest request,
         String url,
@@ -57,6 +90,14 @@ class InertiaSpringRenderer {
         return render(request::getHeader, url, component, props);
     }
 
+    /*
+     * Formats the server response to the Inertia response format.
+     * 
+     * @param headerGetter request header getter
+     * @param url value of the URL field in response
+     * @param component name of the component to render in the client
+     * @param props regular response data
+     */
     private <TData> ResponseEntity<String> render(
         RequestHeaderGetter headerGetter,
         String url,
@@ -80,6 +121,13 @@ class InertiaSpringRenderer {
         return inertiaSpringResponse.toResponseEntity();
     }
 
+
+    /*
+     * Gets the current HTTP request.
+     * 
+     * @param headerGetter request header getter
+     * @returns current request as HttpServletRequest
+     */
     private HttpServletRequest getCurrentRequest() {
         final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         Assert.state(

@@ -4,6 +4,9 @@ import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
+/*
+ * Implements a Facade for the InertiaRenderer in order to simplify spring controller logic.
+ */
 public class Inertia {
     private static final InertiaSpringRenderer renderer = new InertiaSpringRenderer(
         new JacksonPageObjectSerializer(),
