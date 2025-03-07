@@ -29,4 +29,27 @@ public class Inertia {
     ) {
         return renderer.render(request, url, component, props);
     }
+
+    /*
+     * Sets encryptHistory to true for the next request.
+     */
+    public static void encryptHistory() {
+        renderer.setEncryptHistory(true);
+    }
+
+    /*
+     * Sets encryptHistory to the provided value for the next request.
+     * 
+     * @params encryptHistory value to set the flag to
+     */
+    public static void encryptHistory(boolean encryptHistory) {
+        renderer.setEncryptHistory(encryptHistory);
+    }
+
+    /*
+     * Sets clearHistory to true for the next request.
+     */
+    public static void clearHistory() {
+        renderer.setClearHistory(true);
+    }
 }

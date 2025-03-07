@@ -31,6 +31,40 @@ public ResponseEntity<String> index() {
 }
 ```
 
+### Setting encryptHistory and clearHistory flags
+
+Inertia provides a way to encrypt or clear browsing history when responding to a request, and that is via the usage of 
+the `encryptHistory` and `clearHistory` flags, described [here](https://inertiajs.com/history-encryption). In Inertia4J,
+you can set these flags by calling the `Inertia.encryptHistory()` and `Inertia.clearHistory()` methods.
+
+Here is an example:
+
+```java
+@GetMapping("/records")
+public ResponseEntity<String> index() {
+  /* ... */
+  Inertia.encryptHistory();
+  return Inertia.render("Records/Index", records);
+}
+```
+
+This way, the response will be sent with the `encryptHistory` value set to `true`. Note that this is only applied for
+the next render call, after that, Inertia will revert the flags back to their default values.
+
+You may want to provide a default value to the `encryptHistory` flag, and this is also supported. All you need to do is
+to add the following line to your `application.properties` file:
+
+```text
+inertia.history.encrypt=true
+```
+
+In this case, if you wanted to set the flag to `false` for a specific response, you could then call the following in
+your controller method:
+
+```java
+Inertia.encryptHistory(false);
+```
+
 ### Request headers
 
 TODO: document how the request is obtained internally and how to pass a request argument to `.render`.
@@ -49,7 +83,7 @@ TODO: document how to use a custom template renderer.
 - [ ] Create unit tests
 - [x] Make the JSON serializer customizable
 - [ ] Support asset versioning
-- [ ] Support the `encryptHistory` and `clearHistory` flags on response
+- [x] Support the `encryptHistory` and `clearHistory` flags on response
 - [x] Fill the `url` response element
 - [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [ ] Exception throwing/handling

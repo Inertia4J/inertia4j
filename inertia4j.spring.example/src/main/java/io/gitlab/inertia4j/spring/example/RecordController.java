@@ -21,4 +21,22 @@ public class RecordController {
         return Inertia.render("App/Index", records);
     }
 
+    // View to test flags, can be deleted later.
+    @GetMapping("/encryptHistory")
+    public ResponseEntity<String> indexEncryptHistory() {
+        Set<Record> records = recordRepository.getAllRecords();
+
+        Inertia.encryptHistory();
+        return Inertia.render("App/Index", records);
+    }
+
+    // View to test flags, can be deleted later.
+    @GetMapping("/clearHistory")
+    public ResponseEntity<String> indexClearHistory() {
+        Set<Record> records = recordRepository.getAllRecords();
+
+        Inertia.clearHistory();
+        return Inertia.render("App/Index", records);
+    }
+
 }

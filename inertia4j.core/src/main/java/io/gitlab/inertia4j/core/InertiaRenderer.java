@@ -7,6 +7,10 @@ public class InertiaRenderer {
     private final PageObjectSerializer pageObjectSerializer;
     private final TemplateRenderer templateRenderer;
 
+    private boolean inertiaHistoryEncryptDefault = false; // Usually set by adapter
+    private boolean encryptHistory = false;
+    private boolean clearHistory = false;
+
     /*
      * Constructor for InertiaRenderer.
      * 
@@ -19,6 +23,7 @@ public class InertiaRenderer {
     ) {
         this.pageObjectSerializer = pageObjectSerializer;
         this.templateRenderer = templateRenderer;
+        resetHistoryFlags();
     }
 
     /*
@@ -33,6 +38,7 @@ public class InertiaRenderer {
     ) throws TemplateRenderingException {
         this.pageObjectSerializer = pageObjectSerializer;
         this.templateRenderer = new SimpleTemplateRenderer(templatePath);
+        resetHistoryFlags();
     }
 
     /*
@@ -56,6 +62,8 @@ public class InertiaRenderer {
         PageObject pageObject = buildPageObject(url, componentName, props);
         String serializedPageObject = pageObjectSerializer.serialize(pageObject);
 
+        resetHistoryFlags();
+
         String inertiaHeader = headerGetter.get("X-Inertia");
         if (inertiaHeader != null && inertiaHeader.equalsIgnoreCase("true")) {
             response.setHeader("Content-Type", "application/json");
@@ -64,6 +72,35 @@ public class InertiaRenderer {
             response.setHeader("Content-Type", "text/html");
             response.writeBody(templateRenderer.render(serializedPageObject));
         }
+    }
+
+    /*
+     * Sets the default encryptHistory value. Should be called by adapter to provide a default if there is any.
+     * This also sets the next request's encryptHistory flag to the new default provided.
+     *
+     * @params inertiaHistoryEncryptDefault default value for the clearHistory flag
+     */
+    public void setInertiaHistoryEncryptDefault(boolean inertiaHistoryEncryptDefault) {
+        this.inertiaHistoryEncryptDefault = inertiaHistoryEncryptDefault;
+        setEncryptHistory(inertiaHistoryEncryptDefault);
+    }
+
+    /*
+     * Sets the encryptHistory flag value for the next response.
+     * 
+     * @params encryptHistory flag value
+     */
+    public void setEncryptHistory(boolean encryptHistory) {
+        this.encryptHistory = encryptHistory;
+    }
+
+    /*
+     * Sets the clearHistory flag value for the next response.
+     * 
+     * @params clearHistory flag value
+     */
+    public void setClearHistory(boolean clearHistory) {
+        this.clearHistory = clearHistory;
     }
 
     /*
@@ -79,6 +116,20 @@ public class InertiaRenderer {
             .setUrl(url)
             .setComponent(componentName)
             .setProps(props)
+            .setEncryptHistory(this.encryptHistory)
+            .setClearHistory(this.clearHistory)
             .build();
+    }
+
+    /*
+     * Method used to revert the encryptHistory flag and clearHistory flags.
+     * The encryptHistory flag is set to the default value (false if a default was not provided).
+     *
+     * @see <a href="https://inertiajs.com/history-encryption">Inertia history encryption and clearing</a>
+     * @see <a href="https://inertiajs.com/history-encryption#global-encryption">Inertia global encryption configuration</a>
+     */
+    private void resetHistoryFlags() {
+        setEncryptHistory(this.inertiaHistoryEncryptDefault);
+        setClearHistory(false);
     }
 }

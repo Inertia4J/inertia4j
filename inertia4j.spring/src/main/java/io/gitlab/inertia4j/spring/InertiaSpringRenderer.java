@@ -2,6 +2,7 @@ package io.gitlab.inertia4j.spring;
 
 import io.gitlab.inertia4j.core.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
@@ -14,6 +15,9 @@ import org.springframework.web.context.request.WebRequest;
  */
 class InertiaSpringRenderer {
     private final InertiaRenderer renderer;
+    // Configuration value for encryptHistory flag default
+    @Value("${inertia.history.encrypt:false}")
+    private boolean inertiaHistoryEncryptDefault = false;
 
     /*
      * Constructor for InertiaSpringRenderer.
@@ -26,6 +30,7 @@ class InertiaSpringRenderer {
         TemplateRenderer templateRenderer
     ) throws SpringInertiaException {
         this.renderer = new InertiaRenderer(serializer, templateRenderer);
+        this.renderer.setInertiaHistoryEncryptDefault(inertiaHistoryEncryptDefault);
     }
 
     /*
@@ -40,6 +45,7 @@ class InertiaSpringRenderer {
     ) throws SpringInertiaException {
         try {
             this.renderer = new InertiaRenderer(serializer, templatePath);
+            this.renderer.setInertiaHistoryEncryptDefault(inertiaHistoryEncryptDefault);
         } catch (TemplateRenderingException e) {
             throw new SpringInertiaException(e);
         }
@@ -88,6 +94,24 @@ class InertiaSpringRenderer {
         TData props
     ) {
         return render(request::getHeader, url, component, props);
+    }
+
+    /*
+     * Sets the encryptHistory flag for the next request.
+     *
+     * @params encryptHistory flag value
+     */
+    public void setEncryptHistory(boolean encryptHistory) {
+        this.renderer.setEncryptHistory(encryptHistory);
+    }
+
+    /*
+     * Sets the clearHistory flag for the next request.
+     *
+     * @params clearHistory flag value
+     */
+    public void setClearHistory(boolean clearHistory) {
+        this.renderer.setClearHistory(clearHistory);
     }
 
     /*
