@@ -42,7 +42,12 @@ public class InertiaSpringRendererOptions {
      * We must convert the options to the core class since the
      * core API is not exposed as a dependency to Spring projects
      */
-    InertiaRenderingOptions toCoreRenderingOptions() {
-        return new InertiaRenderingOptions(encryptHistory, clearHistory);
+    InertiaRenderingOptions toCoreRenderingOptions(
+        String url,
+        String componentName,
+        Object props,
+        Object version
+    ) {
+        return new InertiaRenderingOptions(encryptHistory, clearHistory, url, componentName, props, version);
     }
 }

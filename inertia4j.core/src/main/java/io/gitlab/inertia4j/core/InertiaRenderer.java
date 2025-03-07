@@ -47,14 +47,11 @@ public class InertiaRenderer {
     public void render(
         RequestHeaderGetter headerGetter,
         HttpResponse response,
-        String url,
-        String componentName,
-        Object props,
         InertiaRenderingOptions options
     ) throws SerializationException {
         response.setHeader("X-Inertia", "true");
 
-        PageObject pageObject = buildPageObject(url, componentName, props, options);
+        PageObject pageObject = PageObject.fromOptions(options);
         String serializedPageObject = pageObjectSerializer.serialize(pageObject);
 
         String inertiaHeader = headerGetter.get("X-Inertia");
@@ -65,28 +62,5 @@ public class InertiaRenderer {
             response.setHeader("Content-Type", "text/html");
             response.writeBody(templateRenderer.render(serializedPageObject));
         }
-    }
-
-    /*
-     * Builds a PageObject with the information provided, to be used by the render method.
-     * 
-     * @param url value of the URL field in response
-     * @param componentName name of the component to render in the client
-     * @param props regular response data
-     * @returns PageObject instance
-     */
-    private PageObject buildPageObject(
-        String url,
-        String componentName,
-        Object props,
-        InertiaRenderingOptions options
-    ) {
-        return new PageObject.Builder()
-            .setUrl(url)
-            .setComponent(componentName)
-            .setProps(props)
-            .setEncryptHistory(options.encryptHistory)
-            .setClearHistory(options.clearHistory)
-            .build();
     }
 }

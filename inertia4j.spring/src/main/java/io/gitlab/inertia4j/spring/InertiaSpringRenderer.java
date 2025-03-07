@@ -49,22 +49,12 @@ class InertiaSpringRenderer {
      */
     public ResponseEntity<String> render(
         RequestHeaderGetter headerGetter,
-        String url,
-        String component,
-        Object props,
         InertiaRenderingOptions options
     ) {
         SpringHttpResponse inertiaSpringResponse = new SpringHttpResponse();
 
         try {
-            renderer.render(
-                headerGetter,
-                inertiaSpringResponse,
-                url,
-                component,
-                props,
-                options
-            );
+            renderer.render(headerGetter, inertiaSpringResponse, options);
         } catch (SerializationException e) {
             throw new SpringInertiaException(e);
         }

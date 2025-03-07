@@ -10,7 +10,7 @@ public class PageObject {
     private final String component;
     private final Object props;
     private final String url;
-    private final String version;
+    private final Object version;
     private final boolean encryptHistory;
     private final boolean clearHistory;
 
@@ -24,7 +24,14 @@ public class PageObject {
      * @params encryptHistory flag set to encrypt previous browsing activity
      * @params clearHistory flag set to clear previous browsing activity
      */
-    public PageObject(String component, Object props, String url, String version, boolean encryptHistory, boolean clearHistory) {
+    public PageObject(
+        String component,
+        Object props,
+        String url,
+        Object version,
+        boolean encryptHistory,
+        boolean clearHistory
+    ) {
         this.component = component;
         this.props = props;
         this.url = url;
@@ -65,7 +72,7 @@ public class PageObject {
      * 
      * @returns version
      */
-    public String getVersion() {
+    public Object getVersion() {
         return version;
     }
 
@@ -89,111 +96,14 @@ public class PageObject {
         return clearHistory;
     }
 
-    /*
-     * Builder for PageObject.
-     */
-    public static class Builder {
-        private String component;
-        private Object props;
-        private String url;
-        private String version;
-        private boolean encryptHistory;
-        private boolean clearHistory;
-
-        /*
-         * Instances the builder with the default attributes.
-         */
-        public Builder() {
-            this.component = "";
-            this.props = null;
-            this.url = "";
-            this.version = "HASH"; // TODO
-            this.encryptHistory = false;
-            this.clearHistory = false;
-        }
-
-        /*
-        * Sets the name of the component for the PageObject.
-        * 
-        * @params component name of the component
-        * @returns builder
-        */
-        public Builder setComponent(String component) {
-            this.component = component;
-            return this;
-        }
-
-        /*
-        * Sets the data props for the PageObject.
-        * 
-        * @params props data props
-        * @returns builder
-        */
-        public Builder setProps(Object props) {
-            this.props = props;
-            return this;
-        }
-
-        /*
-        * Sets the URL for the PageObject.
-        * 
-        * @params url URL
-        * @returns builder
-        */
-        public Builder setUrl(String url) {
-            this.url = url;
-            return this;
-        }
-
-        /*
-        * Sets the asset version for the PageObject.
-        * 
-        * @params version version
-        * @returns builder
-        */
-        public Builder setVersion(String version) {
-            this.version = version;
-            return this;
-        }
-
-        /*
-        * Sets value of the encryptHistory flag for the PageObject.
-        * 
-        * @params encryptHistory value of the encryptHistory flag
-        * @returns builder
-        * @see <a href="https://inertiajs.com/history-encryption">Inertia encryptHistory flag</a>
-        */
-        public Builder setEncryptHistory(boolean encryptHistory) {
-            this.encryptHistory = encryptHistory;
-            return this;
-        }
-
-        /*
-        * Sets value of the clearHistory flag for the PageObject.
-        * 
-        * @params clearHistory value of the clearHistory flag
-        * @returns builder
-        * @see <a href="https://inertiajs.com/history-encryption#clearing-history">Inertia clearHistory flag</a>
-        */
-        public Builder setClearHistory(boolean clearHistory) {
-            this.clearHistory = clearHistory;
-            return this;
-        }
-
-        /*
-        * Builds a PageObject based on provided builder data.
-        * 
-        * @returns a PageObject instance
-        */
-        public PageObject build() {
-            return new PageObject(
-                this.component,
-                this.props,
-                this.url,
-                this.version,
-                this.encryptHistory,
-                this.clearHistory
-            );
-        }
+    public static PageObject fromOptions(InertiaRenderingOptions options) {
+        return new PageObject(
+            options.componentName,
+            options.props,
+            options.url,
+            options.version,
+            options.encryptHistory,
+            options.clearHistory
+        );
     }
 }

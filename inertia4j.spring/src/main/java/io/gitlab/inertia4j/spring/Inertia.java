@@ -58,7 +58,11 @@ public class Inertia {
      * @param props regular response data
      * @param options rendering options
      */
-    public static ResponseEntity<String> render(String component, Object props, InertiaSpringRendererOptions options) {
+    public static ResponseEntity<String> render(
+        String component,
+        Object props,
+        InertiaSpringRendererOptions options
+    ) {
         return render(getCurrentRequest().getRequestURI(), component, props, options);
     }
 
@@ -70,7 +74,12 @@ public class Inertia {
      * @param props regular response data
      * @param options rendering options
      */
-    public static ResponseEntity<String> render(String url, String component, Object props, InertiaSpringRendererOptions options) {
+    public static ResponseEntity<String> render(
+        String url,
+        String component,
+        Object props,
+        InertiaSpringRendererOptions options
+    ) {
         return render(getCurrentRequest(), url, component, props, options);
     }
 
@@ -89,7 +98,10 @@ public class Inertia {
         Object props,
         InertiaSpringRendererOptions options
     ) {
-        return renderer.render(request::getHeader, url, component, props, options.toCoreRenderingOptions());
+        return renderer.render(
+            request::getHeader,
+            options.toCoreRenderingOptions(url, component, props, "VERSION")
+        );
     }
 
     /*
@@ -107,7 +119,10 @@ public class Inertia {
         Object props,
         InertiaSpringRendererOptions options
     ) {
-        return renderer.render(request::getHeader, url, component, props, options.toCoreRenderingOptions());
+        return renderer.render(
+            request::getHeader,
+            options.toCoreRenderingOptions(url, component, props, "VERSION")
+        );
     }
 
     /*
