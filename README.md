@@ -35,7 +35,7 @@ public ResponseEntity<String> index() {
 
 Inertia provides a way to encrypt or clear browsing history when responding to a request, and that is via the usage of 
 the `encryptHistory` and `clearHistory` flags, described [here](https://inertiajs.com/history-encryption). In Inertia4J,
-you can set these flags by calling the `Inertia.encryptHistory()` and `Inertia.clearHistory()` methods.
+you can set these flags by passing options to the `render` method.
 
 Here is an example:
 
@@ -43,8 +43,7 @@ Here is an example:
 @GetMapping("/records")
 public ResponseEntity<String> index() {
   /* ... */
-  Inertia.encryptHistory();
-  return Inertia.render("Records/Index", records);
+  return Inertia.render("Records/Index", records, Options.encryptHistory());
 }
 ```
 
@@ -58,11 +57,17 @@ to add the following line to your `application.properties` file:
 inertia.history.encrypt=true
 ```
 
-In this case, if you wanted to set the flag to `false` for a specific response, you could then call the following in
-your controller method:
+In this case, if you wanted to set the flag to `false` for a specific response, you could then specify that in the options:
 
 ```java
-Inertia.encryptHistory(false);
+Inertia.render("Records/Index", records, Options.encryptHistory(false));
+```
+
+The `clearHistory` option works the same way, except it's not possible to set a default value for it. You can chain
+calls to the `Options` builder to specify it:
+
+```java
+Inertia.render("Records/Index", records, Options.encryptHistory(false).clearHistory());
 ```
 
 ### Request headers
@@ -87,7 +92,7 @@ TODO: document how to use a custom template renderer.
 - [x] Support the `encryptHistory` and `clearHistory` flags on response
 - [x] Fill the `url` response element
 - [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
-- [ ] Exception throwing/handling
+- [x] Exception throwing/handling
 - [x] Create `core` module
 - [x] Support `.render` without passing `request` 
     * We can use `RequestContextHolder` for that. Example [here](https://dzone.com/articles/quick-tip-spring-rest-utility).

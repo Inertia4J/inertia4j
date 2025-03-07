@@ -80,4 +80,5 @@ class Inertia4jSpringApplicationTests {
 				.andExpect(status().isOk())
 				.andExpect(content().string(expectedJson));
 	}
+
 }
