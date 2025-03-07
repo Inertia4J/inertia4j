@@ -100,7 +100,7 @@ public class Inertia {
     ) {
         return renderer.render(
             request::getHeader,
-            options.toCoreRenderingOptions(url, component, props, "VERSION")
+            options.toCoreRenderingOptions(url, component, props, "HASH")
         );
     }
 
@@ -121,7 +121,7 @@ public class Inertia {
     ) {
         return renderer.render(
             request::getHeader,
-            options.toCoreRenderingOptions(url, component, props, "VERSION")
+            options.toCoreRenderingOptions(url, component, props, "HASH")
         );
     }
 
