@@ -48,4 +48,36 @@ class Inertia4jSpringApplicationTests {
 				.andExpect(content().string(expectedJson));
 	}
 
+	@Test
+	void clearHistoryOption() throws Exception {
+		String expectedJson = """
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/clearHistory","version":"HASH","encryptHistory":false,"clearHistory":true}
+		""".stripTrailing();
+
+		mvc.perform(get("/clearHistory").header("X-Inertia", "true"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(expectedJson));
+	}
+
+	@Test
+	void encryptHistoryOption() throws Exception {
+		String expectedJson = """
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/encryptHistory","version":"HASH","encryptHistory":true,"clearHistory":false}
+		""".stripTrailing();
+
+		mvc.perform(get("/encryptHistory").header("X-Inertia", "true"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(expectedJson));
+	}
+
+	@Test
+	void allOptions() throws Exception {
+		String expectedJson = """
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/allOptions","version":"HASH","encryptHistory":true,"clearHistory":true}
+		""".stripTrailing();
+
+		mvc.perform(get("/allOptions").header("X-Inertia", "true"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(expectedJson));
+	}
 }

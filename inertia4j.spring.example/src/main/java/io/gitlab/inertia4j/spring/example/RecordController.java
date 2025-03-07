@@ -1,6 +1,7 @@
 package io.gitlab.inertia4j.spring.example;
 
 import io.gitlab.inertia4j.spring.Inertia;
+import io.gitlab.inertia4j.spring.Inertia.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,22 +22,25 @@ public class RecordController {
         return Inertia.render("App/Index", records);
     }
 
-    // View to test flags, can be deleted later.
     @GetMapping("/encryptHistory")
     public ResponseEntity<String> indexEncryptHistory() {
         Set<Record> records = recordRepository.getAllRecords();
 
-        Inertia.encryptHistory();
-        return Inertia.render("App/Index", records);
+        return Inertia.render("App/Index", records, Options.encryptHistory());
     }
 
-    // View to test flags, can be deleted later.
     @GetMapping("/clearHistory")
     public ResponseEntity<String> indexClearHistory() {
         Set<Record> records = recordRepository.getAllRecords();
 
-        Inertia.clearHistory();
-        return Inertia.render("App/Index", records);
+        return Inertia.render("App/Index", records, Options.clearHistory());
+    }
+
+    @GetMapping("/allOptions")
+    public ResponseEntity<String> allOptions() {
+        Set<Record> records = recordRepository.getAllRecords();
+
+        return Inertia.render("App/Index", records, Options.clearHistory().encryptHistory());
     }
 
 }
