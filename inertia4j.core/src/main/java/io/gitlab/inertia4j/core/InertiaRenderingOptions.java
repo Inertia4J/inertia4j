@@ -9,22 +9,19 @@ public class InertiaRenderingOptions {
     final String url;
     final String componentName;
     final Object props;
-    final Object version;
 
     public InertiaRenderingOptions(
         boolean encryptHistory,
         boolean clearHistory,
         String url,
         String componentName,
-        Object props,
-        Object version
+        Object props
     ) {
         this.encryptHistory = encryptHistory;
         this.clearHistory = clearHistory;
         this.url = url;
         this.componentName = componentName;
         this.props = props;
-        this.version = version;
     }
 
     /*
@@ -35,11 +32,11 @@ public class InertiaRenderingOptions {
      */
     public InertiaRenderingOptions withPartialComponent(String component) {
         return new InertiaRenderingOptions(
-                this.encryptHistory,
-                this.clearHistory,
-                this.url,
-                component,
-                this.props,
-                this.version);
+            this.encryptHistory,
+            this.clearHistory,
+            this.url,
+            component,
+            this.props
+        );
     }
 }

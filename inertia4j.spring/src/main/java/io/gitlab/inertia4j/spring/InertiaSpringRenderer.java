@@ -17,9 +17,10 @@ class InertiaSpringRenderer {
      */
     public InertiaSpringRenderer(
         PageObjectSerializer serializer,
+        VersionProvider versionProvider,
         TemplateRenderer templateRenderer
     ) throws SpringInertiaException {
-        this.renderer = new InertiaRenderer(serializer, templateRenderer);
+        this.renderer = new InertiaRenderer(serializer, versionProvider::get, templateRenderer);
     }
 
     /*
@@ -30,10 +31,11 @@ class InertiaSpringRenderer {
      */
     public InertiaSpringRenderer(
         PageObjectSerializer serializer,
+        VersionProvider versionProvider,
         String templatePath
     ) throws SpringInertiaException {
         try {
-            this.renderer = new InertiaRenderer(serializer, templatePath);
+            this.renderer = new InertiaRenderer(serializer, versionProvider::get, templatePath);
         } catch (TemplateRenderingException e) {
             throw new SpringInertiaException(e);
         }
@@ -48,13 +50,13 @@ class InertiaSpringRenderer {
      * @param props regular response data
      */
     public ResponseEntity<String> render(
-        RequestHeaderGetter headerGetter,
+        HttpRequest request,
         InertiaRenderingOptions options
     ) {
         SpringHttpResponse inertiaSpringResponse = new SpringHttpResponse();
 
         try {
-            renderer.render(headerGetter, inertiaSpringResponse, options);
+            renderer.render(request, inertiaSpringResponse, options);
         } catch (SerializationException e) {
             throw new SpringInertiaException(e);
         }

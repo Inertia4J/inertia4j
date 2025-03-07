@@ -14,12 +14,19 @@ import org.springframework.web.context.request.WebRequest;
  * Implements a Facade for the InertiaRenderer in order to simplify Spring controller logic.
  */
 public class Inertia {
+    public static VersionProvider versionProvider = () -> null;
+
     private static final InertiaSpringRenderer renderer = new InertiaSpringRenderer(
         new JacksonPageObjectSerializer(),
+        versionProvider,
         "templates/app.html"
     );
 
     private static InertiaSpringRendererOptions defaultOptions = new InertiaSpringRendererOptions();
+
+    public static void setVersionProvider(VersionProvider provider) {
+        versionProvider = provider;
+    }
 
     @Value("${inertia.history.encrypt:false}")
     public static void setHistoryEncryptDefault(boolean encryptHistory) {
@@ -98,10 +105,9 @@ public class Inertia {
         Object props,
         InertiaSpringRendererOptions options
     ) {
-        return renderer.render(
-            request::getHeader,
-            options.toCoreRenderingOptions(url, component, props, "HASH")
-        );
+        HttpServletRequest servletRequest = ((ServletRequestAttributes) request).getRequest();
+
+        return render(servletRequest, url, component, props, options);
     }
 
     /*
@@ -120,8 +126,8 @@ public class Inertia {
         InertiaSpringRendererOptions options
     ) {
         return renderer.render(
-            request::getHeader,
-            options.toCoreRenderingOptions(url, component, props, "HASH")
+            new InertiaHttpServletRequest(request),
+            options.toCoreRenderingOptions(url, component, props)
         );
     }
 

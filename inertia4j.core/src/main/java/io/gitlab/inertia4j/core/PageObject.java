@@ -28,16 +28,16 @@ public class PageObject {
         String component,
         Object props,
         String url,
-        Object version,
         boolean encryptHistory,
-        boolean clearHistory
+        boolean clearHistory,
+        Object version
     ) {
         this.component = component;
         this.props = props;
         this.url = url;
-        this.version = version;
         this.encryptHistory = encryptHistory;
         this.clearHistory = clearHistory;
+        this.version = version;
     }
 
     /*
@@ -96,14 +96,14 @@ public class PageObject {
         return clearHistory;
     }
 
-    public static PageObject fromOptions(InertiaRenderingOptions options) {
+    public static PageObject fromOptions(InertiaRenderingOptions options, Object version) {
         return new PageObject(
             options.componentName,
             options.props,
             options.url,
-            options.version,
             options.encryptHistory,
-            options.clearHistory
+            options.clearHistory,
+            version
         );
     }
 }

@@ -7,8 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,10 +26,10 @@ class Inertia4jSpringApplicationTests {
     <title>App</title>
 </head>
 <body>
-    <div id="app" data-page='{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/","version":"HASH","encryptHistory":false,"clearHistory":false}'></div>
+    <div id="app" data-page='{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/","version":null,"encryptHistory":false,"clearHistory":false}'></div>
 </body>
 </html>
-	""";
+		""";
 
 		mvc.perform(get("/"))
 			.andExpect(status().isOk())
@@ -40,7 +39,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void indexPageJsonRendering() throws Exception {
 		String expectedJson = """
-{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/","version":"HASH","encryptHistory":false,"clearHistory":false}
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/","version":null,"encryptHistory":false,"clearHistory":false}
 		""".stripTrailing();
 
 		mvc.perform(get("/").header("X-Inertia", "true"))
@@ -51,7 +50,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void clearHistoryOption() throws Exception {
 		String expectedJson = """
-{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/clearHistory","version":"HASH","encryptHistory":false,"clearHistory":true}
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/clearHistory","version":null,"encryptHistory":false,"clearHistory":true}
 		""".stripTrailing();
 
 		mvc.perform(get("/clearHistory").header("X-Inertia", "true"))
@@ -62,7 +61,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void encryptHistoryOption() throws Exception {
 		String expectedJson = """
-{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/encryptHistory","version":"HASH","encryptHistory":true,"clearHistory":false}
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/encryptHistory","version":null,"encryptHistory":true,"clearHistory":false}
 		""".stripTrailing();
 
 		mvc.perform(get("/encryptHistory").header("X-Inertia", "true"))
@@ -73,12 +72,19 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void allOptions() throws Exception {
 		String expectedJson = """
-{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/allOptions","version":"HASH","encryptHistory":true,"clearHistory":true}
+{"component":"App/Index","props":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}],"url":"/allOptions","version":null,"encryptHistory":true,"clearHistory":true}
 		""".stripTrailing();
 
 		mvc.perform(get("/allOptions").header("X-Inertia", "true"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(expectedJson));
+	}
+
+	@Test
+	void versionConflict() throws Exception {
+		mvc.perform(get("/").header("X-Inertia-Version", "10"))
+			.andExpect(status().isConflict())
+			.andExpect(header().string("X-Inertia-Location", "/"));
 	}
 
 }

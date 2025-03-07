@@ -3,6 +3,7 @@ package io.gitlab.inertia4j.spring;
 import io.gitlab.inertia4j.core.HttpResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 /*
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
  */
 public class SpringHttpResponse implements HttpResponse {
     private String body;
+    private HttpStatusCode status;
     private final HttpHeaders headers = new HttpHeaders();
 
     /*
@@ -21,6 +23,11 @@ public class SpringHttpResponse implements HttpResponse {
     @Override
     public void setHeader(String name, String value) {
         headers.add(name, value);
+    }
+
+    @Override
+    public void setCode(Integer code) {
+        this.status = HttpStatus.resolve(code);
     }
 
     /*
@@ -39,6 +46,6 @@ public class SpringHttpResponse implements HttpResponse {
      * @returns an OK ResponseEntity<String> instance
      */
     public ResponseEntity<String> toResponseEntity() {
-        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+        return new ResponseEntity<>(body, headers, status);
     }
 }

@@ -45,9 +45,8 @@ public class InertiaSpringRendererOptions {
     InertiaRenderingOptions toCoreRenderingOptions(
         String url,
         String componentName,
-        Object props,
-        Object version
+        Object props
     ) {
-        return new InertiaRenderingOptions(encryptHistory, clearHistory, url, componentName, props, version);
+        return new InertiaRenderingOptions(encryptHistory, clearHistory, url, componentName, props);
     }
 }
