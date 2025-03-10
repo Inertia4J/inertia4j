@@ -84,20 +84,22 @@ TODO: document how to use a custom template renderer.
 
 ### TODOS:
 
-- [ ] Test with frontend adapters
+#### V1
+
 - [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
-- [ ] Create unit tests
-- [x] Make the JSON serializer customizable
 - [ ] Support asset versioning
+- [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
+- [x] Make the JSON serializer customizable
 - [x] Support the `encryptHistory` and `clearHistory` flags on response
 - [x] Fill the `url` response element
 - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
-- [x] Exception throwing/handling
-- [x] Create `core` module
-- [x] Support `.render` without passing `request` 
-    * We can use `RequestContextHolder` for that. Example [here](https://dzone.com/articles/quick-tip-spring-rest-utility).
-- [x] Create `Inertia` façade 
 - [x] Add basic documentation to classes
-- [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
-- [x] Setup CI
+- [ ] Create Ktor plugin
+
+#### V1.1
+
+- [ ] Shared data
+- [ ] Deferred props
+- [ ] Create unit tests
+- [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [ ] Generate TypeScript types for props ([inspiration](https://www.youtube.com/watch?v=LeYF1NE3jQ4))
