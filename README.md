@@ -94,6 +94,7 @@ TODO: document how to use a custom template renderer.
 - [x] Fill the `url` response element
 - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [x] Add basic documentation to classes
+- [ ] Write "getting started" documentation
 - [ ] Create Ktor plugin
 
 #### V1.1
@@ -101,5 +102,4 @@ TODO: document how to use a custom template renderer.
 - [ ] Shared data
 - [ ] Deferred props
 - [ ] Create unit tests
-- [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [ ] Generate TypeScript types for props ([inspiration](https://www.youtube.com/watch?v=LeYF1NE3jQ4))
