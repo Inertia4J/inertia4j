@@ -87,7 +87,7 @@ TODO: document how to use a custom template renderer.
 #### V1
 
 - [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
-- [ ] Support asset versioning
+- [x] Support asset versioning
 - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
 - [x] Make the JSON serializer customizable
 - [x] Support the `encryptHistory` and `clearHistory` flags on response
