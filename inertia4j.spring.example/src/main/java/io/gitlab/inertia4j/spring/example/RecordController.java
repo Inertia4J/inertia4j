@@ -22,6 +22,13 @@ public class RecordController {
         return Inertia.render("App/Index", records);
     }
 
+    @GetMapping("/record/first")
+    public ResponseEntity<String> first() {
+        Record record = recordRepository.getRecordById(1);
+
+        return Inertia.render("App/Show", record);
+    }
+
     @GetMapping("/encryptHistory")
     public ResponseEntity<String> indexEncryptHistory() {
         Set<Record> records = recordRepository.getAllRecords();

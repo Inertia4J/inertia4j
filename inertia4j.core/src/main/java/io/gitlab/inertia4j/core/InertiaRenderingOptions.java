@@ -26,4 +26,20 @@ public class InertiaRenderingOptions {
         this.props = props;
         this.version = version;
     }
+
+    /*
+     * Returns a new PageObject with the specified component.
+     *
+     * @param component name of the component
+     * @returns an InertiaRenderingOptions instance
+     */
+    public InertiaRenderingOptions withPartialComponent(String component) {
+        return new InertiaRenderingOptions(
+                this.encryptHistory,
+                this.clearHistory,
+                this.url,
+                component,
+                this.props,
+                this.version);
+    }
 }

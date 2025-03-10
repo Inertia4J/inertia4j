@@ -91,7 +91,7 @@ TODO: document how to use a custom template renderer.
 - [ ] Support asset versioning
 - [x] Support the `encryptHistory` and `clearHistory` flags on response
 - [x] Fill the `url` response element
-- [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
+- [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [x] Exception throwing/handling
 - [x] Create `core` module
 - [x] Support `.render` without passing `request` 
