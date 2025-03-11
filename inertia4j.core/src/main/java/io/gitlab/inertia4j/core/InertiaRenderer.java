@@ -119,9 +119,9 @@ public class InertiaRenderer {
         List<String> partialDataProps = null;
         if (partialDataHeader != null) {
             partialDataProps = Arrays.stream(partialDataHeader.split(","))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .collect(Collectors.toList());
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
         }
 
         return pageObjectSerializer.serialize(pageObject, partialDataProps);
