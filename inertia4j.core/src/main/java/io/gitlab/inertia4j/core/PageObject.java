@@ -1,5 +1,7 @@
 package io.gitlab.inertia4j.core;
 
+import java.util.Map;
+
 /*
  * Internal representation of an Inertia Page Object.
  * This object is serialized and included in the server responses.
@@ -8,7 +10,7 @@ package io.gitlab.inertia4j.core;
  */
 public class PageObject {
     private final String component;
-    private final Object props;
+    private final Map<String, Object> props;
     private final String url;
     private final Object version;
     private final boolean encryptHistory;
@@ -26,7 +28,7 @@ public class PageObject {
      */
     public PageObject(
         String component,
-        Object props,
+        Map<String, Object> props,
         String url,
         boolean encryptHistory,
         boolean clearHistory,
@@ -54,7 +56,7 @@ public class PageObject {
      * 
      * @returns props data
      */
-    public Object getProps() {
+    public Map<String, Object> getProps() {
         return props;
     }
 

@@ -1,5 +1,7 @@
 package io.gitlab.inertia4j.core;
 
+import java.util.Map;
+
 /**
  * Holds options that will be passed along to the renderer.
  */
@@ -8,14 +10,14 @@ public class InertiaRenderingOptions {
     final boolean clearHistory;
     final String url;
     final String componentName;
-    final Object props;
+    final Map<String, Object> props;
 
     public InertiaRenderingOptions(
         boolean encryptHistory,
         boolean clearHistory,
         String url,
         String componentName,
-        Object props
+        Map<String, Object> props
     ) {
         this.encryptHistory = encryptHistory;
         this.clearHistory = clearHistory;

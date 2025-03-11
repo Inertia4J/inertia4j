@@ -10,6 +10,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Map;
+
 /*
  * Implements a Facade for the InertiaRenderer in order to simplify Spring controller logic.
  */
@@ -43,7 +45,7 @@ public class Inertia {
      * @param props regular response data
      * @param options rendering options
      */
-    public static ResponseEntity<String> render(String component, Object props) {
+    public static ResponseEntity<String> render(String component, Map<String, Object> props) {
         return render(getCurrentRequest().getRequestURI(), component, props);
     }
 
@@ -54,7 +56,7 @@ public class Inertia {
      * @params component name of the component to render in the client
      * @param props regular response data
      */
-    public static ResponseEntity<String> render(String url, String component, Object props) {
+    public static ResponseEntity<String> render(String url, String component, Map<String, Object> props) {
         return render(getCurrentRequest(), url, component, props, defaultOptions);
     }
 
@@ -67,7 +69,7 @@ public class Inertia {
      */
     public static ResponseEntity<String> render(
         String component,
-        Object props,
+        Map<String, Object> props,
         InertiaSpringRendererOptions options
     ) {
         return render(getCurrentRequest().getRequestURI(), component, props, options);
@@ -84,7 +86,7 @@ public class Inertia {
     public static ResponseEntity<String> render(
         String url,
         String component,
-        Object props,
+        Map<String, Object> props,
         InertiaSpringRendererOptions options
     ) {
         return render(getCurrentRequest(), url, component, props, options);
@@ -102,7 +104,7 @@ public class Inertia {
         WebRequest request,
         String url,
         String component,
-        Object props,
+        Map<String, Object> props,
         InertiaSpringRendererOptions options
     ) {
         HttpServletRequest servletRequest = ((ServletRequestAttributes) request).getRequest();
@@ -122,7 +124,7 @@ public class Inertia {
         HttpServletRequest request,
         String url,
         String component,
-        Object props,
+        Map<String, Object> props,
         InertiaSpringRendererOptions options
     ) {
         return renderer.render(

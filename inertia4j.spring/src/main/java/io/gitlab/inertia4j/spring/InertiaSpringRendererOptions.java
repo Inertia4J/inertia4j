@@ -2,6 +2,8 @@ package io.gitlab.inertia4j.spring;
 
 import io.gitlab.inertia4j.core.InertiaRenderingOptions;
 
+import java.util.Map;
+
 /**
  * Builder class to make option passing more idiomatic. Necessary to separate
  * from Inertia.Options because of conflicts with its static methods.
@@ -45,7 +47,7 @@ public class InertiaSpringRendererOptions {
     InertiaRenderingOptions toCoreRenderingOptions(
         String url,
         String componentName,
-        Object props
+        Map<String, Object> props
     ) {
         return new InertiaRenderingOptions(encryptHistory, clearHistory, url, componentName, props);
     }
