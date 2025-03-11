@@ -11,16 +11,6 @@ public interface PageObjectSerializer {
      * Serializes the provided PageObject
      *
      * @param pageObject PageObject to serialize
-     * @returns PageObject serialized as String
-     * @throws SerializationException if any errors occur during serialization
-     * @see PageObject
-     */
-    String serialize(PageObject pageObject) throws SerializationException;
-
-    /*
-     * Serializes the provided PageObject
-     *
-     * @param pageObject PageObject to serialize
      * @param partialDataProps list of props to be serialized, used for partial data requests, can be null
      * @returns PageObject serialized as String
      * @throws SerializationException if any errors occur during serialization

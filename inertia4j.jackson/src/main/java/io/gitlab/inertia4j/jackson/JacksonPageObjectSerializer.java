@@ -16,22 +16,6 @@ public class JacksonPageObjectSerializer implements PageObjectSerializer {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /*
-     * Serializes the provided PageObject using Jackson as JSON serializer
-     *
-     * @param pageObject PageObject to serialize
-     * @returns PageObject JSON serialized as String
-     * @throws SerializationException if any errors occur during serialization
-     */
-    @Override
-    public String serialize(PageObject pageObject) throws SerializationException {
-        try {
-            return objectMapper.writeValueAsString(pageObject);
-        } catch (JsonProcessingException e) {
-            throw new SerializationException(e);
-        }
-    }
-
-    /*
      * Serializes the provided PageObject
      *
      * @param pageObject PageObject to serialize
