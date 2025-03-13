@@ -94,6 +94,7 @@ TODO: document how to use a custom template renderer.
 - [x] Fill the `url` response element
 - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [x] Add basic documentation to classes
+- [ ] Support redirects
 - [ ] Write "getting started" documentation
 - [ ] Create Ktor plugin
 
