@@ -64,6 +64,22 @@ public class InertiaRenderer {
         handleSuccessResponse(request, response, options);
     }
 
+    /*
+     * Formats the proper redirect response to the specified location.
+     *
+     * @param request object to obtain headers and method
+     * @param response object to which headers and redirect code will be output
+     * @param location URL to redirect to
+     */
+    public void redirect(
+        HttpRequest request,
+        HttpResponse response,
+        String location
+    ) {
+        response.setCode(isPutPatchDelete(request) ? 303 : 302);
+        response.setHeader("Location", location);
+    }
+
     private boolean isVersionConflict(HttpRequest request) {
         if (!request.getMethod().equalsIgnoreCase("GET")) return false;
 
@@ -124,5 +140,12 @@ public class InertiaRenderer {
         }
 
         return pageObjectSerializer.serialize(pageObject, partialDataProps);
+    }
+
+    private boolean isPutPatchDelete(HttpRequest request) {
+        String requestMethod = request.getMethod();
+        return (requestMethod.equalsIgnoreCase("PUT")
+            || requestMethod.equalsIgnoreCase("PATCH")
+            || requestMethod.equalsIgnoreCase("DELETE"));
     }
 }

@@ -135,6 +135,16 @@ public class Inertia {
     }
 
     /*
+     * Formats the proper redirect response to the specified location.
+     *
+     * @param location URL to redirect to
+     */
+    public static ResponseEntity<String> redirect(String location) {
+        InertiaHttpServletRequest inertiaServletRequest = new InertiaHttpServletRequest(getCurrentRequest());
+        return renderer.redirect(inertiaServletRequest, location);
+    }
+
+    /*
      * Gets the current HTTP request.
      *
      * @returns current request as HttpServletRequest

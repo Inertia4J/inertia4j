@@ -22,6 +22,11 @@ public class RecordController {
         return Inertia.render("records/Index", Map.of("records", records));
     }
 
+    @GetMapping("/records")
+    public ResponseEntity<String> records() {
+        return Inertia.redirect("/");
+    }
+
     @GetMapping("/records/first")
     public ResponseEntity<String> first() {
         Record record = recordRepository.getRecordById(1);
@@ -31,8 +36,7 @@ public class RecordController {
 
     @PostMapping("/records")
     public ResponseEntity<String> create(@RequestBody Record record) {
-        // TODO: replace with Inertia.redirect
-        return Inertia.render("records/Show", Map.of("record", record));
+        return Inertia.redirect("/records/first");
     }
 
     @GetMapping("/encryptHistory")

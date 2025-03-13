@@ -63,4 +63,18 @@ class InertiaSpringRenderer {
 
         return inertiaSpringResponse.toResponseEntity();
     }
+
+    /*
+     * Formats the proper redirect response to the specified location.
+     *
+     * @param request object to obtain headers and method
+     * @param location URL to redirect to
+     */
+    public ResponseEntity<String> redirect(HttpRequest request, String location) {
+        SpringHttpResponse inertiaSpringResponse = new SpringHttpResponse();
+
+        renderer.redirect(request, inertiaSpringResponse, location);
+
+        return inertiaSpringResponse.toResponseEntity();
+    }
 }
