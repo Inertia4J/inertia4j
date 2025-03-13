@@ -13,6 +13,7 @@ class InertiaSpringRenderer {
      * Constructor for InertiaSpringRenderer.
      * 
      * @param serializer PageObjectSerializer implementation used to serialize PageObject
+     * @param versionProvider provider for the current Inertia asset version
      * @param templateRenderer renderer for HTML responses
      */
     public InertiaSpringRenderer(
@@ -27,7 +28,8 @@ class InertiaSpringRenderer {
      * Constructor for InertiaSpringRenderer.
      * 
      * @param serializer PageObjectSerializer implementation used to serialize PageObject
-     * @param templatePath path to the HTML template to be served
+     * @param versionProvider provider for the current Inertia asset version
+     * @param templatePath path to the HTML template to be rendered
      */
     public InertiaSpringRenderer(
         PageObjectSerializer serializer,
@@ -44,10 +46,8 @@ class InertiaSpringRenderer {
     /*
      * Formats the server response to the Inertia response format.
      * 
-     * @param headerGetter request header getter
-     * @param url value of the URL field in response
-     * @param component name of the component to render in the client
-     * @param props regular response data
+     * @param request HTTP request
+     * @param options Inertia flags and other Page Object data
      */
     public ResponseEntity<String> render(
         HttpRequest request,

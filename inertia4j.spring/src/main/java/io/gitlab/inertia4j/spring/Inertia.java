@@ -43,7 +43,6 @@ public class Inertia {
      *
      * @params component name of the component to render in the client
      * @param props regular response data
-     * @param options rendering options
      */
     public static ResponseEntity<String> render(String component, Map<String, Object> props) {
         return render(component, props, getCurrentRequest().getRequestURI());
@@ -65,7 +64,7 @@ public class Inertia {
      *
      * @params component name of the component to render in the client
      * @param props regular response data
-     * @param options rendering options
+     * @param options Inertia flags and other Page Object data
      */
     public static ResponseEntity<String> render(
         String component,
@@ -81,7 +80,7 @@ public class Inertia {
      * @param url value of the URL field in response
      * @params component name of the component to render in the client
      * @param props regular response data
-     * @param options rendering options
+     * @param options Inertia flags and other Page Object data
      */
     public static ResponseEntity<String> render(
         String component,
@@ -99,6 +98,7 @@ public class Inertia {
      * @param url value of the URL field in response
      * @param component name of the component to render in the client
      * @param props regular response data
+     * @param options Inertia flags and other Page Object data
      */
     public static ResponseEntity<String> render(
         WebRequest request,
@@ -116,9 +116,10 @@ public class Inertia {
      * Calls the render method for the current InertiaSpringRenderer instance.
      *
      * @param request HTTP request
-     * @param url value of the URL field in response
      * @param component name of the component to render in the client
      * @param props regular response data
+     * @param url value of the URL field in response
+     * @param options Inertia flags and other Page Object data
      */
     public static ResponseEntity<String> render(
         HttpServletRequest request,
@@ -136,7 +137,6 @@ public class Inertia {
     /*
      * Gets the current HTTP request.
      *
-     * @param headerGetter request header getter
      * @returns current request as HttpServletRequest
      */
     private static HttpServletRequest getCurrentRequest() {

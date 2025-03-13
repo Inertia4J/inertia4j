@@ -17,6 +17,7 @@ public class InertiaRenderer {
      * Constructor for InertiaRenderer.
      *
      * @param serializer PageObjectSerializer implementation used to serialize PageObject
+     * @param versionProvider provider for the current Inertia asset version
      * @param templateRenderer renderer for HTML responses
      */
     public InertiaRenderer(
@@ -33,6 +34,7 @@ public class InertiaRenderer {
      * Constructor for InertiaRenderer, uses SimpleTemplateRenderer as renderer by default.
      * 
      * @param serializer PageObjectSerializer implementation used to serialize PageObject
+     * @param versionProvider provider for the current Inertia asset version
      * @param templatePath path to the HTML template to be served
      */
     public InertiaRenderer(
@@ -48,9 +50,6 @@ public class InertiaRenderer {
      *
      * @param request object to obtain headers and method
      * @param response object to which headers and body will be output
-     * @param url value of the URL field in response
-     * @param componentName name of the component to render in the client
-     * @param props regular response data
      * @param options rendering options
      */
     public void render(
