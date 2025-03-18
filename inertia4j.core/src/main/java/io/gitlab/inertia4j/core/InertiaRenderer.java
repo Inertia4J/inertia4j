@@ -48,7 +48,7 @@ public class InertiaRenderer {
     /*
      * Formats the server response to the Inertia response format.
      *
-     * @param request object to obtain headers and method
+     * @param request HTTP request
      * @param response object to which headers and body will be output
      * @param options rendering options
      */
@@ -67,7 +67,7 @@ public class InertiaRenderer {
     /*
      * Formats the proper redirect response to the specified location.
      *
-     * @param request object to obtain headers and method
+     * @param request HTTP request
      * @param response object to which headers and redirect code will be output
      * @param location URL to redirect to
      */
@@ -78,6 +78,20 @@ public class InertiaRenderer {
     ) {
         response.setCode(isPutPatchDelete(request) ? 303 : 302);
         response.setHeader("Location", location);
+    }
+
+    /*
+     * Redirects to an external or non-Inertia URL.
+     *
+     * @param response object to which headers and redirect code will be output
+     * @param location external URL to redirect to
+     */
+    public void location(
+            HttpResponse response,
+            String url
+    ) {
+        response.setCode(409);
+        response.setHeader("X-Inertia-Location", url);
     }
 
     private boolean isVersionConflict(HttpRequest request) {

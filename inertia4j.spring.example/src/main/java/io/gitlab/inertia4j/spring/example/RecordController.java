@@ -60,4 +60,9 @@ public class RecordController {
         return Inertia.render("records/Index", Map.of("records", records), Options.clearHistory().encryptHistory());
     }
 
+    @GetMapping("/externalRedirect")
+    public ResponseEntity<String> externalRedirect() {
+        return Inertia.location("https://inertiajs.com/");
+    }
+
 }

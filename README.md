@@ -95,7 +95,7 @@ TODO: document how to use a custom template renderer.
 - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
 - [x] Add basic documentation to classes
 - [x] Support Inertia redirects
-- [ ] Support non-Inertia redirects
+- [x] Support non-Inertia redirects
 - [ ] Write "getting started" documentation
 - [ ] Create Ktor plugin
 

@@ -145,6 +145,15 @@ public class Inertia {
     }
 
     /*
+     * Redirects to an external or non-Inertia URL.
+     *
+     * @param location external URL to redirect to
+     */
+    public static ResponseEntity<String> location(String url) {
+        return renderer.location(url);
+    }
+
+    /*
      * Gets the current HTTP request.
      *
      * @returns current request as HttpServletRequest
