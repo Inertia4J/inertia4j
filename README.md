@@ -108,15 +108,17 @@ TODO: document how to use a custom template renderer.
     - [ ] Write "getting started" documentation
     - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
 - **Ktor**
-    - [ ] Support asset versioning
+    - [x] Support asset versioning
     - [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
     - [x] Make the JSON serializer customizable
-    - [ ] Support the `encryptHistory` and `clearHistory` flags on response
-    - [ ] Fill the `url` response element
-    - [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
-    - [ ] Add basic documentation to classes
-    - [ ] Support Inertia redirects
-    - [ ] Support non-Inertia redirects
+    - [x] Support the `encryptHistory` and `clearHistory` flags on response
+        - [ ] Support default values via plugin configuration
+    - [x] Fill the `url` response element
+    - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
+    - [x] Add basic documentation to classes
+    - [x] Support Inertia redirects
+    - [x] Support non-Inertia redirects
+    - [ ] Add testing to example application
     - [ ] Write "getting started" documentation
 
 #### V1.1
