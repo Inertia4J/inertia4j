@@ -86,18 +86,38 @@ TODO: document how to use a custom template renderer.
 
 #### V1
 
-- [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
-- [x] Support asset versioning
-- [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
-- [x] Make the JSON serializer customizable
-- [x] Support the `encryptHistory` and `clearHistory` flags on response
-- [x] Fill the `url` response element
-- [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
-- [x] Add basic documentation to classes
-- [x] Support Inertia redirects
-- [x] Support non-Inertia redirects
-- [ ] Write "getting started" documentation
-- [ ] Create Ktor plugin
+- **Core**
+    - [x] Support asset versioning
+    - [x] Make the JSON serializer customizable
+    - [x] Support the `encryptHistory` and `clearHistory` flags on response
+    - [x] Fill the `url` response element
+    - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
+    - [x] Add basic documentation to classes
+    - [x] Support Inertia redirects
+    - [x] Support non-Inertia redirects
+- **Spring**
+    - [x] Support asset versioning
+    - [x] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
+    - [x] Make the JSON serializer customizable
+    - [x] Support the `encryptHistory` and `clearHistory` flags on response
+    - [x] Fill the `url` response element
+    - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
+    - [x] Add basic documentation to classes
+    - [x] Support Inertia redirects
+    - [x] Support non-Inertia redirects
+    - [ ] Write "getting started" documentation
+    - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
+- **Ktor**
+    - [ ] Support asset versioning
+    - [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
+    - [x] Make the JSON serializer customizable
+    - [ ] Support the `encryptHistory` and `clearHistory` flags on response
+    - [ ] Fill the `url` response element
+    - [ ] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
+    - [ ] Add basic documentation to classes
+    - [ ] Support Inertia redirects
+    - [ ] Support non-Inertia redirects
+    - [ ] Write "getting started" documentation
 
 #### V1.1
 
