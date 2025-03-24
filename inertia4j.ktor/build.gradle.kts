@@ -13,11 +13,8 @@ dependencies {
     // TODO: refactor this to use version catalog
     val ktorVersion = "3.1.1"
 
-    // TODO: change all non-test deps to compileOnly
-    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
-
-    implementation("ch.qos.logback:logback-classic:1.5.18")
+    compileOnly("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    compileOnly("io.ktor:ktor-server-netty-jvm:$ktorVersion")
 
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test:2.1.20")

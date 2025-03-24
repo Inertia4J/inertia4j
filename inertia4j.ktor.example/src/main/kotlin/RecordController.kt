@@ -1,21 +1,18 @@
 package io.gitlab.intertia4j.ktor
 
-import io.gitlab.inertia4j.core.InertiaRenderer
-import io.gitlab.inertia4j.core.InertiaRenderingOptions
-import io.gitlab.inertia4j.core.PageObjectSerializer
-import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer
+import io.gitlab.inertia4j.ktor.Inertia
+import io.gitlab.inertia4j.ktor.inertia
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import io.ktor.util.AttributeKey
-import java.util.function.Supplier
 
 fun main() {
-    embeddedServer(Netty) {
+    embeddedServer(Netty, port = 8080) {
         install(Inertia) {
-            serializer = JacksonPageObjectSerializer()
+            // TODO: move PageObjectSerializer and TemplateRenderer interfaces to
+            //  a config module and expose it as an API on framework adapter modules
+            // serializer = JacksonPageObjectSerializer()
         }
 
         routing {
@@ -29,7 +26,7 @@ fun main() {
                 inertia.redirect("/")
             }
         }
-    }
+    }.start(wait = true)
 }
 
 data class Record(val id: Int, val name: String)
