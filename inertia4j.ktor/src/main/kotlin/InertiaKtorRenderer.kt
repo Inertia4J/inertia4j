@@ -1,0 +1,62 @@
+package io.gitlab.inertia4j.ktor
+
+import io.gitlab.inertia4j.core.InertiaRenderer
+import io.gitlab.inertia4j.core.InertiaRenderingOptions
+import io.ktor.server.request.*
+import io.ktor.server.routing.*
+import io.ktor.util.*
+
+class InertiaKtorRenderer internal constructor(private val coreRenderer: InertiaRenderer) {
+    inner class Renderer internal constructor(call: RoutingCall) {
+        private val request = InertiaKtorHttpRequest(call.request)
+        private val response = InertiaKtorHttpResponse(call)
+
+        // TODO: support default flag values via plugin configuration
+        /*
+         * Renders the Inertia.js formatted response.
+         *
+         * @param name component name to render in the client
+         * @param props data to be provided
+         * @param encryptHistory flag to encrypt client history
+         * @param clearHistory flag to clear client history
+         */
+        fun render(
+            name: String,
+            vararg props: Pair<String, Any>,
+            encryptHistory: Boolean = false,
+            clearHistory: Boolean = false
+        ) {
+            val options = InertiaRenderingOptions(
+                encryptHistory,
+                clearHistory,
+                (request as ApplicationRequest).uri,
+                name,
+                mapOf(*props)
+            )
+
+            coreRenderer.render(request, response, options)
+        }
+
+        /*
+         * Handles internal Inertia redirects.
+         *
+         * @param location url to be redirected to
+         */
+        fun redirect(location: String) {
+            coreRenderer.redirect(request, response, location)
+        }
+
+        /*
+         * Handles non-Inertia redirects and external redirects.
+         *
+         * @param location url to be redirected to
+         */
+        fun location(location: String) {
+            coreRenderer.location(response, location)
+        }
+    }
+
+    companion object {
+        val key = AttributeKey<InertiaKtorRenderer>("inertiaKtor")
+    }
+}

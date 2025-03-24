@@ -1,4 +1,4 @@
-package io.gitlab.intertia4j.ktor
+package io.gitlab.inertia4j.ktor
 
 import io.gitlab.inertia4j.core.HttpResponse
 import io.ktor.http.HttpStatusCode
