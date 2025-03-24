@@ -25,8 +25,14 @@ class InertiaKtor internal constructor(private val coreRenderer: InertiaRenderer
         private val response = InertiaKtorHttpResponse(call)
 
         // TODO: add all args to `render` and build options accordingly
-        fun render(name: String, vararg props: Pair<String, Any>) {
-            val options = InertiaRenderingOptions(false, false, "/", name, mapOf(*props))
+        // TODO: support default flag values via plugin configuration
+        fun render(
+            name: String,
+            vararg props: Pair<String, Any>,
+            encryptHistory: Boolean = false,
+            clearHistory: Boolean = false
+        ) {
+            val options = InertiaRenderingOptions(encryptHistory, clearHistory, "/", name, mapOf(*props))
 
             coreRenderer.render(request, response, options)
         }
