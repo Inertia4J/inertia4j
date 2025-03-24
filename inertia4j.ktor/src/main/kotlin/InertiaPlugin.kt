@@ -43,6 +43,14 @@ class InertiaKtor internal constructor(private val coreRenderer: InertiaRenderer
 
             coreRenderer.render(request, response, options)
         }
+
+        fun redirect(location: String) {
+            coreRenderer.redirect(request, response, location)
+        }
+
+        fun location(location: String) {
+            coreRenderer.location(response, location)
+        }
     }
 
     companion object {
@@ -80,6 +88,10 @@ fun main() {
                 val records = listOf(Record(1, "Meddle"))
 
                 inertia.render("records/Index", "records" to records)
+            }
+
+            get("/redirect") {
+                inertia.redirect("/")
             }
         }
     }
