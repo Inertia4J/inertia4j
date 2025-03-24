@@ -23,13 +23,14 @@ class InertiaKtorRenderer internal constructor(private val coreRenderer: Inertia
         fun render(
             name: String,
             vararg props: Pair<String, Any>,
+            url: String = request.url,
             encryptHistory: Boolean = false,
             clearHistory: Boolean = false
         ) {
             val options = InertiaRenderingOptions(
                 encryptHistory,
                 clearHistory,
-                (request as ApplicationRequest).uri,
+                url,
                 name,
                 mapOf(*props)
             )

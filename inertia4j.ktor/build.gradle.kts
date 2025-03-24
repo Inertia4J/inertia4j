@@ -19,5 +19,10 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:1.5.18")
 
-    testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:2.1.20")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
