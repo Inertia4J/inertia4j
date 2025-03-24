@@ -27,6 +27,14 @@ class InertiaKtor internal constructor(private val coreRenderer: InertiaRenderer
 
         // TODO: add all args to `render` and build options accordingly
         // TODO: support default flag values via plugin configuration
+        /*
+         * Renders the Inertia.js formatted response.
+         *
+         * @param name component name to render in the client
+         * @param props data to be provided
+         * @param encryptHistory flag to encrypt client history
+         * @param clearHistory flag to clear client history
+         */
         fun render(
             name: String,
             vararg props: Pair<String, Any>,
@@ -44,10 +52,20 @@ class InertiaKtor internal constructor(private val coreRenderer: InertiaRenderer
             coreRenderer.render(request, response, options)
         }
 
+        /*
+         * Handles internal Inertia redirects.
+         *
+         * @param location url to be redirected to
+         */
         fun redirect(location: String) {
             coreRenderer.redirect(request, response, location)
         }
 
+        /*
+         * Handles non-Inertia redirects and external redirects.
+         *
+         * @param location url to be redirected to
+         */
         fun location(location: String) {
             coreRenderer.location(response, location)
         }
