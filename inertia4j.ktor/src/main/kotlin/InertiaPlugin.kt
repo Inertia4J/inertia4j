@@ -7,6 +7,7 @@ import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.util.AttributeKey
 import java.util.function.Supplier
@@ -32,7 +33,13 @@ class InertiaKtor internal constructor(private val coreRenderer: InertiaRenderer
             encryptHistory: Boolean = false,
             clearHistory: Boolean = false
         ) {
-            val options = InertiaRenderingOptions(encryptHistory, clearHistory, "/", name, mapOf(*props))
+            val options = InertiaRenderingOptions(
+                encryptHistory,
+                clearHistory,
+                (request as ApplicationRequest).uri,
+                name,
+                mapOf(*props)
+            )
 
             coreRenderer.render(request, response, options)
         }
