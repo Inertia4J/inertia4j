@@ -2,16 +2,17 @@ package io.gitlab.inertia4j.ktor
 
 import io.gitlab.inertia4j.core.InertiaRenderer
 import io.gitlab.inertia4j.core.InertiaRenderingOptions
-import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.util.*
 
-class InertiaKtorRenderer internal constructor(private val coreRenderer: InertiaRenderer) {
+class InertiaKtorRenderer internal constructor(
+    private val coreRenderer: InertiaRenderer,
+    private val configuration: InertiaKtorConfiguration,
+) {
     inner class Renderer internal constructor(call: RoutingCall) {
         private val request = InertiaKtorHttpRequest(call.request)
         private val response = InertiaKtorHttpResponse(call)
 
-        // TODO: support default flag values via plugin configuration
         /*
          * Renders the Inertia.js formatted response.
          *
@@ -24,7 +25,7 @@ class InertiaKtorRenderer internal constructor(private val coreRenderer: Inertia
             name: String,
             vararg props: Pair<String, Any>,
             url: String = request.url,
-            encryptHistory: Boolean = false,
+            encryptHistory: Boolean = configuration.encryptHistory,
             clearHistory: Boolean = false
         ) {
             val options = InertiaRenderingOptions(

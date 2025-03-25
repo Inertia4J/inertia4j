@@ -1,21 +1,23 @@
 package io.gitlab.inertia4j.ktor
 
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.server.routing.*
 import io.ktor.server.testing.*
-import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.routing.get
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class InertiaKtorTest {
     @Test
     fun render() = testApplication {
-        install(Inertia)
+        install(Inertia) {
+            encryptHistory = true
+        }
 
         routing {
             get("/") {
-                inertia.render("SampleComponent", "id" to 1, encryptHistory = true, clearHistory = true)
+                inertia.render("SampleComponent", "id" to 1, clearHistory = true)
             }
         }
 

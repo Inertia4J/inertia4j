@@ -12,5 +12,8 @@ val Inertia = createApplicationPlugin(
         pluginConfig.versionProvider,
         pluginConfig.templatePath
     )
-    application.attributes.put(InertiaKtorRenderer.key, InertiaKtorRenderer(coreRenderer))
+    application.attributes.put(
+        InertiaKtorRenderer.key,
+        InertiaKtorRenderer(coreRenderer, pluginConfig)
+    )
 }

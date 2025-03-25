@@ -112,7 +112,7 @@ TODO: document how to use a custom template renderer.
     - [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development
     - [x] Make the JSON serializer customizable
     - [x] Support the `encryptHistory` and `clearHistory` flags on response
-        - [ ] Support default values via plugin configuration
+        - [x] Support default values via plugin configuration
     - [x] Fill the `url` response element
     - [x] Support partial reloads (via `X-Inertia-Partial-Data` and `X-Inertia-Partial-Component`)
     - [x] Add basic documentation to classes
