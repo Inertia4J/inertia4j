@@ -8,7 +8,7 @@ val Inertia = createApplicationPlugin(
     createConfiguration = ::InertiaKtorConfiguration
 ) {
     val coreRenderer = InertiaRenderer(
-        pluginConfig.serializer,
+        pluginConfig.serializerOrDefault,
         pluginConfig.versionProvider,
         pluginConfig.templateRendererOrDefault
     )

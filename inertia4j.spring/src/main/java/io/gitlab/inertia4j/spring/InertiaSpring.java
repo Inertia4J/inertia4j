@@ -1,10 +1,7 @@
 package io.gitlab.inertia4j.spring;
 
 import io.gitlab.inertia4j.core.PageObjectSerializer;
-import io.gitlab.inertia4j.core.SimpleTemplateRenderer;
 import io.gitlab.inertia4j.core.TemplateRenderer;
-import io.gitlab.inertia4j.core.TemplateRenderingException;
-import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
@@ -155,17 +152,5 @@ public class InertiaSpring {
         );
         Assert.isInstanceOf(ServletRequestAttributes.class, requestAttributes);
         return ((ServletRequestAttributes) requestAttributes).getRequest();
-    }
-
-    private static VersionProvider defaultVersionProvider() {
-        return () -> "1";
-    }
-
-    private static PageObjectSerializer defaultPageObjectSerializer() {
-        return new JacksonPageObjectSerializer();
-    }
-
-    private static TemplateRenderer defaultTemplateRenderer() throws TemplateRenderingException {
-        return new SimpleTemplateRenderer("templates/app.html");
     }
 }

@@ -1,13 +1,10 @@
-package io.gitlab.inertia4j.jackson;
-
-import java.util.List;
+package io.gitlab.inertia4j.core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.gitlab.inertia4j.core.PageObject;
-import io.gitlab.inertia4j.core.PageObjectSerializer;
-import io.gitlab.inertia4j.core.SerializationException;
+
+import java.util.List;
 
 /*
  * PageObject serializer implementation using Jackson for JSON serialization.

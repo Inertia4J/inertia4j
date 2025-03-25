@@ -5,7 +5,6 @@ plugins {
 rootProject.name = "inertia4j"
 
 include("inertia4j.core")
-include("inertia4j.jackson")
 include("inertia4j.ktor")
 include("inertia4j.ktor.example")
 include("inertia4j.spring")

@@ -19,7 +19,6 @@ repositories {
 
 dependencies {
     implementation(project(":inertia4j.core"))
-    implementation(project(":inertia4j.jackson"))
 
     // TODO: change to depend on more specific Spring modules
     compileOnly("org.springframework.boot:spring-boot-starter-web")

@@ -1,6 +1,6 @@
 package io.gitlab.inertia4j.spring;
 
-import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer;
+import io.gitlab.inertia4j.core.DefaultPageObjectSerializer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class Inertia {
     public static VersionProvider versionProvider = () -> null;
 
     private static final InertiaSpringRenderer renderer = new InertiaSpringRenderer(
-        new JacksonPageObjectSerializer(),
+        new DefaultPageObjectSerializer(),
         versionProvider,
         "templates/app.html"
     );

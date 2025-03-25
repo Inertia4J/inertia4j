@@ -1,10 +1,6 @@
 package io.gitlab.inertia4j.spring;
 
-import io.gitlab.inertia4j.core.PageObjectSerializer;
-import io.gitlab.inertia4j.core.SimpleTemplateRenderer;
-import io.gitlab.inertia4j.core.TemplateRenderer;
-import io.gitlab.inertia4j.core.TemplateRenderingException;
-import io.gitlab.inertia4j.jackson.JacksonPageObjectSerializer;
+import io.gitlab.inertia4j.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +30,7 @@ public class InertiaSpringAutoconfiguration {
     @Bean
     @ConditionalOnMissingBean
     public PageObjectSerializer pageObjectSerializer() {
-        return new JacksonPageObjectSerializer();
+        return new DefaultPageObjectSerializer();
     }
 
     @Bean
