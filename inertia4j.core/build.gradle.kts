@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
 }
 
 repositories {
@@ -7,6 +7,8 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":inertia4j.spi"))
+
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 }
 

@@ -14,7 +14,6 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
-
+    implementation("com.google.code.gson:gson:2.12.1")
     implementation("ch.qos.logback:logback-classic:1.5.18")
 }

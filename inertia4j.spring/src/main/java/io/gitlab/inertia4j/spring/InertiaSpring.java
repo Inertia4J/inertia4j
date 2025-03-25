@@ -1,7 +1,7 @@
 package io.gitlab.inertia4j.spring;
 
-import io.gitlab.inertia4j.core.PageObjectSerializer;
-import io.gitlab.inertia4j.core.TemplateRenderer;
+import io.gitlab.inertia4j.spi.PageObjectSerializer;
+import io.gitlab.inertia4j.spi.TemplateRenderer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;

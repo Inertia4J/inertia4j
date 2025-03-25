@@ -1,6 +1,12 @@
 package io.gitlab.inertia4j.spring;
 
-import io.gitlab.inertia4j.core.*;
+import io.gitlab.inertia4j.core.HttpRequest;
+import io.gitlab.inertia4j.core.InertiaRenderer;
+import io.gitlab.inertia4j.core.InertiaRenderingOptions;
+import io.gitlab.inertia4j.core.TemplateRenderingException;
+import io.gitlab.inertia4j.spi.PageObjectSerializer;
+import io.gitlab.inertia4j.spi.SerializationException;
+import io.gitlab.inertia4j.spi.TemplateRenderer;
 import org.springframework.http.ResponseEntity;
 
 /**

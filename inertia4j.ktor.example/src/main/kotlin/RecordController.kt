@@ -1,18 +1,28 @@
 package io.gitlab.intertia4j.ktor
 
+import com.google.gson.Gson
 import io.gitlab.inertia4j.ktor.Inertia
 import io.gitlab.inertia4j.ktor.inertia
+import io.gitlab.inertia4j.spi.PageObject
+import io.gitlab.inertia4j.spi.PageObjectSerializer
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.routing.*
 
+private object CustomPageObjectSerializer : PageObjectSerializer {
+    override fun serialize(
+        pageObject: PageObject,
+        partialDataProps: List<String>?,
+    ): String {
+        return Gson().toJson(pageObject)
+    }
+}
+
 fun main() {
     embeddedServer(Netty, port = 8080) {
         install(Inertia) {
-            // TODO: move PageObjectSerializer and TemplateRenderer interfaces to
-            //  a config module and expose it as an API on framework adapter modules
-            // serializer = JacksonPageObjectSerializer()
+            serializer = CustomPageObjectSerializer
         }
 
         routing {

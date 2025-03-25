@@ -3,6 +3,9 @@ package io.gitlab.inertia4j.core;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.gitlab.inertia4j.spi.PageObject;
+import io.gitlab.inertia4j.spi.PageObjectSerializer;
+import io.gitlab.inertia4j.spi.SerializationException;
 
 import java.util.List;
 

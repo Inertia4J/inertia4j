@@ -1,4 +1,4 @@
-package io.gitlab.inertia4j.core;
+package io.gitlab.inertia4j.spi;
 
 /*
  * Exception to be thrown by serializers.

@@ -8,6 +8,7 @@ repositories {
 
 dependencies {
     implementation(project(":inertia4j.core"))
+    api(project(":inertia4j.spi"))
 
     // TODO: refactor this to use version catalog
     val ktorVersion = "3.1.1"

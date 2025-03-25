@@ -1,5 +1,7 @@
 package io.gitlab.inertia4j.core;
 
+import io.gitlab.inertia4j.spi.TemplateRenderer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Matcher;

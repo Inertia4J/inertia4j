@@ -1,4 +1,4 @@
-package io.gitlab.inertia4j.core;
+package io.gitlab.inertia4j.spi;
 
 import java.util.Map;
 
@@ -96,16 +96,5 @@ public class PageObject {
      */
     public boolean isClearHistory() {
         return clearHistory;
-    }
-
-    public static PageObject fromOptions(InertiaRenderingOptions options, Object version) {
-        return new PageObject(
-            options.componentName,
-            options.props,
-            options.url,
-            options.encryptHistory,
-            options.clearHistory,
-            version
-        );
     }
 }

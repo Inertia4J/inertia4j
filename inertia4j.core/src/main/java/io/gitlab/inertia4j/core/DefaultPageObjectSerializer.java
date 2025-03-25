@@ -1,5 +1,9 @@
 package io.gitlab.inertia4j.core;
 
+import io.gitlab.inertia4j.spi.PageObject;
+import io.gitlab.inertia4j.spi.PageObjectSerializer;
+import io.gitlab.inertia4j.spi.SerializationException;
+
 import java.util.List;
 
 public class DefaultPageObjectSerializer implements PageObjectSerializer {

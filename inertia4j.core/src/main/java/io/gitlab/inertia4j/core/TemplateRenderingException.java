@@ -1,7 +1,7 @@
 package io.gitlab.inertia4j.core;
 
 /*
- * Exception thrown by TemplateRenderer.
+ * Exception thrown when the default template renderer can't find the template file.
  */
 public class TemplateRenderingException extends Exception {
     public TemplateRenderingException(String path) {

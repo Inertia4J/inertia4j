@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
     id("org.springframework.boot") version "3.4.3"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     implementation(project(":inertia4j.core"))
+    api(project(":inertia4j.spi"))
 
     // TODO: change to depend on more specific Spring modules
     compileOnly("org.springframework.boot:spring-boot-starter-web")

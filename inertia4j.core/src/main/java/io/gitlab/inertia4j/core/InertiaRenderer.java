@@ -1,9 +1,14 @@
 package io.gitlab.inertia4j.core;
 
+import io.gitlab.inertia4j.spi.PageObject;
+import io.gitlab.inertia4j.spi.PageObjectSerializer;
+import io.gitlab.inertia4j.spi.SerializationException;
+import io.gitlab.inertia4j.spi.TemplateRenderer;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /*
  * Class responsible for transforming regular responses into Inertia responses.
@@ -138,8 +143,14 @@ public class InertiaRenderer {
         if (partialComponentHeader != null) {
             options = options.withPartialComponent(partialComponentHeader);
         }
-
-        return PageObject.fromOptions(options, versionProvider.get());
+        return new PageObject(
+            options.componentName,
+            options.props,
+            options.url,
+            options.encryptHistory,
+            options.clearHistory,
+            versionProvider.get()
+        );
     }
 
     private String serializePageObject(HttpRequest request, PageObject pageObject) throws SerializationException {

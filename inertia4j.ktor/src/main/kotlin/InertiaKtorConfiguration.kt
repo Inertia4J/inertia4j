@@ -1,9 +1,9 @@
 package io.gitlab.inertia4j.ktor
 
 import io.gitlab.inertia4j.core.DefaultPageObjectSerializer
-import io.gitlab.inertia4j.core.PageObjectSerializer
 import io.gitlab.inertia4j.core.SimpleTemplateRenderer
-import io.gitlab.inertia4j.core.TemplateRenderer
+import io.gitlab.inertia4j.spi.PageObjectSerializer
+import io.gitlab.inertia4j.spi.TemplateRenderer
 import java.util.function.Supplier
 
 class InertiaKtorConfiguration {
