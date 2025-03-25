@@ -10,7 +10,7 @@ val Inertia = createApplicationPlugin(
     val coreRenderer = InertiaRenderer(
         pluginConfig.serializer,
         pluginConfig.versionProvider,
-        pluginConfig.templatePath
+        pluginConfig.templateRendererOrDefault
     )
     application.attributes.put(
         InertiaKtorRenderer.key,
