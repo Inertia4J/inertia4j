@@ -106,7 +106,7 @@ TODO: document how to use a custom template renderer.
     - [x] Support Inertia redirects
     - [x] Support non-Inertia redirects
     - [ ] Write "getting started" documentation
-    - [ ] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
+    - [x] [Autoconfigure](https://www.baeldung.com/spring-boot-custom-auto-configuration) the beans
 - **Ktor**
     - [x] Support asset versioning
     - [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Spring for development

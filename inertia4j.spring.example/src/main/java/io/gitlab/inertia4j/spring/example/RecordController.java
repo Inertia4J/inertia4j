@@ -2,6 +2,7 @@ package io.gitlab.inertia4j.spring.example;
 
 import io.gitlab.inertia4j.spring.Inertia;
 import io.gitlab.inertia4j.spring.Inertia.Options;
+import io.gitlab.inertia4j.spring.InertiaSpring;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,16 @@ import java.util.Set;
 public class RecordController {
 
     @Autowired
+    private InertiaSpring inertia;
+
+    @Autowired
     private RecordRepository recordRepository;
 
     @GetMapping("/")
     public ResponseEntity<String> index() {
         Set<Record> records = recordRepository.getAllRecords();
 
-        return Inertia.render("records/Index", Map.of("records", records));
+        return inertia.render("records/Index", Map.of("records", records));
     }
 
     @GetMapping("/records")
@@ -31,7 +35,7 @@ public class RecordController {
     public ResponseEntity<String> first() {
         Record record = recordRepository.getRecordById(1);
 
-        return Inertia.render("records/Show", Map.of("record", record));
+        return inertia.render("records/Show", Map.of("record", record));
     }
 
     @PostMapping("/records")
@@ -43,26 +47,26 @@ public class RecordController {
     public ResponseEntity<String> indexEncryptHistory() {
         Set<Record> records = recordRepository.getAllRecords();
 
-        return Inertia.render("records/Index", Map.of("records", records), Options.encryptHistory());
+        return inertia.render("records/Index", Map.of("records", records), Options.encryptHistory());
     }
 
     @GetMapping("/clearHistory")
     public ResponseEntity<String> indexClearHistory() {
         Set<Record> records = recordRepository.getAllRecords();
 
-        return Inertia.render("records/Index", Map.of("records", records), Options.clearHistory());
+        return inertia.render("records/Index", Map.of("records", records), Options.clearHistory());
     }
 
     @GetMapping("/allOptions")
     public ResponseEntity<String> allOptions() {
         Set<Record> records = recordRepository.getAllRecords();
 
-        return Inertia.render("records/Index", Map.of("records", records), Options.clearHistory().encryptHistory());
+        return inertia.render("records/Index", Map.of("records", records), Options.clearHistory().encryptHistory());
     }
 
     @GetMapping("/externalRedirect")
     public ResponseEntity<String> externalRedirect() {
-        return Inertia.location("https://inertiajs.com/");
+        return inertia.location("https://inertiajs.com/");
     }
 
 }

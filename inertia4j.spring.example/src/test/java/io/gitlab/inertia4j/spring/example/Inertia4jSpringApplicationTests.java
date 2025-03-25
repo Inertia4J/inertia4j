@@ -28,7 +28,7 @@ class Inertia4jSpringApplicationTests {
     <title>App</title>
   </head>
   <body>
-    <div id="app" data-page='{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/","version":null,"encryptHistory":false,"clearHistory":false}'></div>
+    <div id="app" data-page='{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/","version":"latest","encryptHistory":false,"clearHistory":false}'></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
@@ -42,7 +42,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void indexPageJsonRendering() throws Exception {
 		String expectedJson = """
-{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/","version":null,"encryptHistory":false,"clearHistory":false}
+{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/","version":"latest","encryptHistory":false,"clearHistory":false}
 		""".stripTrailing();
 
 		mvc.perform(get("/").header("X-Inertia", "true"))
@@ -53,7 +53,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void clearHistoryOption() throws Exception {
 		String expectedJson = """
-{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/clearHistory","version":null,"encryptHistory":false,"clearHistory":true}
+{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/clearHistory","version":"latest","encryptHistory":false,"clearHistory":true}
 		""".stripTrailing();
 
 		mvc.perform(get("/clearHistory").header("X-Inertia", "true"))
@@ -64,7 +64,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void encryptHistoryOption() throws Exception {
 		String expectedJson = """
-{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/encryptHistory","version":null,"encryptHistory":true,"clearHistory":false}
+{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/encryptHistory","version":"latest","encryptHistory":true,"clearHistory":false}
 		""".stripTrailing();
 
 		mvc.perform(get("/encryptHistory").header("X-Inertia", "true"))
@@ -75,7 +75,7 @@ class Inertia4jSpringApplicationTests {
 	@Test
 	void allOptions() throws Exception {
 		String expectedJson = """
-{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/allOptions","version":null,"encryptHistory":true,"clearHistory":true}
+{"component":"records/Index","props":{"records":[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Smith"},{"id":3,"name":"Alice Johnson"}]},"url":"/allOptions","version":"latest","encryptHistory":true,"clearHistory":true}
 		""".stripTrailing();
 
 		mvc.perform(get("/allOptions").header("X-Inertia", "true"))
