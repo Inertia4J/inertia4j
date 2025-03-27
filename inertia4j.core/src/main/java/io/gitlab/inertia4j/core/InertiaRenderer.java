@@ -63,7 +63,7 @@ public class InertiaRenderer {
         InertiaRenderingOptions options
     ) throws SerializationException {
         if (isVersionConflict(request)) {
-            handleVersionConflictResponse(request, response, options);
+            handleVersionConflictResponse(response, options);
             return;
         }
         handleSuccessResponse(request, response, options);
@@ -81,8 +81,9 @@ public class InertiaRenderer {
         HttpResponse response,
         String location
     ) {
-        response.setCode(isPutPatchDelete(request) ? 303 : 302);
-        response.setHeader("Location", location);
+        response
+            .setCode(isPutPatchDelete(request) ? 303 : 302)
+            .setHeader("Location", location);
     }
 
     /*
@@ -95,8 +96,7 @@ public class InertiaRenderer {
             HttpResponse response,
             String url
     ) {
-        response.setCode(409);
-        response.setHeader("X-Inertia-Location", url);
+        response.setCode(409).setHeader("X-Inertia-Location", url);
     }
 
     private boolean isVersionConflict(HttpRequest request) {
@@ -108,12 +108,10 @@ public class InertiaRenderer {
     }
 
     private void handleVersionConflictResponse(
-        HttpRequest request,
         HttpResponse response,
         InertiaRenderingOptions options
     ) {
-        response.setCode(409);
-        response.setHeader("X-Inertia-Location", options.url);
+        response.setCode(409).setHeader("X-Inertia-Location", options.url);
     }
 
     private void handleSuccessResponse(
@@ -121,21 +119,21 @@ public class InertiaRenderer {
         HttpResponse response,
         InertiaRenderingOptions options
     ) throws SerializationException {
-        response.setHeader("X-Inertia", "true");
-
         PageObject pageObject = pageObjectFromOptions(request, options);
         String serializedPageObject = serializePageObject(request, pageObject);
 
         String inertiaHeader = request.getHeader("X-Inertia");
         if (inertiaHeader != null && inertiaHeader.equalsIgnoreCase("true")) {
-            response.setHeader("Content-Type", "application/json");
-            response.writeBody(serializedPageObject);
+            response
+                .setHeader("Content-Type", "application/json")
+                .writeBody(serializedPageObject);
         } else {
-            response.setHeader("Content-Type", "text/html");
-            response.writeBody(templateRenderer.render(serializedPageObject));
+            response
+                .setHeader("Content-Type", "text/html")
+                .writeBody(templateRenderer.render(serializedPageObject));
         }
 
-        response.setCode(200);
+        response.setHeader("X-Inertia", "true").setCode(200);
     }
 
     private PageObject pageObjectFromOptions(HttpRequest request, InertiaRenderingOptions options) {

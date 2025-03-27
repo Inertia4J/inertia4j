@@ -8,19 +8,25 @@ import io.ktor.server.routing.RoutingCall
 import kotlinx.coroutines.runBlocking
 
 internal class InertiaKtorHttpResponse(private val call: RoutingCall) : HttpResponse {
-    // Ugh... should we refactor core?
     private var code: Int = 200
+    private var body: String = ""
 
-    override fun setHeader(name: String, value: String) {
+    override fun setHeader(name: String, value: String): InertiaKtorHttpResponse {
         call.response.header(name, value)
+        return this
     }
 
-    override fun setCode(code: Int) {
+    override fun setCode(code: Int): InertiaKtorHttpResponse {
         this.code = code
+        return this
     }
 
-    // TODO: review this use of runBlocking. We may need to change core interfaces to use `Future`s
-    override fun writeBody(content: String) = runBlocking {
-        call.respond(HttpStatusCode.fromValue(code), content)
+    override fun writeBody(content: String): InertiaKtorHttpResponse {
+        this.body = content
+        return this
+    }
+
+    fun respond() = runBlocking {
+        call.respond(HttpStatusCode.fromValue(code), body)
     }
 }

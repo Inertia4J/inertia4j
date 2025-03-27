@@ -21,13 +21,15 @@ public class SpringHttpResponse implements HttpResponse {
      * @param value value of the header
      */
     @Override
-    public void setHeader(String name, String value) {
+    public SpringHttpResponse setHeader(String name, String value) {
         headers.add(name, value);
+        return this;
     }
 
     @Override
-    public void setCode(Integer code) {
+    public SpringHttpResponse setCode(Integer code) {
         this.status = HttpStatus.resolve(code);
+        return this;
     }
 
     /*
@@ -36,8 +38,9 @@ public class SpringHttpResponse implements HttpResponse {
      * @param content the content of the HTTP response
      */
     @Override
-    public void writeBody(String content) {
+    public SpringHttpResponse writeBody(String content) {
         body = content;
+        return this;
     }
 
     /*

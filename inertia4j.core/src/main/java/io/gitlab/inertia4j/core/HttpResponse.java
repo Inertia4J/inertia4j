@@ -9,18 +9,23 @@ public interface HttpResponse {
      * 
      * @param name name of the header to set value for
      * @param value value of the header
+     * @returns this HttpResponse instance
      */
-    void setHeader(String name, String value);
+    HttpResponse setHeader(String name, String value);
 
     /*
      * Sets the HTTP status code.
+     *
+     * @param code HTTP status code
+     * @returns this HttpResponse instance
      */
-    void setCode(Integer code);
+    HttpResponse setCode(Integer code);
 
     /*
      * Writes the body content of the HTTP response.
      * 
      * @param content the content of the HTTP response
+     * @returns this HttpResponse instance
      */
-    void writeBody(String content);
+    HttpResponse writeBody(String content);
 }

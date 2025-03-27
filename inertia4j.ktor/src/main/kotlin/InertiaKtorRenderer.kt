@@ -37,6 +37,7 @@ class InertiaKtorRenderer internal constructor(
             )
 
             coreRenderer.render(request, response, options)
+            response.respond()
         }
 
         /*
@@ -46,6 +47,7 @@ class InertiaKtorRenderer internal constructor(
          */
         fun redirect(location: String) {
             coreRenderer.redirect(request, response, location)
+            response.respond()
         }
 
         /*
@@ -55,6 +57,7 @@ class InertiaKtorRenderer internal constructor(
          */
         fun location(location: String) {
             coreRenderer.location(response, location)
+            response.respond()
         }
     }
 
