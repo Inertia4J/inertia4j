@@ -1,19 +1,18 @@
 package io.gitlab.inertia4j.spring;
 
-import io.gitlab.inertia4j.core.HttpRequest;
-import io.gitlab.inertia4j.core.InertiaRenderer;
-import io.gitlab.inertia4j.core.InertiaRenderingOptions;
-import io.gitlab.inertia4j.core.TemplateRenderingException;
+import io.gitlab.inertia4j.core.*;
 import io.gitlab.inertia4j.spi.PageObjectSerializer;
 import io.gitlab.inertia4j.spi.SerializationException;
 import io.gitlab.inertia4j.spi.TemplateRenderer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Bridges Spring-specific rendering with the core InertiaRenderer.
  */
 class InertiaSpringRenderer {
-    private final InertiaRenderer renderer;
+    private final InertiaRenderer coreRenderer;
 
     /*
      * Constructor for InertiaSpringRenderer.
@@ -27,7 +26,7 @@ class InertiaSpringRenderer {
         VersionProvider versionProvider,
         TemplateRenderer templateRenderer
     ) throws SpringInertiaException {
-        this.renderer = new InertiaRenderer(serializer, versionProvider::get, templateRenderer);
+        this.coreRenderer = new InertiaRenderer(serializer, versionProvider::get, templateRenderer);
     }
 
     /*
@@ -43,7 +42,8 @@ class InertiaSpringRenderer {
         String templatePath
     ) throws SpringInertiaException {
         try {
-            this.renderer = new InertiaRenderer(serializer, versionProvider::get, templatePath);
+            this.coreRenderer = new InertiaRenderer(serializer, versionProvider::get, templatePath);
+            // TODO: remove this exception wrapping
         } catch (TemplateRenderingException e) {
             throw new SpringInertiaException(e);
         }
@@ -59,15 +59,12 @@ class InertiaSpringRenderer {
         HttpRequest request,
         InertiaRenderingOptions options
     ) {
-        SpringHttpResponse inertiaSpringResponse = new SpringHttpResponse();
-
         try {
-            renderer.render(request, inertiaSpringResponse, options);
+            return convertToResponseEntity(coreRenderer.render(request, options));
+            // TODO: remove this exception wrapping
         } catch (SerializationException e) {
             throw new SpringInertiaException(e);
         }
-
-        return inertiaSpringResponse.toResponseEntity();
     }
 
     /*
@@ -77,11 +74,7 @@ class InertiaSpringRenderer {
      * @param location URL to redirect to
      */
     public ResponseEntity<String> redirect(HttpRequest request, String location) {
-        SpringHttpResponse inertiaSpringResponse = new SpringHttpResponse();
-
-        renderer.redirect(request, inertiaSpringResponse, location);
-
-        return inertiaSpringResponse.toResponseEntity();
+        return convertToResponseEntity(coreRenderer.redirect(request, location));
     }
 
     /*
@@ -90,10 +83,13 @@ class InertiaSpringRenderer {
      * @param location external URL to redirect to
      */
     public ResponseEntity<String> location(String url) {
-        SpringHttpResponse inertiaSpringResponse = new SpringHttpResponse();
+        return convertToResponseEntity(coreRenderer.location(url));
+    }
 
-        renderer.location(inertiaSpringResponse, url);
-
-        return inertiaSpringResponse.toResponseEntity();
+    private ResponseEntity<String> convertToResponseEntity(HttpResponse response) {
+        HttpHeaders responseHeaders = new HttpHeaders(
+            CollectionUtils.toMultiValueMap(response.getHeaders())
+        );
+        return new ResponseEntity<>(response.getBody(), responseHeaders, response.getCode());
     }
 }

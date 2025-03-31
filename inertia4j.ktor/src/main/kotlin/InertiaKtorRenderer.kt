@@ -1,17 +1,19 @@
 package io.gitlab.inertia4j.ktor
 
+import io.gitlab.inertia4j.core.HttpResponse
 import io.gitlab.inertia4j.core.InertiaRenderer
 import io.gitlab.inertia4j.core.InertiaRenderingOptions
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.routing.*
+import io.ktor.server.response.*
 import io.ktor.util.*
 
 class InertiaKtorRenderer internal constructor(
     private val coreRenderer: InertiaRenderer,
     private val configuration: InertiaKtorConfiguration,
 ) {
-    inner class Renderer internal constructor(call: RoutingCall) {
+    inner class Renderer internal constructor(private val call: RoutingCall) {
         private val request = InertiaKtorHttpRequest(call.request)
-        private val response = InertiaKtorHttpResponse(call)
 
         /*
          * Renders the Inertia.js formatted response.
@@ -21,7 +23,7 @@ class InertiaKtorRenderer internal constructor(
          * @param encryptHistory flag to encrypt client history
          * @param clearHistory flag to clear client history
          */
-        fun render(
+        suspend fun render(
             name: String,
             vararg props: Pair<String, Any>,
             url: String = request.url,
@@ -35,9 +37,7 @@ class InertiaKtorRenderer internal constructor(
                 name,
                 mapOf(*props)
             )
-
-            coreRenderer.render(request, response, options)
-            response.respond()
+            respond(coreRenderer.render(request, options))
         }
 
         /*
@@ -45,9 +45,8 @@ class InertiaKtorRenderer internal constructor(
          *
          * @param location url to be redirected to
          */
-        fun redirect(location: String) {
-            coreRenderer.redirect(request, response, location)
-            response.respond()
+        suspend fun redirect(location: String) {
+            respond(coreRenderer.redirect(request, location))
         }
 
         /*
@@ -55,9 +54,15 @@ class InertiaKtorRenderer internal constructor(
          *
          * @param location url to be redirected to
          */
-        fun location(location: String) {
-            coreRenderer.location(response, location)
-            response.respond()
+        suspend fun location(location: String) {
+            respond(coreRenderer.location(location))
+        }
+
+        private suspend fun respond(coreResponse: HttpResponse) {
+            coreResponse.headers.forEach { (name: String, values: List<String>) ->
+                values.forEach { call.response.header(name, it) }
+            }
+            call.respond(HttpStatusCode.fromValue(coreResponse.code), coreResponse.body)
         }
     }
 

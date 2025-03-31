@@ -1,31 +1,43 @@
 package io.gitlab.inertia4j.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /*
- * Base HttpResponse interface.
+ * Simple response data class.
  */
-public interface HttpResponse {
-    /*
-     * Sets the HTTP Header on the Response to the value provided.
-     * 
-     * @param name name of the header to set value for
-     * @param value value of the header
-     * @returns this HttpResponse instance
-     */
-    HttpResponse setHeader(String name, String value);
+public class HttpResponse {
+    private int code;
+    private final Map<String, List<String>> headers = new HashMap<>();
+    private String body;
 
-    /*
-     * Sets the HTTP status code.
-     *
-     * @param code HTTP status code
-     * @returns this HttpResponse instance
-     */
-    HttpResponse setCode(Integer code);
+    HttpResponse setCode(int code) {
+        this.code = code;
+        return this;
+    }
 
-    /*
-     * Writes the body content of the HTTP response.
-     * 
-     * @param content the content of the HTTP response
-     * @returns this HttpResponse instance
-     */
-    HttpResponse writeBody(String content);
+    HttpResponse setHeader(String name, String value) {
+        headers.putIfAbsent(name, new ArrayList<>());
+        headers.get(name).add(value);
+        return this;
+    }
+
+    HttpResponse setBody(String body) {
+        this.body = body;
+        return this;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public Map<String, List<String>> getHeaders() {
+        return headers;
+    }
+
+    public String getBody() {
+        return body;
+    }
 }

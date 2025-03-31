@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /*
+
  * Class responsible for transforming regular responses into Inertia responses.
  */
 public class InertiaRenderer {
@@ -57,16 +58,14 @@ public class InertiaRenderer {
      * @param response object to which headers and body will be output
      * @param options rendering options
      */
-    public void render(
+    public HttpResponse render(
         HttpRequest request,
-        HttpResponse response,
         InertiaRenderingOptions options
     ) throws SerializationException {
         if (isVersionConflict(request)) {
-            handleVersionConflictResponse(response, options);
-            return;
+            return handleVersionConflictResponse(request, options);
         }
-        handleSuccessResponse(request, response, options);
+        return handleSuccessResponse(request, options);
     }
 
     /*
@@ -76,12 +75,11 @@ public class InertiaRenderer {
      * @param response object to which headers and redirect code will be output
      * @param location URL to redirect to
      */
-    public void redirect(
+    public HttpResponse redirect(
         HttpRequest request,
-        HttpResponse response,
         String location
     ) {
-        response
+        return new HttpResponse()
             .setCode(isPutPatchDelete(request) ? 303 : 302)
             .setHeader("Location", location);
     }
@@ -92,11 +90,10 @@ public class InertiaRenderer {
      * @param response object to which headers and redirect code will be output
      * @param location external URL to redirect to
      */
-    public void location(
-            HttpResponse response,
-            String url
-    ) {
-        response.setCode(409).setHeader("X-Inertia-Location", url);
+    public HttpResponse location(String url) {
+        return new HttpResponse()
+            .setCode(409)
+            .setHeader("X-Inertia-Location", url);
     }
 
     private boolean isVersionConflict(HttpRequest request) {
@@ -107,33 +104,34 @@ public class InertiaRenderer {
         return versionHeader != null && !versionHeader.equals(versionProvider.get());
     }
 
-    private void handleVersionConflictResponse(
-        HttpResponse response,
+    private HttpResponse handleVersionConflictResponse(
+        HttpRequest request,
         InertiaRenderingOptions options
     ) {
-        response.setCode(409).setHeader("X-Inertia-Location", options.url);
+        return new HttpResponse()
+            .setCode(409)
+            .setHeader("X-Inertia-Location", options.url);
     }
 
-    private void handleSuccessResponse(
+    private HttpResponse handleSuccessResponse(
         HttpRequest request,
-        HttpResponse response,
         InertiaRenderingOptions options
     ) throws SerializationException {
+        var response = new HttpResponse().setHeader("X-Inertia", "true");
+
         PageObject pageObject = pageObjectFromOptions(request, options);
         String serializedPageObject = serializePageObject(request, pageObject);
 
         String inertiaHeader = request.getHeader("X-Inertia");
         if (inertiaHeader != null && inertiaHeader.equalsIgnoreCase("true")) {
-            response
-                .setHeader("Content-Type", "application/json")
-                .writeBody(serializedPageObject);
+            response.setHeader("Content-Type", "application/json");
+            response.setBody(serializedPageObject);
         } else {
-            response
-                .setHeader("Content-Type", "text/html")
-                .writeBody(templateRenderer.render(serializedPageObject));
+            response.setHeader("Content-Type", "text/html");
+            response.setBody(templateRenderer.render(serializedPageObject));
         }
 
-        response.setHeader("X-Inertia", "true").setCode(200);
+        return response.setCode(200);
     }
 
     private PageObject pageObjectFromOptions(HttpRequest request, InertiaRenderingOptions options) {
