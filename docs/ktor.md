@@ -1,0 +1,179 @@
+# Inertia 4J Ktor
+
+An adapter to use Inertia.js on a Ktor backend.
+
+Inertia4J provides a Spring and a Ktor implementation. Both work in very similar ways, but this documentation will focus
+on the Spring implementation. If you wish to learn about the Spring implementation, check out the project's
+[README](https://github.com/Inertia4J/inertia4j/tree/main/README.md).
+
+## Installation
+
+### Backend
+
+Add the Ktor Inertia4J dependency to your project, via Gradle or Maven:
+
+```kotlin
+// build.gradle.kts
+dependencies {
+  implementation("io.gitlab.inertia4j.ktor:1.0.0")
+}
+```
+
+```xml
+<!-- pom.xml --> 
+<dependencies>
+    <dependency>
+        <groupId>io.gitlab.inertia4j.ktor</groupId>
+        <artifactId>inertia4j</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
+```
+
+### Frontend
+
+Follow the [Client-side setup](https://inertiajs.com/server-side-setup) guide for the client-side configuration steps.
+
+## Usage
+
+### Responses
+
+To use Inertia4J with Ktor, you first need to import`io.gitlab.inertia4j.ktor.Inertia` and
+`io.gitlab.inertia4j.ktor.inertia`.
+
+In your `embeddedServer`, install the Inertia4J Ktor plugin:
+
+```kotlin
+embeddedServer(Netty, port = 8080) {
+    install(Inertia)
+    // ...
+}
+```
+
+After installing, you can now call `inertia.render()` instead of `call.respond()` in your Inertia controller methods.
+The `render` method requires at least two arguments. The first argument is the name of the component to be rendered in 
+client, and the second argument is a `Pair<String, Any>`, which will be converted to a JSON object and sent to the 
+client. Below is an example of this usage:
+
+```kotlin
+import io.gitlab.inertia4j.ktor.Inertia
+import io.gitlab.inertia4j.ktor.inertia
+
+fun main() {
+    embeddedServer(Netty, port = 8080) {
+        install(Inertia)
+
+        routing {
+            get("/") {
+                val recordRepository: RecordRepository = RecordRepository()
+
+                inertia.render("records/Index", "records" to recordRepository.all())
+            }
+        }
+    }.start(wait = true)
+}
+```
+
+This will instruct the frontend to render the `Records/Index` component with a single prop called "records", which 
+contains the list of records, as retrieved from `RecordRepository`.
+
+The JSON response will look like this:
+
+```json
+{
+  "records": [
+    {
+      "id": 1,
+      "name": "John Doe"
+    },
+    {
+      "id": 2,
+      "name": "Alice Smith"
+    }
+  ]
+}
+```
+
+### The HTML Template
+
+The first time an Inertia request is made to the server, the server will respond with an HTML page document. Inertia4J
+will automatically load the `resources/templates/app.html` file in your project and will replace `@PageObject@` with the
+data you wish to send to the client. If you wish to customize this template, just make sure to keep a div with id "app"
+and the property `data-page='@PageObject@'`.
+
+### Options
+
+Inertia4J supports option passing on response. In Ktor, you can pass options directly to the `render` method as you 
+call it. The Inertia protocol defines two main flags which can be passed through options, those are the `encryptHistory`
+and `clearHistory` flags. If you need more information about their functionality you can read the 
+[official Inertia docs](https://inertiajs.com/history-encryption). Here is an example of option passing in the Inertia 
+response:
+
+```kotlin
+get("/") {
+    val recordRepository: RecordRepository = RecordRepository()
+
+    inertia.render("records/Index", "records" to recordRepository.all(), encryptHistory = true, clearHistory = true)
+}
+```
+
+This way, the response will be sent with the `encryptHistory` and `clearHistory` values set to `true`. Note that this 
+is only applied for that render call. After that call, Inertia will revert the flags back to their default values.
+
+You may want to provide a default value to the `encryptHistory` flag, and this is also supported. All you need to do is
+to pass the default value when installing the Inertia plugin:
+
+```kotlin
+fun main() {
+    embeddedServer(Netty, port = 8080) {
+        install(Inertia) {
+            encryptHistory = true
+        }
+    }.start(wait = true)
+}
+```
+
+It is important to note that the `clearHistory` flag doesn't allow a default value, and must be manually set on `render`
+calls.
+
+### Asset Versioning
+
+The Inertia4J adapter fully supports asset versioning, and responds accordingly to outdated assets. To provide a version
+to your assets, you will need to provide an implementation of the `VersionProvider` interface. This interface has only
+a single method, called `get`, which returns your asset version number as a `String`. You can implement the `get`
+method to suit your project's needs, be it a value that manually changes, or a dynamic hash of your asset folder.
+
+If you choose not to implement a `VersionProvider`, your app is still going to work perfectly, it just won't support
+Inertia asset versioning.
+
+Below is an example of a simple `VersionProvider` implementation in Spring:
+
+```java
+import io.gitlab.inertia4j.spring.VersionProvider;
+import org.springframework.stereotype.Comonent;
+
+@Component
+public class MyCustomVersionProvider implements VersionProvider {
+    @Override
+    public String get() {
+        return "latest";
+    }
+}
+
+```
+
+### Partial Reloads
+
+Inertia4J also supports partial reloads, in case you don't need to return all the data to your client side on component
+load, or in case you just need to reload a specific component in your page.
+
+### Advanced usage
+
+Inertia4J was designed from the start to be easy to use for small projects, yet fully customizable and modular, so you 
+can tweak the library to fit your project's needs. If you want to learn about customizing and extending Inertia4J, you 
+can read the [advanced usage guide](https://github.com/Inertia4J/inertia4j/tree/main/docs/advanced.md).
+
+### Contributing
+
+Inertia4J is an Open Source project. If you'd like to contribute with any new features, feel free to open a Pull
+Request in this repository.
