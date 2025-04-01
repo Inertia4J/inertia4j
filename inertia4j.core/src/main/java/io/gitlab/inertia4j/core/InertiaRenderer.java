@@ -117,18 +117,21 @@ public class InertiaRenderer {
         HttpRequest request,
         InertiaRenderingOptions options
     ) throws SerializationException {
-        var response = new HttpResponse().setHeader("X-Inertia", "true");
+        var response = new HttpResponse();
 
         PageObject pageObject = pageObjectFromOptions(request, options);
         String serializedPageObject = serializePageObject(request, pageObject);
 
         String inertiaHeader = request.getHeader("X-Inertia");
         if (inertiaHeader != null && inertiaHeader.equalsIgnoreCase("true")) {
-            response.setHeader("Content-Type", "application/json");
-            response.setBody(serializedPageObject);
+            response
+                .setHeader("Content-Type", "application/json")
+                .setHeader("X-Inertia", "true")
+                .setBody(serializedPageObject);
         } else {
-            response.setHeader("Content-Type", "text/html");
-            response.setBody(templateRenderer.render(serializedPageObject));
+            response
+                .setHeader("Content-Type", "text/html")
+                .setBody(templateRenderer.render(serializedPageObject));
         }
 
         return response.setCode(200);

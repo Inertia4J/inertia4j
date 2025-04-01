@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class InertiaRendererTest {
     private final PageObjectSerializer pageObjectSerializer = new DefaultPageObjectSerializer();
@@ -36,6 +37,7 @@ public class InertiaRendererTest {
 
         assertEquals(200, response.getCode());
         assertEquals(Collections.singletonList("text/html"), response.getHeaders().get("Content-Type"));
+        assertFalse(response.getHeaders().containsKey("X-Inertia"));
 
         var expectedBody = """
         <!doctype html>
@@ -57,6 +59,7 @@ public class InertiaRendererTest {
 
         assertEquals(200, response.getCode());
         assertEquals(Collections.singletonList("text/html"), response.getHeaders().get("Content-Type"));
+        assertFalse(response.getHeaders().containsKey("X-Inertia"));
 
         var expectedBody = """
         <!doctype html>
@@ -79,6 +82,7 @@ public class InertiaRendererTest {
 
         assertEquals(200, response.getCode());
         assertEquals(Collections.singletonList("text/html"), response.getHeaders().get("Content-Type"));
+        assertFalse(response.getHeaders().containsKey("X-Inertia"));
 
         var expectedBody = """
         <!doctype html>
