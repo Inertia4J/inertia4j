@@ -1,8 +1,10 @@
 package io.gitlab.inertia4j.spring;
 
-import io.gitlab.inertia4j.core.*;
+import io.gitlab.inertia4j.core.HttpRequest;
+import io.gitlab.inertia4j.core.HttpResponse;
+import io.gitlab.inertia4j.core.InertiaRenderer;
+import io.gitlab.inertia4j.core.InertiaRenderingOptions;
 import io.gitlab.inertia4j.spi.PageObjectSerializer;
-import io.gitlab.inertia4j.spi.SerializationException;
 import io.gitlab.inertia4j.spi.TemplateRenderer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ class InertiaSpringRenderer {
         PageObjectSerializer serializer,
         VersionProvider versionProvider,
         TemplateRenderer templateRenderer
-    ) throws SpringInertiaException {
+    ) {
         this.coreRenderer = new InertiaRenderer(serializer, versionProvider::get, templateRenderer);
     }
 
@@ -40,13 +42,8 @@ class InertiaSpringRenderer {
         PageObjectSerializer serializer,
         VersionProvider versionProvider,
         String templatePath
-    ) throws SpringInertiaException {
-        try {
-            this.coreRenderer = new InertiaRenderer(serializer, versionProvider::get, templatePath);
-            // TODO: remove this exception wrapping
-        } catch (TemplateRenderingException e) {
-            throw new SpringInertiaException(e);
-        }
+    ) {
+        this.coreRenderer = new InertiaRenderer(serializer, versionProvider::get, templatePath);
     }
 
     /*
@@ -59,12 +56,7 @@ class InertiaSpringRenderer {
         HttpRequest request,
         InertiaRenderingOptions options
     ) {
-        try {
-            return convertToResponseEntity(coreRenderer.render(request, options));
-            // TODO: remove this exception wrapping
-        } catch (SerializationException e) {
-            throw new SpringInertiaException(e);
-        }
+        return convertToResponseEntity(coreRenderer.render(request, options));
     }
 
     /*

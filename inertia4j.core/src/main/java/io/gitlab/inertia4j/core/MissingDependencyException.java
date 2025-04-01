@@ -1,7 +1,8 @@
 package io.gitlab.inertia4j.core;
 
-// TODO: make this extend InertiaException
-public class MissingDependencyException extends RuntimeException {
+import io.gitlab.inertia4j.spi.InertiaException;
+
+public class MissingDependencyException extends InertiaException {
     public MissingDependencyException(String message) {
         super(message);
     }
