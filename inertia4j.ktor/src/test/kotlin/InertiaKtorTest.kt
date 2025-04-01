@@ -8,7 +8,6 @@ import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class InertiaKtorTest {
     private fun testApp(block: suspend ApplicationTestBuilder.() -> Unit) = testApplication {
@@ -32,7 +31,7 @@ class InertiaKtorTest {
         val response = client.get("/")
         assertEquals(HttpStatusCode.OK, response.status)
         assertEquals(ContentType.Text.Html, response.contentType())
-        assertNull(response.headers["X-Inertia"])
+        assert("X-Inertia" !in response.headers)
 
         val expectedBody = """
             <!doctype html>
