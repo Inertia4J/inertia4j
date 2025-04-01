@@ -3,9 +3,9 @@ package io.gitlab.inertia4j.ktor
 import io.gitlab.inertia4j.core.HttpResponse
 import io.gitlab.inertia4j.core.InertiaRenderer
 import io.gitlab.inertia4j.core.InertiaRenderingOptions
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.routing.*
+import io.ktor.http.*
 import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import io.ktor.util.*
 
 class InertiaKtorRenderer internal constructor(
@@ -62,7 +62,7 @@ class InertiaKtorRenderer internal constructor(
             coreResponse.headers.forEach { (name: String, values: List<String>) ->
                 values.forEach { call.response.header(name, it) }
             }
-            call.respond(HttpStatusCode.fromValue(coreResponse.code), coreResponse.body)
+            call.respond(HttpStatusCode.fromValue(coreResponse.code), coreResponse.body ?: "")
         }
     }
 

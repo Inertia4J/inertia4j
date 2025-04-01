@@ -3,18 +3,26 @@ package io.gitlab.inertia4j.ktor
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class InertiaKtorTest {
-    @Test
-    fun render() = testApplication {
-        install(Inertia) {
-            encryptHistory = true
+    private fun testApp(block: suspend ApplicationTestBuilder.() -> Unit) = testApplication {
+        application {
+            install(Inertia) {
+                encryptHistory = true
+                versionProvider = { "1" }
+            }
         }
+        block()
+    }
 
+    @Test
+    fun `render full page`() = testApp {
         routing {
             get("/") {
                 inertia.render("SampleComponent", "id" to 1, clearHistory = true)
@@ -23,6 +31,8 @@ class InertiaKtorTest {
 
         val response = client.get("/")
         assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(ContentType.Text.Html, response.contentType())
+        assertNull(response.headers["X-Inertia"])
 
         val expectedBody = """
             <!doctype html>
@@ -31,7 +41,116 @@ class InertiaKtorTest {
                 <div id="app" data-page='{"component":"SampleComponent","props":{"id":1},"url":"/","version":"1","encryptHistory":true,"clearHistory":true}'></div>
             </body>
             </html>
-        """.trimIndent() + '\n'
+        """.trimIndent()
         assertEquals(expectedBody, response.bodyAsText())
+    }
+
+    @Test
+    fun `render partial with X-Inertia header`() = testApp {
+        routing {
+            get("/") {
+                inertia.render("SampleComponent", "id" to 1)
+            }
+        }
+
+        val response = client.get("/") {
+            header("X-Inertia", "true")
+        }
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(ContentType.Application.Json, response.contentType())
+        assertEquals("true", response.headers["X-Inertia"])
+
+        val expectedBody = """{"component":"SampleComponent","props":{"id":1},"url":"/","version":"1","encryptHistory":true,"clearHistory":false}"""
+        assertEquals(expectedBody, response.bodyAsText())
+    }
+
+    @Test
+    fun `render partial with matching X-Inertia and X-Inertia-Version headers`() = testApp {
+         routing {
+            get("/") {
+                inertia.render("SampleComponent", "id" to 1)
+            }
+        }
+
+        val response = client.get("/") {
+            header("X-Inertia", "true")
+            header("X-Inertia-Version", "1")
+        }
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(ContentType.Application.Json, response.contentType())
+        assertEquals("true", response.headers["X-Inertia"])
+
+        val expectedBody = """{"component":"SampleComponent","props":{"id":1},"url":"/","version":"1","encryptHistory":true,"clearHistory":false}"""
+        assertEquals(expectedBody, response.bodyAsText())
+    }
+
+     @Test
+    fun `render conflict with mismatching X-Inertia and X-Inertia-Version headers`() = testApp {
+         routing {
+            get("/") {
+                inertia.render("SampleComponent", "id" to 1)
+            }
+        }
+
+        val response = client.get("/") {
+            header("X-Inertia", "true")
+            header("X-Inertia-Version", "stale-version")
+        }
+        assertEquals(HttpStatusCode.Conflict, response.status)
+        assert("X-Inertia" !in response.headers)
+        assert(response.bodyAsText().isEmpty())
+    }
+
+    @Test
+    fun `redirect internal with X-Inertia header`() = testApp {
+        // Disable followRedirects to capture the 302
+        val client = createClient { followRedirects = false }
+        routing {
+            put("/redirect") {
+                inertia.redirect("/target")
+            }
+        }
+
+        val response = client.put("/redirect") {
+            header("X-Inertia", "true")
+        }
+        assertEquals(HttpStatusCode.SeeOther, response.status)
+        assert("X-Inertia" !in response.headers)
+        assertEquals("/target", response.headers[HttpHeaders.Location])
+        assert(response.bodyAsText().isEmpty())
+    }
+
+    @Test
+    fun `redirect internal without X-Inertia header`() = testApp {
+        // Disable followRedirects to capture the 302
+        val client = createClient { followRedirects = false }
+        routing {
+            get("/redirect") {
+                inertia.redirect("/target")
+            }
+        }
+
+        val response = client.get("/redirect")
+        assertEquals(HttpStatusCode.Found, response.status)
+        assert("X-Inertia" !in response.headers)
+        assertEquals("/target", response.headers[HttpHeaders.Location])
+        assert(response.bodyAsText().isEmpty())
+    }
+
+    @Test
+    fun `location external redirect with X-Inertia header`() = testApp {
+         routing {
+            get("/external") {
+                inertia.location("https://external.example.com")
+            }
+        }
+
+        val response = client.get("/external") {
+            header("X-Inertia", "true")
+        }
+        assertEquals(HttpStatusCode.Conflict, response.status)
+        assert("X-Inertia" !in response.headers)
+        assertEquals("https://external.example.com", response.headers["X-Inertia-Location"])
+        assert(response.bodyAsText().isEmpty())
     }
 }

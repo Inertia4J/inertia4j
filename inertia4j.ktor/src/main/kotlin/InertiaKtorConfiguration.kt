@@ -4,10 +4,9 @@ import io.gitlab.inertia4j.core.DefaultPageObjectSerializer
 import io.gitlab.inertia4j.core.SimpleTemplateRenderer
 import io.gitlab.inertia4j.spi.PageObjectSerializer
 import io.gitlab.inertia4j.spi.TemplateRenderer
-import java.util.function.Supplier
 
 class InertiaKtorConfiguration {
-    var versionProvider: Supplier<String> = Supplier { "1" }
+    var versionProvider: () -> String = { "1" }
     /*
      * Use null as default to avoid checking for Jackson in case
      * the user provides a custom PageObjectSerializer implementation

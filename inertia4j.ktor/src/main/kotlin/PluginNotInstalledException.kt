@@ -1,3 +1,5 @@
 package io.gitlab.inertia4j.ktor
 
-class PluginNotInstalledException : Exception("Inertia plugin was not installed")
+import io.gitlab.inertia4j.spi.InertiaException
+
+class PluginNotInstalledException : InertiaException("Inertia plugin was not installed")
