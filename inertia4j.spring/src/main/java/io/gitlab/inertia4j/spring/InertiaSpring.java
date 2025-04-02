@@ -2,7 +2,6 @@ package io.gitlab.inertia4j.spring;
 
 import io.gitlab.inertia4j.spi.PageObjectSerializer;
 import io.gitlab.inertia4j.spi.TemplateRenderer;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
@@ -10,7 +9,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * An injectable Spring bean providing convenient methods for rendering Inertia responses within controllers.
@@ -23,6 +24,20 @@ import java.util.Map;
 public class InertiaSpring {
     private final InertiaSpringRenderer renderer;
     private static final InertiaSpringRendererOptions defaultOptions = new InertiaSpringRendererOptions();
+    private final Supplier<HttpServletRequest> requestSupplier;
+
+    /**
+     * Internal constructor used in tests.
+     */
+    InertiaSpring(
+        VersionProvider versionProvider,
+        PageObjectSerializer pageObjectSerializer,
+        TemplateRenderer templateRenderer,
+        Supplier<HttpServletRequest> requestSupplier
+    ) {
+        this.renderer = new InertiaSpringRenderer(pageObjectSerializer, versionProvider, templateRenderer);
+        this.requestSupplier = requestSupplier;
+    }
 
     /**
      * Constructs the InertiaSpring bean with required dependencies.
@@ -35,7 +50,7 @@ public class InertiaSpring {
         PageObjectSerializer pageObjectSerializer,
         TemplateRenderer templateRenderer
     ) {
-        this.renderer = new InertiaSpringRenderer(pageObjectSerializer, versionProvider, templateRenderer);
+        this(versionProvider, pageObjectSerializer, templateRenderer, InertiaSpring::getCurrentRequest);
     }
 
     /**
@@ -47,7 +62,7 @@ public class InertiaSpring {
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(String component, Map<String, Object> props) {
-        return render(component, props, getCurrentRequest().getRequestURI());
+        return render(component, props, requestSupplier.get().getRequestURI());
     }
 
     /**
@@ -60,7 +75,7 @@ public class InertiaSpring {
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(String component, Map<String, Object> props, String url) {
-        return render(getCurrentRequest(), component, props, url, defaultOptions);
+        return render(requestSupplier.get(), component, props, url, defaultOptions);
     }
 
     /**
@@ -77,7 +92,7 @@ public class InertiaSpring {
         Map<String, Object> props,
         InertiaSpringRendererOptions options
     ) {
-        return render(component, props, getCurrentRequest().getRequestURI(), options);
+        return render(component, props, requestSupplier.get().getRequestURI(), options);
     }
 
     /**
@@ -96,7 +111,7 @@ public class InertiaSpring {
         String url,
         InertiaSpringRendererOptions options
     ) {
-        return render(getCurrentRequest(), component, props, url, options);
+        return render(requestSupplier.get(), component, props, url, options);
     }
 
     /**
@@ -152,7 +167,7 @@ public class InertiaSpring {
      * @return A Spring {@link ResponseEntity} configured for an Inertia redirect.
      */
     public ResponseEntity<String> redirect(String location) {
-        InertiaHttpServletRequest inertiaServletRequest = new InertiaHttpServletRequest(getCurrentRequest());
+        InertiaHttpServletRequest inertiaServletRequest = new InertiaHttpServletRequest(requestSupplier.get());
         return renderer.redirect(inertiaServletRequest, location);
     }
 
@@ -172,7 +187,7 @@ public class InertiaSpring {
      * @return The current HttpServletRequest.
      * @throws IllegalStateException if the request attributes are not found or not of the expected type.
      */
-    private HttpServletRequest getCurrentRequest() {
+    private static HttpServletRequest getCurrentRequest() {
         final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         Assert.state(
             requestAttributes != null,
