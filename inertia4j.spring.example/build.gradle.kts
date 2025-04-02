@@ -1,7 +1,7 @@
 plugins {
     id("java")
-    id("org.springframework.boot") version "3.4.3"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("org.springframework.boot") version "2.7.18"
+    id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
 group = "dev.edrd"

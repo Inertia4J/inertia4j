@@ -39,14 +39,12 @@ public class InertiaRendererTest {
         assertEquals(Collections.singletonList("text/html"), response.getHeaders().get("Content-Type"));
         assertFalse(response.getHeaders().containsKey("X-Inertia"));
 
-        var expectedBody = """
-        <!doctype html>
-        <html lang="en">
-          <body>
-            <div id="app" data-page='{"component":"Component","props":null,"url":"/page","version":"old","encryptHistory":false,"clearHistory":false}'></div>
-          </body>
-        </html>
-        """.trim();
+        var expectedBody = "<!doctype html>\n" +
+                "<html lang=\"en\">\n" +
+                "  <body>\n" +
+                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"old\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "  </body>\n" +
+                "</html>".trim();
         assertEquals(expectedBody, response.getBody());
     }
 
@@ -61,14 +59,12 @@ public class InertiaRendererTest {
         assertEquals(Collections.singletonList("text/html"), response.getHeaders().get("Content-Type"));
         assertFalse(response.getHeaders().containsKey("X-Inertia"));
 
-        var expectedBody = """
-        <!doctype html>
-        <html lang="en">
-          <body>
-            <div id="app" data-page='{"component":"Component","props":null,"url":"/page","version":"1","encryptHistory":false,"clearHistory":false}'></div>
-          </body>
-        </html>
-        """.trim();
+        var expectedBody = "<!doctype html>\n" +
+                "<html lang=\"en\">\n" +
+                "  <body>\n" +
+                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "  </body>\n" +
+                "</html>".trim();
 
         assertEquals(expectedBody, response.getBody());
     }
@@ -84,14 +80,12 @@ public class InertiaRendererTest {
         assertEquals(Collections.singletonList("text/html"), response.getHeaders().get("Content-Type"));
         assertFalse(response.getHeaders().containsKey("X-Inertia"));
 
-        var expectedBody = """
-        <!doctype html>
-        <html lang="en">
-          <body>
-            <div id="app" data-page='{"component":"Component","props":null,"url":"/page","version":"1","encryptHistory":false,"clearHistory":false}'></div>
-          </body>
-        </html>
-        """.trim();
+        var expectedBody = "<!doctype html>\n" +
+                "<html lang=\"en\">\n" +
+                "  <body>\n" +
+                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "  </body>\n" +
+                "</html>".trim();
 
         assertEquals(expectedBody, response.getBody());
     }
@@ -111,9 +105,7 @@ public class InertiaRendererTest {
         assertEquals(Collections.singletonList("application/json"), response.getHeaders().get("Content-Type"));
         assertEquals(Collections.singletonList("true"), response.getHeaders().get("X-Inertia"));
 
-        var expectedJson = """
-        {"component":"Component","props":{"status":1,"user":"test"},"url":"/page","version":"1","encryptHistory":false,"clearHistory":false}
-        """.trim();
+        var expectedJson = "{\"component\":\"Component\",\"props\":{\"status\":1,\"user\":\"test\"},\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}".trim();
         assertEquals(expectedJson, response.getBody());
     }
 
@@ -134,9 +126,7 @@ public class InertiaRendererTest {
         assertEquals(Collections.singletonList("application/json"), response.getHeaders().get("Content-Type"));
         assertEquals(Collections.singletonList("true"), response.getHeaders().get("X-Inertia"));
 
-        var expectedJson = """
-        {"component":"Component","props":{"status":1,"user":"test"},"url":"/page","version":"1","encryptHistory":false,"clearHistory":false}
-        """.trim();
+        var expectedJson = "{\"component\":\"Component\",\"props\":{\"status\":1,\"user\":\"test\"},\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}".trim();
         assertEquals(expectedJson, response.getBody());
     }
 

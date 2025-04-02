@@ -1,7 +1,7 @@
 package io.gitlab.inertia4j.spring;
 
 import io.gitlab.inertia4j.core.DefaultPageObjectSerializer;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;

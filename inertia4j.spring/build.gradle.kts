@@ -1,7 +1,7 @@
 plugins {
     `java-library`
-    id("org.springframework.boot") version "3.4.3"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("org.springframework.boot") version "2.7.18"
+    id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
 group = "io.gitlab.inertia4j"
@@ -9,7 +9,7 @@ version = "0.0.1"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
@@ -30,4 +30,8 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.getByName("bootJar") {
+    enabled = false
 }
