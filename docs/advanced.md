@@ -28,11 +28,25 @@ please read its
 [implementation](https://github.com/Inertia4J/inertia4j/blob/main/inertia4j.spi/src/main/java/io/gitlab/inertia4j/spi/PageObject.java).
 
 In Inertia4J, it is also the serializer's role to support [partial reloads](https://inertiajs.com/partial-reloads).
-Your serializer should only respond to partial reloads with the correct properties, as specified by the 
-`partialDataProps` parameter, which is passed to the `serialize` method along with your Page Object.
+Your serializer should only respond to partial reloads with the correct properties, as specified by the
+`partialDataProps` parameter, which is passed to the `serialize` method along with your Page Object. Once you do
+implement your own serializer, you can plug it into Inertia4J.
 
-Once you do implement your own serializer, you can plug it into Inertia4J by passing it to the plugin installation in 
-your Ktor code:
+In Spring, you can achieve this by implementing the `PageObjectSerializer` into a Spring Bean, which can be injected 
+into your Inertia4J Spring project. The interface implementation could be achieved through something like this:
+
+```java
+@Component
+@Primary
+public class MyCustomPageObjectSerializer implements PageObjectSerializer {
+    @Override
+    public String serialize() {
+        /* ... */
+    }
+}
+```
+
+In Ktor, you can achieve this by passing it to the plugin installation:
 
 ```kotlin
 install(Inertia) {
@@ -51,8 +65,23 @@ is the JSON representation of the Page Object (provided by your JSON Serializer)
 represents the HTML with the serialized Page Object.
 
 When implementing a new Template Renderer, just make sure that it complies with the
-[Inertia protocol specification](https://inertiajs.com/the-protocol). To change the Template Renderer to your
-implementation, you can write the following in Ktor:
+[Inertia protocol specification](https://inertiajs.com/the-protocol).
+
+In Spring, you can achieve this by implementing the `TemplateRenderer` into a Spring Bean, which can be injected
+into your Inertia4J Spring project. The interface implementation could be achieved through something like this:
+
+```java
+@Component
+@Primary
+public class MyCustomTemplateRenderer implements TemplateRenderer {
+    @Override
+    public String get() {
+        /* ... */
+    }
+}
+```
+
+To change the Template Renderer to your implementation in Ktor, you can write the following:
 
 ```kotlin
 install(Inertia) {
