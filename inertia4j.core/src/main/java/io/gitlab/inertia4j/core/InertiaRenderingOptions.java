@@ -12,6 +12,15 @@ public class InertiaRenderingOptions {
     final String componentName;
     final Map<String, Object> props;
 
+    /**
+     * Constructs a new set of rendering options.
+     *
+     * @param encryptHistory Whether to encrypt the browser history state.
+     * @param clearHistory   Whether to clear the browser history state.
+     * @param url            The URL for the page object.
+     * @param componentName  The name of the client-side component to render.
+     * @param props          The properties (data) to pass to the component.
+     */
     public InertiaRenderingOptions(
         boolean encryptHistory,
         boolean clearHistory,
@@ -26,11 +35,13 @@ public class InertiaRenderingOptions {
         this.props = props;
     }
 
-    /*
-     * Returns a new PageObject with the specified component.
+    /**
+     * Creates a new {@code InertiaRenderingOptions} instance with a potentially different component name.
+     * This is used internally when handling partial reloads requested via the `X-Inertia-Partial-Component` header,
+     * allowing the server to respond with the same props but target a different component on the client-side.
      *
-     * @param component name of the component
-     * @returns an InertiaRenderingOptions instance
+     * @param component The name of the component specified in the partial reload request.
+     * @return A new {@code InertiaRenderingOptions} instance with the updated component name.
      */
     public InertiaRenderingOptions withPartialComponent(String component) {
         return new InertiaRenderingOptions(

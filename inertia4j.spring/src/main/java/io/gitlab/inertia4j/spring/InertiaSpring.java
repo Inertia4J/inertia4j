@@ -12,10 +12,24 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
 
+/**
+ * An injectable Spring bean providing convenient methods for rendering Inertia responses within controllers.
+ * This class offers similar functionality to the static {@link Inertia} facade but is designed
+ * to be managed by the Spring container, allowing for easier configuration and testing.
+ * <p>
+ * It requires {@link VersionProvider}, {@link PageObjectSerializer}, and {@link TemplateRenderer}
+ * beans to be available in the application context for its construction.
+ */
 public class InertiaSpring {
     private final InertiaSpringRenderer renderer;
     private static final InertiaSpringRendererOptions defaultOptions = new InertiaSpringRendererOptions();
 
+    /**
+     * Constructs the InertiaSpring bean with required dependencies.
+     * @param versionProvider      The provider for the current asset version.
+     * @param pageObjectSerializer The serializer for the PageObject.
+     * @param templateRenderer     The renderer for the base HTML template.
+     */
     public InertiaSpring(
         VersionProvider versionProvider,
         PageObjectSerializer pageObjectSerializer,
@@ -24,33 +38,39 @@ public class InertiaSpring {
         this.renderer = new InertiaSpringRenderer(pageObjectSerializer, versionProvider, templateRenderer);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties.
+     * Uses the current request URI as the page object URL and default rendering options.
      *
-     * @params component name of the component to render in the client
-     * @param props regular response data
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(String component, Map<String, Object> props) {
         return render(component, props, getCurrentRequest().getRequestURI());
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties and a specific URL.
+     * Uses default rendering options.
      *
-     * @params component name of the component to render in the client
-     * @param props regular response data
-     * @param url value of the URL field in response
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(String component, Map<String, Object> props, String url) {
         return render(getCurrentRequest(), component, props, url, defaultOptions);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties and specific rendering options.
+     * Uses the current request URI as the page object URL.
      *
-     * @params component name of the component to render in the client
-     * @param props regular response data
-     * @param options Inertia flags and other Page Object data
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param options   Specific rendering options (e.g., history flags).
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(
         String component,
@@ -60,13 +80,15 @@ public class InertiaSpring {
         return render(component, props, getCurrentRequest().getRequestURI(), options);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties, URL, and specific rendering options.
+     * This is the most explicit render method, allowing full control.
      *
-     * @param url value of the URL field in response
-     * @params component name of the component to render in the client
-     * @param props regular response data
-     * @param options Inertia flags and other Page Object data
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @param options   Specific rendering options (e.g., history flags).
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(
         String component,
@@ -77,14 +99,15 @@ public class InertiaSpring {
         return render(getCurrentRequest(), component, props, url, options);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component using an explicit {@link WebRequest}.
      *
-     * @param request HTTP request
-     * @param url value of the URL field in response
-     * @param component name of the component to render in the client
-     * @param props regular response data
-     * @param options Inertia flags and other Page Object data
+     * @param request   The current Spring WebRequest.
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @param options   Specific rendering options.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(
         WebRequest request,
@@ -98,14 +121,15 @@ public class InertiaSpring {
         return render(servletRequest, component, props, url, options);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component using an explicit {@link HttpServletRequest}.
      *
-     * @param request HTTP request
-     * @param component name of the component to render in the client
-     * @param props regular response data
-     * @param url value of the URL field in response
-     * @param options Inertia flags and other Page Object data
+     * @param request   The current HttpServletRequest.
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @param options   Specific rendering options.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public ResponseEntity<String> render(
         HttpServletRequest request,
@@ -120,29 +144,33 @@ public class InertiaSpring {
         );
     }
 
-    /*
-     * Formats the proper redirect response to the specified location.
+    /**
+     * Creates an Inertia redirect response.
+     * Uses a 303 status code for PUT/PATCH/DELETE requests and 302 otherwise.
      *
-     * @param location URL to redirect to
+     * @param location The URL to redirect to.
+     * @return A Spring {@link ResponseEntity} configured for an Inertia redirect.
      */
     public ResponseEntity<String> redirect(String location) {
         InertiaHttpServletRequest inertiaServletRequest = new InertiaHttpServletRequest(getCurrentRequest());
         return renderer.redirect(inertiaServletRequest, location);
     }
 
-    /*
-     * Redirects to an external or non-Inertia URL.
+    /**
+     * Creates an external redirect response (using 409 Conflict + X-Inertia-Location header).
      *
-     * @param location external URL to redirect to
+     * @param url The external URL to redirect to.
+     * @return A Spring {@link ResponseEntity} configured for an external Inertia redirect.
      */
     public ResponseEntity<String> location(String url) {
         return renderer.location(url);
     }
 
-    /*
-     * Gets the current HTTP request.
-     *
-     * @returns current request as HttpServletRequest
+    /**
+     * Retrieves the current {@link HttpServletRequest} from the {@link RequestContextHolder}.
+     * 
+     * @return The current HttpServletRequest.
+     * @throws IllegalStateException if the request attributes are not found or not of the expected type.
      */
     private HttpServletRequest getCurrentRequest() {
         final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();

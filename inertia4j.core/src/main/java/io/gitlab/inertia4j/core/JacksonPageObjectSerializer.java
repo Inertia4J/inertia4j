@@ -10,21 +10,23 @@ import io.gitlab.inertia4j.spi.SerializationException;
 
 import java.util.List;
 
-/*
- * PageObject serializer implementation using Jackson for JSON serialization.
+/**
+ * {@link PageObjectSerializer} implementation using Jackson for JSON serialization.
  */
 public class JacksonPageObjectSerializer implements PageObjectSerializer {
+    /**
+     * The Jackson ObjectMapper instance used for serialization.
+     * Configured to order map entries by keys for consistent output.
+     */
     private final ObjectMapper objectMapper = new ObjectMapper()
         .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 
-    /*
-     * Serializes the provided PageObject
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If {@code partialDataProps} is provided, only the properties specified in the list
+     * will be included under the "props" key in the resulting JSON.
      *
-     * @param pageObject PageObject to serialize
-     * @param partialDataProps list of props to be serialized, used for partial data requests, can be null
-     * @returns PageObject serialized as String with the partial data properties specified
-     * @throws SerializationException if any errors occur during serialization
-     * @see PageObject
      */
     @Override
     public String serialize(PageObject pageObject, List<String> partialDataProps) throws SerializationException {

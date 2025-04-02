@@ -2,19 +2,18 @@ package io.gitlab.inertia4j.spi;
 
 import java.util.List;
 
-/*
- * Interface to implement serializers for PageObject objects.
- * Used to transform the PageObject into a string, an implementation must be provided to the renderer.
+/**
+ * Interface for implementing serializers for {@link PageObject} objects.
+ * Used to transform the {@code PageObject} into a string representation. An implementation must be provided to the renderer.
  */
 public interface PageObjectSerializer {
-    /*
-     * Serializes the provided PageObject
+    /**
+     * Serializes the provided {@link PageObject}.
      *
-     * @param pageObject PageObject to serialize
+     * @param pageObject       {@code PageObject} to serialize
      * @param partialDataProps list of props to be serialized, used for partial data requests, can be null
-     * @returns PageObject serialized as String
+     * @return {@code PageObject} serialized as a String
      * @throws SerializationException if any errors occur during serialization
-     * @see PageObject
      */
     String serialize(PageObject pageObject, List<String> partialDataProps) throws SerializationException;
 }

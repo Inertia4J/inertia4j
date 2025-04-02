@@ -2,10 +2,9 @@ package io.gitlab.inertia4j.spi;
 
 import java.util.Map;
 
-/*
- * Internal representation of an Inertia Page Object.
- * This object is serialized and included in the server responses.
- * 
+/**
+ * Internal representation of an Inertia Page Object. This object is serialized and included in the server responses.
+ *
  * @see <a href="https://inertiajs.com/the-protocol#the-page-object">Inertia Page Object spec</a>
  */
 public class PageObject {
@@ -16,15 +15,15 @@ public class PageObject {
     private final boolean encryptHistory;
     private final boolean clearHistory;
 
-    /*
-     * PageObject constructor.
-     * 
-     * @params component component to be rendered by the client
-     * @params props data to be served to client
-     * @params url value of the URL field in response
-     * @params version asset version to be compared with current client asset version
-     * @params encryptHistory flag set to encrypt previous browsing activity
-     * @params clearHistory flag set to clear previous browsing activity
+    /**
+     * Constructs a new PageObject.
+     *
+     * @param component      component to be rendered by the client
+     * @param props          data to be served to client
+     * @param url            value of the URL field in response
+     * @param encryptHistory flag set to encrypt previous browsing activity
+     * @param clearHistory   flag set to clear previous browsing activity
+     * @param version        asset version to be compared with current client asset version
      */
     public PageObject(
         String component,
@@ -42,56 +41,56 @@ public class PageObject {
         this.version = version;
     }
 
-    /*
+    /**
      * Gets the name of the component to be rendered by the client.
-     * 
-     * @returns component name
+     *
+     * @return component name
      */
     public String getComponent() {
         return component;
     }
 
-    /*
+    /**
      * Gets the data to be served to client.
-     * 
-     * @returns props data
+     *
+     * @return props data
      */
     public Map<String, Object> getProps() {
         return props;
     }
 
-    /*
+    /**
      * Gets the value of the URL field.
-     * 
-     * @returns URL
+     *
+     * @return URL
      */
     public String getUrl() {
         return url;
     }
 
-    /*
+    /**
      * Gets the current version of the project assets.
-     * 
-     * @returns version
+     *
+     * @return version
      */
     public Object getVersion() {
         return version;
     }
 
-    /*
+    /**
      * Gets the current value of the encryptHistory flag.
-     * 
-     * @returns value of the encryptHistory flag
+     *
+     * @return value of the encryptHistory flag
      * @see <a href="https://inertiajs.com/history-encryption">Inertia encryptHistory flag</a>
      */
     public boolean isEncryptHistory() {
         return encryptHistory;
     }
 
-    /*
+    /**
      * Gets the current value of the clearHistory flag.
-     * 
-     * @returns value of the clearHistory flag
+     *
+     * @return value of the clearHistory flag
      * @see <a href="https://inertiajs.com/history-encryption#clearing-history">Inertia clearHistory flag</a>
      */
     public boolean isClearHistory() {

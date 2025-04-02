@@ -6,9 +6,20 @@ import io.gitlab.inertia4j.spi.SerializationException;
 
 import java.util.List;
 
+/**
+ * Default implementation of {@link PageObjectSerializer}.
+ * <p>
+ * This implementation checks if Jackson Databind is present on the classpath.
+ * If it is, it delegates serialization to {@link JacksonPageObjectSerializer}.
+ * If not, it throws a {@link MissingDependencyException} during construction.
+ */
 public class DefaultPageObjectSerializer implements PageObjectSerializer {
     private final PageObjectSerializer actualSerializer;
 
+    /**
+     * Constructs a new DefaultPageObjectSerializer, checking for Jackson dependency.
+     * @throws MissingDependencyException if Jackson Databind is not found on the classpath.
+     */
     public DefaultPageObjectSerializer() {
         try {
             Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
@@ -18,6 +29,9 @@ public class DefaultPageObjectSerializer implements PageObjectSerializer {
         this.actualSerializer = new JacksonPageObjectSerializer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String serialize(PageObject pageObject, List<String> partialDataProps) throws SerializationException {
         return actualSerializer.serialize(pageObject, partialDataProps);

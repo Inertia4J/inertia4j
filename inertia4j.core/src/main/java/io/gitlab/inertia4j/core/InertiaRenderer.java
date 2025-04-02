@@ -10,21 +10,21 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-/*
-
- * Class responsible for transforming regular responses into Inertia responses.
+/**
+ * The core class responsible for transforming regular web responses into Inertia-compatible responses.
+ * It handles full page loads, partial updates, asset versioning, and redirects according to the Inertia protocol.
  */
 public class InertiaRenderer {
     private final PageObjectSerializer pageObjectSerializer;
     private final TemplateRenderer templateRenderer;
     private final Supplier<String> versionProvider;
 
-    /*
-     * Constructor for InertiaRenderer.
+    /**
+     * Constructs an InertiaRenderer with explicit dependencies.
      *
-     * @param serializer PageObjectSerializer implementation used to serialize PageObject
+     * @param pageObjectSerializer PageObjectSerializer implementation used to serialize the {@link PageObject}.
      * @param versionProvider provider for the current Inertia asset version
-     * @param templateRenderer renderer for HTML responses
+     * @param templateRenderer renderer for the base HTML template used in full page loads.
      */
     public InertiaRenderer(
         PageObjectSerializer pageObjectSerializer,
@@ -36,12 +36,13 @@ public class InertiaRenderer {
         this.versionProvider = versionProvider;
     }
 
-    /*
-     * Constructor for InertiaRenderer, uses SimpleTemplateRenderer as renderer by default.
-     * 
-     * @param serializer PageObjectSerializer implementation used to serialize PageObject
+    /**
+     * Constructs an InertiaRenderer using the default {@link SimpleTemplateRenderer}.
+     *
+     * @param pageObjectSerializer PageObjectSerializer implementation used to serialize the {@link PageObject}.
      * @param versionProvider provider for the current Inertia asset version
      * @param templatePath path to the HTML template to be served
+     * @throws TemplateRenderingException if the template file cannot be read.
      */
     public InertiaRenderer(
         PageObjectSerializer pageObjectSerializer,
@@ -51,12 +52,14 @@ public class InertiaRenderer {
         this(pageObjectSerializer, versionProvider, new SimpleTemplateRenderer(templatePath));
     }
 
-    /*
-     * Formats the server response to the Inertia response format.
+    /**
+     * Renders the response according to the Inertia protocol based on the incoming request and rendering options.
+     * Handles full page loads, partial updates, and asset version conflicts.
      *
-     * @param request HTTP request
-     * @param response object to which headers and body will be output
-     * @param options rendering options
+     * @param request The incoming HTTP request wrapper.
+     * @param options rendering options containing component name, props, etc.
+     * @return An {@link HttpResponse} object configured according to the Inertia protocol.
+     * @throws SerializationException if the {@link PageObject} serialization fails.
      */
     public HttpResponse render(
         HttpRequest request,
@@ -68,12 +71,13 @@ public class InertiaRenderer {
         return handleSuccessResponse(request, options);
     }
 
-    /*
-     * Formats the proper redirect response to the specified location.
+    /**
+     * Creates an appropriate redirect response based on the Inertia protocol.
+     * Uses a 303 See Other redirect for PUT/PATCH/DELETE requests and a 302 Found for others.
      *
-     * @param request HTTP request
-     * @param response object to which headers and redirect code will be output
+     * @param request The incoming HTTP request wrapper.
      * @param location URL to redirect to
+     * @return An {@link HttpResponse} object configured for an Inertia redirect.
      */
     public HttpResponse redirect(
         HttpRequest request,
@@ -84,11 +88,12 @@ public class InertiaRenderer {
             .setHeader("Location", location);
     }
 
-    /*
-     * Redirects to an external or non-Inertia URL.
+    /**
+     * Instructs the client-side Inertia adapter to perform a hard visit to an external URL
+     * by returning a 409 Conflict response with the `X-Inertia-Location` header.
      *
-     * @param response object to which headers and redirect code will be output
-     * @param location external URL to redirect to
+     * @param url The external URL to navigate to.
+     * @return An {@link HttpResponse} object configured for an external redirect.
      */
     public HttpResponse location(String url) {
         return new HttpResponse()
@@ -96,6 +101,12 @@ public class InertiaRenderer {
             .setHeader("X-Inertia-Location", url);
     }
 
+    /**
+     * Checks if the request indicates an asset version conflict.
+     * This happens on GET requests where the `X-Inertia-Version` header doesn't match the current asset version.
+     * @param request The incoming HTTP request.
+     * @return {@code true} if there's a version conflict, {@code false} otherwise.
+     */
     private boolean isVersionConflict(HttpRequest request) {
         if (!request.getMethod().equalsIgnoreCase("GET")) return false;
 
@@ -104,6 +115,13 @@ public class InertiaRenderer {
         return versionHeader != null && !versionHeader.equals(versionProvider.get());
     }
 
+    /**
+     * Handles the response when an asset version conflict is detected.
+     * Returns a 409 Conflict response with the `X-Inertia-Location` header set to the request URL.
+     * @param request The incoming HTTP request.
+     * @param options The rendering options.
+     * @return An {@link HttpResponse} for a version conflict.
+     */
     private HttpResponse handleVersionConflictResponse(
         HttpRequest request,
         InertiaRenderingOptions options
@@ -113,6 +131,14 @@ public class InertiaRenderer {
             .setHeader("X-Inertia-Location", options.url);
     }
 
+    /**
+     * Handles a standard successful Inertia request (not a version conflict or redirect).
+     * Determines whether to return a full HTML response or a JSON response based on the `X-Inertia` header.
+     * @param request The incoming HTTP request.
+     * @param options The rendering options.
+     * @return An {@link HttpResponse} containing either the full HTML page or the JSON PageObject.
+     * @throws SerializationException if PageObject serialization fails.
+     */
     private HttpResponse handleSuccessResponse(
         HttpRequest request,
         InertiaRenderingOptions options
@@ -137,6 +163,13 @@ public class InertiaRenderer {
         return response.setCode(200);
     }
 
+    /**
+     * Creates a {@link PageObject} instance from the provided rendering options.
+     * Checks for the `X-Inertia-Partial-Component` header to potentially modify props based on partial rendering requests.
+     * @param request The incoming HTTP request.
+     * @param options The rendering options.
+     * @return A configured {@link PageObject}.
+     */
     private PageObject pageObjectFromOptions(HttpRequest request, InertiaRenderingOptions options) {
         String partialComponentHeader = request.getHeader("X-Inertia-Partial-Component");
         if (partialComponentHeader != null) {
@@ -152,6 +185,14 @@ public class InertiaRenderer {
         );
     }
 
+    /**
+     * Serializes the {@link PageObject} into a JSON string.
+     * Checks for the `X-Inertia-Partial-Data` header to determine if only a subset of props should be included in the JSON.
+     * @param request The incoming HTTP request.
+     * @param pageObject The PageObject to serialize.
+     * @return The JSON string representation of the PageObject.
+     * @throws SerializationException if serialization fails.
+     */
     private String serializePageObject(HttpRequest request, PageObject pageObject) throws SerializationException {
         String partialDataHeader = request.getHeader("X-Inertia-Partial-Data");
 
@@ -166,6 +207,11 @@ public class InertiaRenderer {
         return pageObjectSerializer.serialize(pageObject, partialDataProps);
     }
 
+    /**
+     * Checks if the HTTP request method is PUT, PATCH, or DELETE.
+     * @param request The incoming HTTP request.
+     * @return {@code true} if the method is PUT, PATCH, or DELETE, {@code false} otherwise.
+     */
     private boolean isPutPatchDelete(HttpRequest request) {
         String requestMethod = request.getMethod();
         return (requestMethod.equalsIgnoreCase("PUT")

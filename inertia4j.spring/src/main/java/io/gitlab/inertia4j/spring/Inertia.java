@@ -12,10 +12,17 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
 
-/*
- * Implements a Facade for the InertiaRenderer in order to simplify Spring controller logic.
+/**
+ * Static facade providing convenient methods for rendering Inertia responses within Spring controllers.
+ * This class simplifies common Inertia operations like rendering components, handling redirects,
+ * and managing asset versions. It uses a default setup but can be configured via static setters
+ * or Spring Boot properties.
  */
 public class Inertia {
+    /**
+     * Provides the current asset version. Can be replaced with a custom implementation.
+     * Defaults to returning null, relying on the core renderer's default if not set.
+     */
     public static VersionProvider versionProvider = () -> null;
 
     private static final InertiaSpringRenderer renderer = new InertiaSpringRenderer(
@@ -26,10 +33,18 @@ public class Inertia {
 
     private static InertiaSpringRendererOptions defaultOptions = new InertiaSpringRendererOptions();
 
+    /**
+     * Sets the {@link VersionProvider} used by the static renderer instance.
+     * @param provider The VersionProvider implementation.
+     */
     public static void setVersionProvider(VersionProvider provider) {
         versionProvider = provider;
     }
 
+    /**
+     * Sets the default value for the `encryptHistory` flag based on the `inertia.history.encrypt` property.
+     * @param encryptHistory The default value for encrypting history.
+     */
     @Value("${inertia.history.encrypt:false}")
     public static void setHistoryEncryptDefault(boolean encryptHistory) {
         defaultOptions = new InertiaSpringRendererOptions(
@@ -38,33 +53,39 @@ public class Inertia {
         );
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties.
+     * Uses the current request URI as the page object URL and default rendering options.
      *
-     * @params component name of the component to render in the client
-     * @param props regular response data
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public static ResponseEntity<String> render(String component, Map<String, Object> props) {
         return render(component, props, getCurrentRequest().getRequestURI());
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties and a specific URL.
+     * Uses default rendering options.
      *
-     * @params component name of the component to render in the client
-     * @param props regular response data
-     * @param url value of the URL field in response
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public static ResponseEntity<String> render(String component, Map<String, Object> props, String url) {
         return render(getCurrentRequest(), component, props, url, defaultOptions);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties and specific rendering options.
+     * Uses the current request URI as the page object URL.
      *
-     * @params component name of the component to render in the client
-     * @param props regular response data
-     * @param options Inertia flags and other Page Object data
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param options   Specific rendering options (e.g., history flags).
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public static ResponseEntity<String> render(
         String component,
@@ -74,13 +95,15 @@ public class Inertia {
         return render(component, props, getCurrentRequest().getRequestURI(), options);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component with the given properties, URL, and specific rendering options.
+     * This is the most explicit render method, allowing full control.
      *
-     * @param url value of the URL field in response
-     * @params component name of the component to render in the client
-     * @param props regular response data
-     * @param options Inertia flags and other Page Object data
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @param options   Specific rendering options (e.g., history flags).
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public static ResponseEntity<String> render(
         String component,
@@ -91,14 +114,15 @@ public class Inertia {
         return render(getCurrentRequest(), component, props, url, options);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component using an explicit {@link WebRequest}.
      *
-     * @param request HTTP request
-     * @param url value of the URL field in response
-     * @param component name of the component to render in the client
-     * @param props regular response data
-     * @param options Inertia flags and other Page Object data
+     * @param request   The current Spring WebRequest.
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @param options   Specific rendering options.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public static ResponseEntity<String> render(
         WebRequest request,
@@ -112,14 +136,15 @@ public class Inertia {
         return render(servletRequest, component, props, url, options);
     }
 
-    /*
-     * Calls the render method for the current InertiaSpringRenderer instance.
+    /**
+     * Renders an Inertia component using an explicit {@link HttpServletRequest}.
      *
-     * @param request HTTP request
-     * @param component name of the component to render in the client
-     * @param props regular response data
-     * @param url value of the URL field in response
-     * @param options Inertia flags and other Page Object data
+     * @param request   The current HttpServletRequest.
+     * @param component The name of the client-side component.
+     * @param props     A map of properties to pass to the component.
+     * @param url       The URL to be included in the page object.
+     * @param options   Specific rendering options.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
     public static ResponseEntity<String> render(
         HttpServletRequest request,
@@ -134,29 +159,33 @@ public class Inertia {
         );
     }
 
-    /*
-     * Formats the proper redirect response to the specified location.
+    /**
+     * Creates an Inertia redirect response.
+     * Uses a 303 status code for PUT/PATCH/DELETE requests and 302 otherwise.
      *
-     * @param location URL to redirect to
+     * @param location The URL to redirect to.
+     * @return A Spring {@link ResponseEntity} configured for an Inertia redirect.
      */
     public static ResponseEntity<String> redirect(String location) {
         InertiaHttpServletRequest inertiaServletRequest = new InertiaHttpServletRequest(getCurrentRequest());
         return renderer.redirect(inertiaServletRequest, location);
     }
 
-    /*
-     * Redirects to an external or non-Inertia URL.
+    /**
+     * Creates an external redirect response using 409 Conflict status code and X-Inertia-Location header.
      *
-     * @param location external URL to redirect to
+     * @param url The external URL to redirect to.
+     * @return A Spring {@link ResponseEntity} configured for an external Inertia redirect.
      */
     public static ResponseEntity<String> location(String url) {
         return renderer.location(url);
     }
 
-    /*
-     * Gets the current HTTP request.
-     *
-     * @returns current request as HttpServletRequest
+    /**
+     * Retrieves the current {@link HttpServletRequest} from the {@link RequestContextHolder}.
+     * 
+     * @return The current HttpServletRequest.
+     * @throws IllegalStateException if the request attributes are not found or not of the expected type.
      */
     private static HttpServletRequest getCurrentRequest() {
         final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -169,21 +198,40 @@ public class Inertia {
     }
 
     /**
-     * A builder class to make option passing more idiomatic
+     * A helper class providing static factory methods for creating {@link InertiaSpringRendererOptions}
+     * instances in a more fluent way, primarily for setting history flags.
      */
     public static class Options {
+        /**
+         * Creates options with `clearHistory` set to true and default `encryptHistory`.
+         * @return New options instance.
+         */
         public static InertiaSpringRendererOptions clearHistory() {
             return new InertiaSpringRendererOptions(InertiaSpringRendererOptions.defaultEncryptHistory, true);
         }
 
+        /**
+         * Creates options with the specified `clearHistory` value and default `encryptHistory`.
+         * @param clearHistory The value for the clearHistory flag.
+         * @return New options instance.
+         */
         public static InertiaSpringRendererOptions clearHistory(boolean clearHistory) {
             return new InertiaSpringRendererOptions(InertiaSpringRendererOptions.defaultEncryptHistory, clearHistory);
         }
 
+        /**
+         * Creates options with `encryptHistory` set to true and default `clearHistory`.
+         * @return New options instance.
+         */
         public static InertiaSpringRendererOptions encryptHistory() {
             return new InertiaSpringRendererOptions(true, InertiaSpringRendererOptions.defaultClearHistory);
         }
 
+        /**
+         * Creates options with the specified `encryptHistory` value and default `clearHistory`.
+         * @param encryptHistory The value for the encryptHistory flag.
+         * @return New options instance.
+         */
         public static InertiaSpringRendererOptions encryptHistory(boolean encryptHistory) {
             return new InertiaSpringRendererOptions(encryptHistory, InertiaSpringRendererOptions.defaultClearHistory);
         }
