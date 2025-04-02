@@ -38,22 +38,27 @@ Follow the [Client-side setup](https://inertiajs.com/server-side-setup) guide fo
 
 ### Responses
 
-To use Inertia4J with Spring, you first need to import`io.gitlab.inertia4j.spring.Inertia`.
-
-In your controller, the simplest way to use Inertia4J is to call `Inertia.render` in your controllers. The `render` 
-method takes two arguments. The first argument is the name of the component to be rendered in client, and the second
-argument is a map, which will be converted to a JSON object and sent to the client. Below is an example of this usage:
+In your controller, the simplest way to use Inertia4J is to inject the `inertia` bean. This bean will give you access to
+the Inertia4J methods. To respond with an Inertia response in your controller method, you can call `inertia.render`.
+The `render` method takes two arguments. The first argument is the name of the component to be rendered in client, and
+the second argument is a map, which will be converted to a JSON object and sent to the client. This method returns a
+`ResponseEntity<String>` instance, so when using Inertia4J in a route, the return type of your method should always be
+`ResponseEntity<String>`.
 
 ```java
-import io.gitlab.inertia4j.spring.Inertia;
+public class RecordController {
+    @Autowired
+    private InertiaSpring inertia; // Inertia4J bean injection
 
-@GetMapping("/records")
-public ResponseEntity<String> index() {
-    RecordRepository recordRepository = new RecordRepository();
-    Set<Record> records = recordRepository.getAllRecords();
+    @GetMapping("/records")
+    public ResponseEntity<String> index() {
+        RecordRepository recordRepository = new RecordRepository();
+        Set<Record> records = recordRepository.getAllRecords();
 
-    return Inertia.render("Records/Index", Map.of("records", records));
+        return inertia.render("Records/Index", Map.of("records", records));
+    }
 }
+
 ```
 
 This will instruct the frontend to render the `Records/Index` component with a single prop called "records", which
@@ -98,11 +103,11 @@ import io.gitlab.inertia4j.spring.Inertia.Options;
 @GetMapping("/records")
 public ResponseEntity<String> index() {
   /* ... */
-  return Inertia.render("Records/Index", records, Options.clearHistory().encryptHistory());
+  return inertia.render("Records/Index", records, Options.clearHistory().encryptHistory());
 }
 ```
 
-This way, the response will be sent with the `encryptHistory` value set to `true`. Note that this is only applied for
+This way, the response will be sent with the `encryptHistory` value set to `true`. Nozte that this is only applied for
 the next render call, after that, Inertia will revert the flags back to their default values.
 
 You may want to provide a default value to the `encryptHistory` flag, and this is also supported. All you need to do is
@@ -115,7 +120,7 @@ inertia.history.encrypt=true
 In this case, if you wanted to set the flag to `false` for a specific response, you could then specify that in the options:
 
 ```java
-Inertia.render("Records/Index", records, Options.encryptHistory(false));
+inertia.render("Records/Index", records, Options.encryptHistory(false));
 ```
 
 The `clearHistory` option works the same way, except it's not possible to set a default value for it.
@@ -146,6 +151,43 @@ public class MyCustomVersionProvider implements VersionProvider {
 
 ```
 
+### Redirecting
+
+Inertia4J supports redirecting, and just like the Inertia docs specify, there are two kinds of redirects. The first
+is via the `redirect` method, and it is meant to redirect to other Inertia routes. The second kind of redirect is via
+the `location` method, which redirects the client to a non-Inertia route in your application, or to an external route.
+Both methods only receive a single parameter, which is the route to redirect to.
+
+Below is an example of both methods being used:
+
+ ```java
+public class RecordController {
+    @Autowired
+    private InertiaSpring inertia; // Inertia4J bean injection
+  
+    @GetMapping("/records")
+    public ResponseEntity<String> index() {
+        /* ... */
+    }
+  
+    @PostMapping("/records")
+    public ResponseEntity<String> create() {
+        /* ... */
+        inertia.redirect("/records"); // This redirects to our index "/records" route.
+    }
+  
+    @GetMapping("/external-redirect")
+    public ResponseEntity<String> externalRedirect() {
+        inertia.location("https://github.com/Inertia4J/inertia4j"); // Redirects to an external route.
+    }
+}
+ ```
+
+Note that in the example provided, we've defined a `POST` route as well. This is the most common use case for
+redirecting in a simple application, and the redirect methods (both `inertia.redirect` and `inertia.location`) work on
+routes that receive requests of any HTTP methods. If you need more information about redirects in Inertia, please read
+the [official docs](https://inertiajs.com/redirects).
+
 ### Partial Reloads
 
 Inertia4J also supports partial reloads, in case you don't need to return all the data to your client side on component
@@ -159,8 +201,8 @@ can read the [advanced usage guide](https://github.com/Inertia4J/inertia4j/tree/
 
 ### Contributing
 
-Inertia4J is an Open Source project. If you'd like to contribute with any new features, feel free to open a Pull 
-Request in this repository.
+Inertia4J is an Open Source project. If you'd like to contribute with any new features or bug fixes, please read the
+[contributing guide](https://github.com/Inertia4J/inertia4j/blob/main/CONTRIBUTING.md).
 
 ### TODOS:
 

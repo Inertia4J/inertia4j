@@ -162,18 +162,53 @@ public class MyCustomVersionProvider implements VersionProvider {
 
 ```
 
+### Redirecting
+
+Inertia4J supports redirecting, and just like the Inertia docs specify, there are two kinds of redirects. The first
+is via the `redirect` method, and it is meant to redirect to other Inertia routes. The second kind of redirect is via
+the `location` method, which redirects the client to a non-Inertia route in your application, or to an external route.
+Both methods only receive a single parameter, which is the route to redirect to.
+
+Below is an example of both methods being used:
+
+```kotlin
+embeddedServer(Netty, port = 8080) {
+    install(Inertia)
+
+    routing {
+        get("/records") {
+            /* ... */
+        }
+
+        post("/records") {
+            /* ... */
+            inertia.redirect("/records")
+        }
+            
+        get("/external-redirect") {
+            inertia.location("https://github.com/Inertia4J/inertia4j")
+        }
+    }
+}.start(wait = true)
+```
+
+Note that in the example provided, we've defined a `POST` route as well. This is the most common use case for
+redirecting in a simple application, and the redirect methods (both `inertia.redirect` and `inertia.location`) work on
+routes that receive requests of any HTTP methods. If you need more information about redirects in Inertia, please read
+the [official docs](https://inertiajs.com/redirects).
+
 ### Partial Reloads
 
 Inertia4J also supports partial reloads, in case you don't need to return all the data to your client side on component
 load, or in case you just need to reload a specific component in your page.
 
-### Advanced usage
+### Advanced Usage and Extending Inertia4J
 
-Inertia4J was designed from the start to be easy to use for small projects, yet fully customizable and modular, so you 
-can tweak the library to fit your project's needs. If you want to learn about customizing and extending Inertia4J, you 
+Inertia4J was designed from the start to be easy to use for small projects, yet fully customizable and modular, so you
+can tweak the library to fit your project's needs. If you want to learn about customizing and extending Inertia4J, you
 can read the [advanced usage guide](https://github.com/Inertia4J/inertia4j/tree/main/docs/advanced.md).
 
 ### Contributing
 
-Inertia4J is an Open Source project. If you'd like to contribute with any new features, feel free to open a Pull
-Request in this repository.
+Inertia4J is an Open Source project. If you'd like to contribute with any new features or bug fixes, please read the
+[contributing guide](https://github.com/Inertia4J/inertia4j/blob/main/CONTRIBUTING.md).
