@@ -21,8 +21,9 @@ dependencies {
     implementation(project(":inertia4j.core"))
     api(project(":inertia4j.spi"))
 
-    // TODO: change to depend on more specific Spring modules
-    compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("javax.servlet:javax.servlet-api:4.0.1")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure")
+    compileOnly("org.springframework:spring-web")
 
     testImplementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -31,8 +32,4 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-tasks.getByName("bootJar") {
-    enabled = false
 }
