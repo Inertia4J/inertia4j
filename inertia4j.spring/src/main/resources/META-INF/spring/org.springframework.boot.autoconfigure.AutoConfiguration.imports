@@ -1,2 +1,2 @@
-io.gitlab.inertia4j.spring.InertiaSpringAutoconfiguration
-io.gitlab.inertia4j.spring.InertiaConfigurationProperties
+io.github.inertia4j.spring.InertiaSpringAutoconfiguration
+io.github.inertia4j.spring.InertiaConfigurationProperties

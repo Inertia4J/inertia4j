@@ -1,5 +1,5 @@
-import io.gitlab.inertia4j.core.*;
-import io.gitlab.inertia4j.spi.PageObjectSerializer;
+import io.github.inertia4j.core.*;
+import io.github.inertia4j.spi.PageObjectSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

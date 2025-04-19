@@ -15,15 +15,15 @@ Add the Inertia4J dependency to your project, via Gradle or Maven:
 ```kotlin
 // build.gradle.kts
 dependencies {
-  implementation("io.gitlab.inertia4j.spring:1.0.0")
+  implementation("io.github.inertia4j.spring:1.0.0")
 }
 ```
 
 ```xml
-<!-- pom.xml --> 
+<!-- pom.xml -->
 <dependencies>
     <dependency>
-        <groupId>io.gitlab.inertia4j.spring</groupId>
+        <groupId>io.github.inertia4j.spring</groupId>
         <artifactId>inertia4j</artifactId>
         <version>1.0.0</version>
     </dependency>
@@ -91,19 +91,19 @@ and the property `data-page='@PageObject@'`.
 ### Options
 
 Inertia4J supports option passing on response. To enable option passing, first you need to import
-`io.gitlab.inertia4j.spring.Inertia.Options`. After importing, you can now use the `Options` class to pass options as
+`io.github.inertia4j.spring.Inertia.Options`. After importing, you can now use the `Options` class to pass options as
 a third argument to `Inertia.render`. The Inertia protocol defines two main flags which can be passed through options,
 those are the `encryptHistory` and `clearHistory` flags. If you need more information about their functionality
 you can read the [official Inertia docs](https://inertiajs.com/history-encryption). Here is an example of option
 passing in the Inertia response:
 
 ```java
-import io.gitlab.inertia4j.spring.Inertia.Options;
+import io.github.inertia4j.spring.Inertia.Options;
 
 @GetMapping("/records")
 public ResponseEntity<String> index() {
-  /* ... */
-  return inertia.render("Records/Index", records, Options.clearHistory().encryptHistory());
+    /* ... */
+    return inertia.render("Records/Index", records, Options.clearHistory().encryptHistory());
 }
 ```
 
@@ -138,7 +138,7 @@ Inertia asset versioning.
 Below is an example of a simple `VersionProvider` implementation in Spring:
 
 ```java
-import io.gitlab.inertia4j.spring.VersionProvider;
+import io.github.inertia4j.spring.VersionProvider;
 import org.springframework.stereotype.Comonent;
 
 @Component

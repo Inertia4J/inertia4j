@@ -1,6 +1,6 @@
-package io.gitlab.inertia4j.ktor
+package io.github.inertia4j.ktor
 
-import io.gitlab.inertia4j.core.InertiaRenderer
+import io.github.inertia4j.core.InertiaRenderer
 import io.ktor.server.application.*
 
 /**

@@ -1,4 +1,4 @@
-import io.gitlab.inertia4j.core.HttpRequest;
+import io.github.inertia4j.core.HttpRequest;
 
 import java.util.Map;
 

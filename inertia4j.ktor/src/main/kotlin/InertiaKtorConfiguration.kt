@@ -1,9 +1,9 @@
-package io.gitlab.inertia4j.ktor
+package io.github.inertia4j.ktor
 
-import io.gitlab.inertia4j.core.DefaultPageObjectSerializer
-import io.gitlab.inertia4j.core.SimpleTemplateRenderer
-import io.gitlab.inertia4j.spi.PageObjectSerializer
-import io.gitlab.inertia4j.spi.TemplateRenderer
+import io.github.inertia4j.core.DefaultPageObjectSerializer
+import io.github.inertia4j.core.SimpleTemplateRenderer
+import io.github.inertia4j.spi.PageObjectSerializer
+import io.github.inertia4j.spi.TemplateRenderer
 
 /**
  * Configuration class for the Inertia Ktor plugin.
@@ -16,7 +16,7 @@ class InertiaKtorConfiguration {
      */
     var versionProvider: () -> String = { "1" }
     /**
-     * The serializer used to convert the [io.gitlab.inertia4j.spi.PageObject] into a JSON string.
+     * The serializer used to convert the [io.github.inertia4j.spi.PageObject] into a JSON string.
      * Defaults to `null`. If left `null`, [DefaultPageObjectSerializer] will be used,
      * which requires Jackson Databind on the classpath.
      * Provide a custom implementation if you don't want to use Jackson or need custom serialization logic.

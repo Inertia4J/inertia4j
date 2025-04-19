@@ -15,15 +15,15 @@ Add the Ktor Inertia4J dependency to your project, via Gradle or Maven:
 ```kotlin
 // build.gradle.kts
 dependencies {
-  implementation("io.gitlab.inertia4j.ktor:1.0.0")
+  implementation("io.github.inertia4j.ktor:1.0.0")
 }
 ```
 
 ```xml
-<!-- pom.xml --> 
+<!-- pom.xml -->
 <dependencies>
     <dependency>
-        <groupId>io.gitlab.inertia4j.ktor</groupId>
+        <groupId>io.github.inertia4j.ktor</groupId>
         <artifactId>inertia4j</artifactId>
         <version>1.0.0</version>
     </dependency>
@@ -38,8 +38,8 @@ Follow the [Client-side setup](https://inertiajs.com/server-side-setup) guide fo
 
 ### Responses
 
-To use Inertia4J with Ktor, you first need to import`io.gitlab.inertia4j.ktor.Inertia` and
-`io.gitlab.inertia4j.ktor.inertia`.
+To use Inertia4J with Ktor, you first need to import`io.github.inertia4j.ktor.Inertia` and
+`io.github.inertia4j.ktor.inertia`.
 
 In your `embeddedServer`, install the Inertia4J Ktor plugin:
 
@@ -56,8 +56,8 @@ client, and the second argument is a `Pair<String, Any>`, which will be converte
 client. Below is an example of this usage:
 
 ```kotlin
-import io.gitlab.inertia4j.ktor.Inertia
-import io.gitlab.inertia4j.ktor.inertia
+import io.github.inertia4j.ktor.Inertia
+import io.github.inertia4j.ktor.inertia
 
 fun main() {
     embeddedServer(Netty, port = 8080) {
@@ -149,7 +149,7 @@ Inertia asset versioning.
 Below is an example of a simple `VersionProvider` implementation in Spring:
 
 ```java
-import io.gitlab.inertia4j.spring.VersionProvider;
+import io.github.inertia4j.spring.VersionProvider;
 import org.springframework.stereotype.Comonent;
 
 @Component
