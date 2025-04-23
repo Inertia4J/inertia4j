@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Represents a simple HTTP response, holding the status code, headers, and body.
- * Used internally by {@link InertiaRenderer} to construct the final response.
+ * Used internally by InertiaRenderer to construct the final response.
  */
 public class HttpResponse {
     private int code;

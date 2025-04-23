@@ -4,7 +4,7 @@ import io.github.inertia4j.spi.InertiaException;
 
 /**
  * Exception thrown when a dependency (like Jackson) is missing from the classpath,
- * but is needed for a specific setup (like when using the default {@link PageObjectSerializer}).
+ * but is needed for a specific setup (like when using the default PageObjectSerializer).
  */
 public class MissingDependencyException extends InertiaException {
     /**

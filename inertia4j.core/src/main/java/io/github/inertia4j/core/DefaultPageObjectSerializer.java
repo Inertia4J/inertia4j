@@ -3,6 +3,7 @@ package io.github.inertia4j.core;
 import io.github.inertia4j.spi.PageObject;
 import io.github.inertia4j.spi.PageObjectSerializer;
 import io.github.inertia4j.spi.SerializationException;
+import io.github.inertia4j.core.MissingDependencyException; // Javadoc import
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Default implementation of {@link PageObjectSerializer}.
  * <p>
  * This implementation checks if Jackson Databind is present on the classpath.
- * If it is, it delegates serialization to {@link JacksonPageObjectSerializer}.
+ * If it is, it delegates serialization to JacksonPageObjectSerializer.
  * If not, it throws a {@link MissingDependencyException} during construction.
  */
 public class DefaultPageObjectSerializer implements PageObjectSerializer {
