@@ -21,7 +21,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class InertiaSpringTest {
+public class InertiaTest {
 
     private static final String testComponent = "TestComponent";
     private static final String testUrl = "/test-url";
@@ -31,13 +31,13 @@ public class InertiaSpringTest {
     private final VersionProvider versionProvider = () -> "1";
     private final PageObjectSerializer pageObjectSerializer = new DefaultPageObjectSerializer();
     private final TemplateRenderer templateRenderer = new FakeTemplateRenderer();
-    private InertiaSpring inertiaSpring;
+    private Inertia inertia;
 
     @BeforeEach
     void setUp() {
         request = new MockHttpServletRequest("GET", testUrl);
 
-        inertiaSpring = new InertiaSpring(
+        inertia = new Inertia(
             versionProvider,
             pageObjectSerializer,
             templateRenderer,
@@ -59,7 +59,7 @@ public class InertiaSpringTest {
 
     @Test
     void render_whenInitialRequest_returnsHtmlResponse() {
-        ResponseEntity<String> response = inertiaSpring.render(testComponent, testProps);
+        ResponseEntity<String> response = inertia.render(testComponent, testProps);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(MediaType.TEXT_HTML, response.getHeaders().getContentType());
@@ -73,7 +73,7 @@ public class InertiaSpringTest {
         request.addHeader("X-Inertia-Partial-Component", testComponent);
         request.addHeader("X-Inertia-Partial-Data", "prop1"); // Request only prop1
 
-        ResponseEntity<String> response = inertiaSpring.render(testComponent, testProps);
+        ResponseEntity<String> response = inertia.render(testComponent, testProps);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(MediaType.APPLICATION_JSON, response.getHeaders().getContentType());
@@ -86,7 +86,7 @@ public class InertiaSpringTest {
         request.addHeader("X-Inertia", "true");
         request.addHeader("X-Inertia-Version", "stale-version");
 
-        ResponseEntity<String> response = inertiaSpring.render(testComponent, testProps);
+        ResponseEntity<String> response = inertia.render(testComponent, testProps);
 
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals(Collections.singletonList("/test-url"), response.getHeaders().get("X-Inertia-Location"));
@@ -99,7 +99,7 @@ public class InertiaSpringTest {
         request.setMethod("PUT");
         request.addHeader("X-Inertia", "true");
 
-        ResponseEntity<String> response = inertiaSpring.redirect("/target");
+        ResponseEntity<String> response = inertia.redirect("/target");
 
         assertEquals(HttpStatus.SEE_OTHER, response.getStatusCode());
         assertNull(response.getHeaders().get("X-Inertia"));
@@ -110,7 +110,7 @@ public class InertiaSpringTest {
     @Test
     void redirect_returnsFoundResponse() {
         request.setMethod("GET");
-        ResponseEntity<String> response = inertiaSpring.redirect("/target");
+        ResponseEntity<String> response = inertia.redirect("/target");
 
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
         assertNull(response.getHeaders().get("X-Inertia"));
@@ -122,7 +122,7 @@ public class InertiaSpringTest {
     void location_returnsConflictResponseWithLocationHeader() {
         request.addHeader("X-Inertia", "true");
 
-        ResponseEntity<String> response = inertiaSpring.location("https://external.example.com");
+        ResponseEntity<String> response = inertia.location("https://external.example.com");
 
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertNull(response.getHeaders().get("X-Inertia"));
@@ -132,7 +132,7 @@ public class InertiaSpringTest {
 
     @Test
     void render_whenInitialRequestWithEncryptHistory_returnsHtmlResponse() {
-        ResponseEntity<String> response = inertiaSpring.render(testComponent, testProps, Options.encryptHistory());
+        ResponseEntity<String> response = inertia.render(testComponent, testProps, Options.encryptHistory());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(MediaType.TEXT_HTML, response.getHeaders().getContentType());
@@ -144,7 +144,7 @@ public class InertiaSpringTest {
     void render_withEncryptHistory_returnsJsonResponse() {
         request.addHeader("X-Inertia", "true");
         request.addHeader("X-Inertia-Version", "1");
-        ResponseEntity<String> response = inertiaSpring.render(testComponent, testProps, Options.encryptHistory());
+        ResponseEntity<String> response = inertia.render(testComponent, testProps, Options.encryptHistory());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(MediaType.APPLICATION_JSON, response.getHeaders().getContentType());

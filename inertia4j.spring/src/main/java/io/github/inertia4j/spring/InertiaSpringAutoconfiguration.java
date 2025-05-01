@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 /**
  * Spring Boot auto-configuration for Inertia4j.
- * Sets up default beans for {@link InertiaSpring}, {@link VersionProvider},
+ * Sets up default beans for {@link Inertia}, {@link VersionProvider},
  * {@link PageObjectSerializer}, and {@link TemplateRenderer} if they are not
  * already present in the application context.
  */
@@ -22,7 +22,7 @@ public class InertiaSpringAutoconfiguration {
     InertiaConfigurationProperties properties;
 
     /**
-     * Creates the main {@link InertiaSpring} bean if one doesn't already exist.
+     * Creates the main {@link Inertia} bean if one doesn't already exist.
      * 
      * @param versionProvider      The configured or default VersionProvider.
      * @param pageObjectSerializer The configured or default PageObjectSerializer.
@@ -31,12 +31,12 @@ public class InertiaSpringAutoconfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public InertiaSpring inertia(
+    public Inertia inertia(
         VersionProvider versionProvider,
         PageObjectSerializer pageObjectSerializer,
         TemplateRenderer templateRenderer
     ) {
-        return new InertiaSpring(versionProvider, pageObjectSerializer, templateRenderer);
+        return new Inertia(versionProvider, pageObjectSerializer, templateRenderer);
     }
 
     /**

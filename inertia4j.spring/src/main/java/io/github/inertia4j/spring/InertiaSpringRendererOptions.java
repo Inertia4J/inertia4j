@@ -9,7 +9,7 @@ import java.util.Map;
  * history state flags (`encryptHistory`, `clearHistory`).
  * <p>
  * This class exists separately from {@link Inertia.Options} to avoid conflicts with static methods
- * and provide an instance-based way to configure options, often used with the {@link InertiaSpring} bean.
+ * and provide an instance-based way to configure options, often used with the {@link Inertia} bean.
  */
 public class InertiaSpringRendererOptions {
     private final boolean encryptHistory;

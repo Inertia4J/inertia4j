@@ -1,8 +1,7 @@
 package io.github.inertia4j.spring;
 
-import io.github.inertia4j.core.DefaultPageObjectSerializer;
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Value;
+import io.github.inertia4j.spi.PageObjectSerializer;
+import io.github.inertia4j.spi.TemplateRenderer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
@@ -10,47 +9,49 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
- * Static facade providing convenient methods for rendering Inertia responses within Spring controllers.
- * This class simplifies common Inertia operations like rendering components, handling redirects,
- * and managing asset versions. It uses a default setup but can be configured via static setters
- * or Spring Boot properties.
+ * An injectable Spring bean providing convenient methods for rendering Inertia responses within controllers.
+ * This class offers similar functionality to the static {@link Inertia} facade but is designed
+ * to be managed by the Spring container, allowing for easier configuration and testing.
+ * <p>
+ * It requires {@link VersionProvider}, {@link PageObjectSerializer}, and {@link TemplateRenderer}
+ * beans to be available in the application context for its construction.
  */
 public class Inertia {
-    /**
-     * Provides the current asset version. Can be replaced with a custom implementation.
-     * Defaults to returning null, relying on the core renderer's default if not set.
-     */
-    public static VersionProvider versionProvider = () -> null;
-
-    private static final InertiaSpringRenderer renderer = new InertiaSpringRenderer(
-        new DefaultPageObjectSerializer(),
-        versionProvider,
-        "templates/app.html"
-    );
-
-    private static InertiaSpringRendererOptions defaultOptions = new InertiaSpringRendererOptions();
+    private final InertiaSpringRenderer renderer;
+    private static final InertiaSpringRendererOptions defaultOptions = new InertiaSpringRendererOptions();
+    private final Supplier<HttpServletRequest> requestSupplier;
 
     /**
-     * Sets the {@link VersionProvider} used by the static renderer instance.
-     * @param provider The VersionProvider implementation.
+     * Internal constructor used in tests.
      */
-    public static void setVersionProvider(VersionProvider provider) {
-        versionProvider = provider;
+    Inertia(
+        VersionProvider versionProvider,
+        PageObjectSerializer pageObjectSerializer,
+        TemplateRenderer templateRenderer,
+        Supplier<HttpServletRequest> requestSupplier
+    ) {
+        this.renderer = new InertiaSpringRenderer(pageObjectSerializer, versionProvider, templateRenderer);
+        this.requestSupplier = requestSupplier;
     }
 
     /**
-     * Sets the default value for the `encryptHistory` flag based on the `inertia.history.encrypt` property.
-     * @param encryptHistory The default value for encrypting history.
+     * Constructs the InertiaSpring bean with required dependencies.
+     * 
+     * @param versionProvider      The provider for the current asset version.
+     * @param pageObjectSerializer The serializer for the PageObject.
+     * @param templateRenderer     The renderer for the base HTML template.
      */
-    @Value("${inertia.history.encrypt:false}")
-    public static void setHistoryEncryptDefault(boolean encryptHistory) {
-        defaultOptions = new InertiaSpringRendererOptions(
-            encryptHistory,
-            InertiaSpringRendererOptions.defaultClearHistory
-        );
+    public Inertia(
+        VersionProvider versionProvider,
+        PageObjectSerializer pageObjectSerializer,
+        TemplateRenderer templateRenderer
+    ) {
+        this(versionProvider, pageObjectSerializer, templateRenderer, Inertia::getCurrentRequest);
     }
 
     /**
@@ -61,8 +62,8 @@ public class Inertia {
      * @param props     A map of properties to pass to the component.
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
-    public static ResponseEntity<String> render(String component, Map<String, Object> props) {
-        return render(component, props, getCurrentRequest().getRequestURI());
+    public ResponseEntity<String> render(String component, Map<String, Object> props) {
+        return render(component, props, requestSupplier.get().getRequestURI());
     }
 
     /**
@@ -74,8 +75,8 @@ public class Inertia {
      * @param url       The URL to be included in the page object.
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
-    public static ResponseEntity<String> render(String component, Map<String, Object> props, String url) {
-        return render(getCurrentRequest(), component, props, url, defaultOptions);
+    public ResponseEntity<String> render(String component, Map<String, Object> props, String url) {
+        return render(requestSupplier.get(), component, props, url, defaultOptions);
     }
 
     /**
@@ -87,12 +88,12 @@ public class Inertia {
      * @param options   Specific rendering options (e.g., history flags).
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
-    public static ResponseEntity<String> render(
+    public ResponseEntity<String> render(
         String component,
         Map<String, Object> props,
         InertiaSpringRendererOptions options
     ) {
-        return render(component, props, getCurrentRequest().getRequestURI(), options);
+        return render(component, props, requestSupplier.get().getRequestURI(), options);
     }
 
     /**
@@ -105,13 +106,13 @@ public class Inertia {
      * @param options   Specific rendering options (e.g., history flags).
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
-    public static ResponseEntity<String> render(
+    public ResponseEntity<String> render(
         String component,
         Map<String, Object> props,
         String url,
         InertiaSpringRendererOptions options
     ) {
-        return render(getCurrentRequest(), component, props, url, options);
+        return render(requestSupplier.get(), component, props, url, options);
     }
 
     /**
@@ -124,7 +125,7 @@ public class Inertia {
      * @param options   Specific rendering options.
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
-    public static ResponseEntity<String> render(
+    public ResponseEntity<String> render(
         WebRequest request,
         String component,
         Map<String, Object> props,
@@ -146,7 +147,7 @@ public class Inertia {
      * @param options   Specific rendering options.
      * @return A Spring {@link ResponseEntity} containing the Inertia response.
      */
-    public static ResponseEntity<String> render(
+    public ResponseEntity<String> render(
         HttpServletRequest request,
         String component,
         Map<String, Object> props,
@@ -166,18 +167,18 @@ public class Inertia {
      * @param location The URL to redirect to.
      * @return A Spring {@link ResponseEntity} configured for an Inertia redirect.
      */
-    public static ResponseEntity<String> redirect(String location) {
-        InertiaHttpServletRequest inertiaServletRequest = new InertiaHttpServletRequest(getCurrentRequest());
+    public ResponseEntity<String> redirect(String location) {
+        InertiaHttpServletRequest inertiaServletRequest = new InertiaHttpServletRequest(requestSupplier.get());
         return renderer.redirect(inertiaServletRequest, location);
     }
 
     /**
-     * Creates an external redirect response using 409 Conflict status code and X-Inertia-Location header.
+     * Creates an external redirect response (using 409 Conflict + X-Inertia-Location header).
      *
      * @param url The external URL to redirect to.
      * @return A Spring {@link ResponseEntity} configured for an external Inertia redirect.
      */
-    public static ResponseEntity<String> location(String url) {
+    public ResponseEntity<String> location(String url) {
         return renderer.location(url);
     }
 
@@ -197,10 +198,6 @@ public class Inertia {
         return ((ServletRequestAttributes) requestAttributes).getRequest();
     }
 
-    /**
-     * A helper class providing static factory methods for creating {@link InertiaSpringRendererOptions}
-     * instances in a more fluent way, primarily for setting history flags.
-     */
     public static class Options {
         /**
          * Creates options with `clearHistory` set to true and default `encryptHistory`.

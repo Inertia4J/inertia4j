@@ -34,7 +34,7 @@ Follow Inertia's [Client-side setup](https://inertiajs.com/client-side-setup) gu
 
 ### Responses
 
-In your controller, the simplest way to use Inertia4J is to inject the `InertiaSpring` bean. This bean will give you access to
+In your controller, the simplest way to use Inertia4J is to inject the `Inertia` bean. This bean will give you access to
 the Inertia4J methods. To respond with an Inertia response in your controller method, you can call `inertia.render`.
 The `render` method takes two arguments. The first argument is the name of the component to be rendered client-side, and
 the second argument is a map, which will be converted to a JSON object and sent to the client. This method returns a
@@ -44,7 +44,7 @@ the second argument is a map, which will be converted to a JSON object and sent 
 ```java
 public class RecordController {
     @Autowired
-    private InertiaSpring inertia; // Inertia4J bean injection
+    private Inertia inertia; // Inertia4J bean injection
 
     @GetMapping("/records")
     public ResponseEntity<String> index() {
@@ -70,7 +70,7 @@ data you wish to send to the client. If you wish to customize this template, jus
 
 Inertia4J supports option passing on response. To enable option passing, first you need to import
 `io.github.inertia4j.spring.Inertia.Options`. After importing, you can now use the `Options` class to pass options as
-a third argument to `Inertia.render`. The Inertia protocol defines two main flags which can be passed through options,
+a third argument to `inertia.render`. The Inertia protocol defines two main flags which can be passed through options,
 those are the `encryptHistory` and `clearHistory` flags. If you need more information about their functionality
 you can read the [official Inertia docs](https://inertiajs.com/history-encryption). Here is an example of option
 passing in the Inertia response:
@@ -139,7 +139,7 @@ Below is an example of both methods being used:
  ```java
 public class RecordController {
     @Autowired
-    private InertiaSpring inertia; // Inertia4J bean injection
+    private Inertia inertia; // Inertia4J bean injection
   
     @GetMapping("/records")
     public ResponseEntity<String> index() {
