@@ -40,7 +40,7 @@ public class Inertia {
     }
 
     /**
-     * Constructs the InertiaSpring bean with required dependencies.
+     * Constructs the Inertia bean with required dependencies.
      * 
      * @param versionProvider      The provider for the current asset version.
      * @param pageObjectSerializer The serializer for the PageObject.

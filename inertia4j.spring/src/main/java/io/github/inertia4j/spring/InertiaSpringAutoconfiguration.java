@@ -27,7 +27,7 @@ public class InertiaSpringAutoconfiguration {
      * @param versionProvider      The configured or default VersionProvider.
      * @param pageObjectSerializer The configured or default PageObjectSerializer.
      * @param templateRenderer     The configured or default TemplateRenderer.
-     * @return The InertiaSpring bean instance.
+     * @return The Inertia bean instance.
      */
     @Bean
     @ConditionalOnMissingBean
