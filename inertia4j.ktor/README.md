@@ -1,10 +1,6 @@
-# Inertia 4J Ktor
+# Inertia4J Ktor
 
-An adapter to use Inertia.js on a Ktor backend.
-
-Inertia4J provides a Spring and a Ktor implementation. Both work in very similar ways, but this documentation will focus
-on the Spring implementation. If you wish to learn about the Spring implementation, check out the project's
-[README](https://github.com/Inertia4J/inertia4j/tree/main/README.md).
+This document describes how to install and use Inertia4J with Ktor.
 
 ## Installation
 
@@ -32,13 +28,13 @@ dependencies {
 
 ### Frontend
 
-Follow the [Client-side setup](https://inertiajs.com/server-side-setup) guide for the client-side configuration steps.
+Follow the [Client-side setup](https://inertiajs.com/client-side-setup) guide for the client-side configuration steps.
 
 ## Usage
 
 ### Responses
 
-To use Inertia4J with Ktor, you first need to import`io.github.inertia4j.ktor.Inertia` and
+To use Inertia4J with Ktor, you first need to import `io.github.inertia4j.ktor.Inertia` and
 `io.github.inertia4j.ktor.inertia`.
 
 In your `embeddedServer`, install the Inertia4J Ktor plugin:
@@ -50,10 +46,9 @@ embeddedServer(Netty, port = 8080) {
 }
 ```
 
-After installing, you can now call `inertia.render()` instead of `call.respond()` in your Inertia controller methods.
-The `render` method requires at least two arguments. The first argument is the name of the component to be rendered in 
-client, and the second argument is a `Pair<String, Any>`, which will be converted to a JSON object and sent to the 
-client. Below is an example of this usage:
+After installing, you can call `inertia.render()` instead of `call.respond()` in your Ktor routes.
+The `render` function requires at least two arguments: the name of the component to be rendered in 
+client, and the props to be passed to the component in the form of a `Pair<String, Any>`. These will be converted to a JSON object and sent to the client. Below is an example of this usage:
 
 ```kotlin
 import io.github.inertia4j.ktor.Inertia
@@ -65,7 +60,7 @@ fun main() {
 
         routing {
             get("/") {
-                val recordRepository: RecordRepository = RecordRepository()
+                val recordRepository = RecordRepository()
 
                 inertia.render("records/Index", "records" to recordRepository.all())
             }
@@ -74,54 +69,30 @@ fun main() {
 }
 ```
 
-This will instruct the frontend to render the `Records/Index` component with a single prop called "records", which 
-contains the list of records, as retrieved from `RecordRepository`.
-
-The JSON response will look like this:
-
-```json
-{
-  "records": [
-    {
-      "id": 1,
-      "name": "John Doe"
-    },
-    {
-      "id": 2,
-      "name": "Alice Smith"
-    }
-  ]
-}
-```
+This will instruct the frontend to render the `records/Index` component with a single prop called `records`, which contains the list of records, as retrieved from `RecordRepository`.
 
 ### The HTML Template
 
 The first time an Inertia request is made to the server, the server will respond with an HTML page document. Inertia4J
-will automatically load the `resources/templates/app.html` file in your project and will replace `@PageObject@` with the
-data you wish to send to the client. If you wish to customize this template, just make sure to keep a div with id "app"
-and the property `data-page='@PageObject@'`.
+will automatically load the `resources/templates/app.html` file in your project and replace `@PageObject@` with the
+data you wish to send to the client. If you wish to customize this template, just make sure to keep a div with id "app" and an HTML attribute `data-page='@PageObject@'`. Remember to use **single quotes** (i.e. `'@PageObject'`), given the JSON object will use double quotes.
 
 ### Options
 
-Inertia4J supports option passing on response. In Ktor, you can pass options directly to the `render` method as you 
-call it. The Inertia protocol defines two main flags which can be passed through options, those are the `encryptHistory`
-and `clearHistory` flags. If you need more information about their functionality you can read the 
-[official Inertia docs](https://inertiajs.com/history-encryption). Here is an example of option passing in the Inertia 
-response:
+The `render` function also supports the `encryptHistory`and `clearHistory` parameters. If you need more information about their functionality, you can read the 
+[official Inertia docs](https://inertiajs.com/history-encryption) on this topic. 
+Below is an usage example:
 
 ```kotlin
 get("/") {
-    val recordRepository: RecordRepository = RecordRepository()
+    val recordRepository = RecordRepository()
 
     inertia.render("records/Index", "records" to recordRepository.all(), encryptHistory = true, clearHistory = true)
 }
 ```
 
-This way, the response will be sent with the `encryptHistory` and `clearHistory` values set to `true`. Note that this 
-is only applied for that render call. After that call, Inertia will revert the flags back to their default values.
-
-You may want to provide a default value to the `encryptHistory` flag, and this is also supported. All you need to do is
-to pass the default value when installing the Inertia plugin:
+This way, the response will be sent with the `encryptHistory` and `clearHistory` values set to `true`.
+If you don't want to pass `encryptHistory` on every `render` call, you can provide a default value for it when installing the Inertia plugin:
 
 ```kotlin
 fun main() {
@@ -133,8 +104,7 @@ fun main() {
 }
 ```
 
-It is important to note that the `clearHistory` flag doesn't allow a default value, and must be manually set on `render`
-calls.
+It is important to note that it's not possible to change the default value of `clearHistory` the same way. If you want it to be `true`, that needs to be specified on the `render` call.
 
 ### Asset Versioning
 
@@ -159,7 +129,6 @@ public class MyCustomVersionProvider implements VersionProvider {
         return "latest";
     }
 }
-
 ```
 
 ### Redirecting
@@ -202,13 +171,3 @@ the [official docs](https://inertiajs.com/redirects).
 Inertia4J also supports partial reloads, in case you don't need to return all the data to your client side on component
 load, or in case you just need to reload a specific component in your page.
 
-### Advanced Usage and Extending Inertia4J
-
-Inertia4J was designed from the start to be easy to use for small projects, yet fully customizable and modular, so you
-can tweak the library to fit your project's needs. If you want to learn about customizing and extending Inertia4J, you
-can read the [advanced usage guide](https://github.com/Inertia4J/inertia4j/tree/main/docs/advanced.md).
-
-### Contributing
-
-Inertia4J is an Open Source project. If you'd like to contribute with any new features or bug fixes, please read the
-[contributing guide](https://github.com/Inertia4J/inertia4j/blob/main/CONTRIBUTING.md).
