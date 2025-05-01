@@ -11,7 +11,7 @@ Add the Ktor Inertia4J dependency to your project, via Gradle or Maven:
 ```kotlin
 // build.gradle.kts
 dependencies {
-  implementation("io.github.inertia4j.ktor:1.0.0")
+  implementation("io.github.inertia4j:inertia4j-ktor:1.0.0")
 }
 ```
 
@@ -19,8 +19,8 @@ dependencies {
 <!-- pom.xml -->
 <dependencies>
     <dependency>
-        <groupId>io.github.inertia4j.ktor</groupId>
-        <artifactId>inertia4j</artifactId>
+        <groupId>io.github.inertia4j</groupId>
+        <artifactId>inertia4j-ktor</artifactId>
         <version>1.0.0</version>
     </dependency>
 </dependencies>
