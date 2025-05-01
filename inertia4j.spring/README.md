@@ -110,8 +110,7 @@ to your assets, you will need to provide an implementation of the `VersionProvid
 a single method, called `get`, which returns your asset version number as a `String`. You can implement the `get`
 method to suit your project's needs, be it a value that manually changes, or a dynamic hash of your asset folder.
 
-If you choose not to implement a `VersionProvider`, your app is still going to work perfectly, it just won't support 
-Inertia asset versioning.
+The `VersionProvider` bean is optional, with the default implementation returning a fixed string. However, it's important to note that this causes the client to never perform a full-page reload, and after a deployment, your client-side code will be stale until the user performs a browser refresh. **It's highly recommended to provide a custom implementation to prevent this issue**..
 
 Below is an example of a simple `VersionProvider` implementation in Spring:
 
