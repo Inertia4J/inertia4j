@@ -1,5 +1,6 @@
+# Roadmap
 
-#### V1
+## 1.0
 
 - **Core**
     - [x] Support asset versioning
@@ -35,7 +36,7 @@
     - [ ] Add testing to example application
     - [ ] Setup Vite and [integrate it](https://v3.vitejs.dev/guide/backend-integration.html) with Ktor for development
 
-#### V1.1
+## 1.1
 
 - [ ] Shared data
 - [ ] Deferred props

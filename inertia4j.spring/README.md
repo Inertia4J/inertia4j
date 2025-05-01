@@ -2,6 +2,8 @@
 
 This document describes how to install and use Inertia4J with Spring.
 
+For a complete example, please refer to the [inertia4j-spring-example](https://github.com/Inertia4J/inertia4j-spring-example) repository.
+
 ## Installation
 
 ### Backend
