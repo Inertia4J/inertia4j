@@ -29,5 +29,5 @@ can read the [advanced usage guide](https://github.com/Inertia4J/inertia4j/tree/
 
 ### Contributing
 
-Inertia4J is an Open Source project created by @edrd-f and @pefcos. If you'd like to contribute with any new features or bug fixes, please read the
+Inertia4J is an Open Source project created by [@edrd-f](https://github.com/edrd-f) and [@pefcos](https://github.com/pefcos). If you'd like to contribute with any new features or bug fixes, please read the
 [contributing guide](https://github.com/Inertia4J/inertia4j/blob/main/CONTRIBUTING.md).
