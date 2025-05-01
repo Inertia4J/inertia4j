@@ -1,8 +1,20 @@
-# Inertia4J 
+<div align="center">
 
-Server-side [Inertia.js](https://inertiajs.com/) adapter for JVM backends.
+<img src="https://raw.githubusercontent.com/Inertia4J/inertia4j/refs/heads/assets/logo.webp" width="280" alt="BetterDisplay" align="center"/></a>
 
-Inertia4J currently offers Spring and Ktor-specific implementations. Below you will find the links to usage instructions for each framework.
+<h2>Inertia4J</h2> 
+<p>
+Server-side <a href="https://inertiajs.com/">Inertia.js</a> adapter for JVM backends.
+</p>
+<div>
+<a href="https://github.com/Inertia4j/inertia4j/releases"><img src="https://img.shields.io/github/release/Inertia4j/inertia4j.svg?style=flat&color=blue&include_prereleases" alt="latest version"/></a>
+</div>
+
+</div>
+
+## About Inertia4J
+
+Inertia4J currently offers Spring and Ktor-specific implementations. Below are the links to usage instructions for each framework.
 
 * [Using with Spring (Java / Kotlin)](/inertia4j.spring/README.md)
 * [Using with Ktor (Kotlin)](/inertia4j.ktor/README.md)
@@ -17,5 +29,5 @@ can read the [advanced usage guide](https://github.com/Inertia4J/inertia4j/tree/
 
 ### Contributing
 
-Inertia4J is an Open Source project. If you'd like to contribute with any new features or bug fixes, please read the
+Inertia4J is an Open Source project created by @edrd-f and @pefcos. If you'd like to contribute with any new features or bug fixes, please read the
 [contributing guide](https://github.com/Inertia4J/inertia4j/blob/main/CONTRIBUTING.md).
