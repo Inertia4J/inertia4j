@@ -6,7 +6,7 @@ Inertia4J currently offers Spring and Ktor-specific implementations. Below you w
 
 * [Using with Spring (Java / Kotlin)](/inertia4j.spring/README.md)
 * [Using with Ktor (Kotlin)](/inertia4j.ktor/README.md)
-* [Advanced Usagage and Extending Inertia4J](#advanced-usage-and-extending-inertia4j)
+* [Advanced Usage and Extending Inertia4J](#advanced-usage-and-extending-inertia4j)
 * [Contributing](#contributing)
 
 ### Advanced Usage and Extending Inertia4J

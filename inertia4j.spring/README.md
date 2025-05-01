@@ -36,7 +36,7 @@ Follow Inertia's [Client-side setup](https://inertiajs.com/client-side-setup) gu
 
 In your controller, the simplest way to use Inertia4J is to inject the `InertiaSpring` bean. This bean will give you access to
 the Inertia4J methods. To respond with an Inertia response in your controller method, you can call `inertia.render`.
-The `render` method takes two arguments. The first argument is the name of the component to be rendered in client, and
+The `render` method takes two arguments. The first argument is the name of the component to be rendered client-side, and
 the second argument is a map, which will be converted to a JSON object and sent to the client. This method returns a
 `ResponseEntity<String>` instance, so when using Inertia4J in a route, the return type of your method should always be
 `ResponseEntity<String>`.
@@ -62,7 +62,7 @@ contains the list of records, as retrieved from `RecordRepository`.
 
 ### The HTML Template
 
-The first time an Inertia request is made to the server, the server will respond with an HTML page document. Inertia4J 
+The first time an Inertia request is made to the server, the server will respond with an HTML document. Inertia4J
 will automatically load the `resources/templates/app.html` file in your project and will replace `@PageObject@` with the
 data you wish to send to the client. If you wish to customize this template, just make sure to keep a div with id "app" and an HTML attribute `data-page='@PageObject@'`. Remember to use **single quotes** (i.e. `'@PageObject'`), given the JSON object will use double quotes.
 
@@ -85,7 +85,7 @@ public ResponseEntity<String> index() {
 }
 ```
 
-This way, the response will be sent with the `encryptHistory` value set to `true`. Nozte that this is only applied for
+This way, the response will be sent with the `encryptHistory` value set to `true`. Note that this is only applied for
 the next render call, after that, Inertia will revert the flags back to their default values.
 
 You may want to provide a default value to the `encryptHistory` flag, and this is also supported. All you need to do is
@@ -105,18 +105,18 @@ The `clearHistory` option works the same way, except it's not possible to set a 
 
 ### Asset Versioning
 
-The Inertia4J adapter fully supports asset versioning, and responds accordingly to outdated assets. To provide a version
-to your assets, you will need to provide an implementation of the `VersionProvider` interface. This interface has only
+The Inertia4J adapter fully supports asset versioning, and responds accordingly to requests with outdated assets. To provide a version
+to your assets, you will need to provide an implementation of the `VersionProvider` interface as a Spring Bean. This interface has only
 a single method, called `get`, which returns your asset version number as a `String`. You can implement the `get`
 method to suit your project's needs, be it a value that manually changes, or a dynamic hash of your asset folder.
 
-The `VersionProvider` bean is optional, with the default implementation returning a fixed string. However, it's important to note that this causes the client to never perform a full-page reload, and after a deployment, your client-side code will be stale until the user performs a browser refresh. **It's highly recommended to provide a custom implementation to prevent this issue**..
+The `VersionProvider` bean is optional, with the default implementation returning a fixed string. However, it's important to note that this prevents the client from performing automatic full-page reloads, and after a deployment, your client-side code will be stale until the user performs a browser refresh. **It's highly recommended to provide a custom implementation to prevent this issue**.
 
 Below is an example of a simple `VersionProvider` implementation in Spring:
 
 ```java
 import io.github.inertia4j.spring.VersionProvider;
-import org.springframework.stereotype.Comonent;
+import org.springframework.stereotype.Component;
 
 @Component
 public class MyCustomVersionProvider implements VersionProvider {
@@ -129,7 +129,7 @@ public class MyCustomVersionProvider implements VersionProvider {
 
 ### Redirecting
 
-Inertia4J supports redirecting, and just like the Inertia docs specify, there are two kinds of redirects. The first
+Inertia4J supports redirecting, and as the Inertia docs specify, there are two kinds of redirects. The first
 is via the `redirect` method, and it is meant to redirect to other Inertia routes. The second kind of redirect is via
 the `location` method, which redirects the client to a non-Inertia route in your application, or to an external route.
 Both methods only receive a single parameter, which is the route to redirect to.
@@ -166,4 +166,4 @@ the [official docs](https://inertiajs.com/redirects).
 
 ### Partial Reloads
 
-Inertia4J also supports partial reloads, in case you don't need to return all the data to your client-side on component load, or in case you just need to reload a specific component in your page.
+Inertia4J also supports partial reloads, in case you don't need to return all the data to your client-side when the component loads, or in case you just need to reload a specific component in your page.
