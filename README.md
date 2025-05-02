@@ -14,7 +14,7 @@ Server-side <a href="https://inertiajs.com/">Inertia.js</a> adapter for JVM back
 
 ## About Inertia4J
 
-Inertia provides a protocol to render components written in modern frontend frameworks such as React, Vue.js, and Angular, directly from the backend. Inertia4J is a server-side adapter for Inertia aimed at JVM backends, and currently offers first-class support for Spring and Ktor. Below you can find usage instructions for each framework.
+Inertia provides a protocol to render components written in modern frontend frameworks such as React, Vue.js, and Angular, directly from the backend. Inertia4J is a JVM adapter implementing such a protocol, and currently offers first-class support for Spring and Ktor. Below, you can find usage instructions for each framework.
 
 * [Using with Spring (Java / Kotlin)](/inertia4j.spring/README.md)
 * [Using with Ktor (Kotlin)](/inertia4j.ktor/README.md)
