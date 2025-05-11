@@ -42,7 +42,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"old\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;old&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
         assertEquals(expectedBody, response.getBody());
@@ -62,7 +62,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
 
@@ -83,7 +83,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
 
