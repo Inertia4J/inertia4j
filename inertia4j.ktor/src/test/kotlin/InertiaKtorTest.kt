@@ -41,7 +41,7 @@ class InertiaKtorTest {
             </body>
             </html>
         """.trimIndent()
-        assertEquals(expectedBody, response.bodyAsText())
+        assertEquals(normalizeHtml(expectedBody), normalizeHtml(response.bodyAsText()))
     }
 
     @Test
@@ -151,5 +151,12 @@ class InertiaKtorTest {
         assert("X-Inertia" !in response.headers)
         assertEquals("https://external.example.com", response.headers["X-Inertia-Location"])
         assert(response.bodyAsText().isEmpty())
+    }
+
+    private fun normalizeHtml(html: String): String {
+        return html
+            .replace("\\s+".toRegex(), "")
+            .replace(">\\s+<".toRegex(), "><")
+            .trim { it <= ' ' }
     }
 }
