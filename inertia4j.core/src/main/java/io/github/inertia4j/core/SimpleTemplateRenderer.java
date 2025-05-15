@@ -33,11 +33,17 @@ public class SimpleTemplateRenderer implements TemplateRenderer {
      * {@inheritDoc}
      * <p>
      * This implementation replaces all occurrences of the <code>@PageObject@</code> placeholder
-     * in the loaded template with the provided {@code pageObjectJson}.
+     * in the loaded template with the provided {@code pageObjectJson}, escaping HTML characters.
      */
     @Override
     public String render(String pageObjectJson) {
-        return templateMatcher.replaceAll(pageObjectJson);
+        String escapedPageObjectJson = pageObjectJson
+            .replace("\\", "\\\\")
+            .replace("$", "\\$")
+            .replace("\"", "&quot;")
+            .replace("'", "&apos;");
+
+        return templateMatcher.replaceFirst(escapedPageObjectJson);
     }
 
     /**

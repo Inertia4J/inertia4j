@@ -37,7 +37,7 @@ class InertiaKtorTest {
             <!doctype html>
             <html lang="en">
             <body>
-                <div id="app" data-page='{"component":"SampleComponent","props":{"id":1},"url":"/","version":"1","encryptHistory":true,"clearHistory":true}'></div>
+                <div id="app" data-page='{&quot;component&quot;:&quot;SampleComponent&quot;,&quot;props&quot;:{&quot;id&quot;:1},&quot;url&quot;:&quot;/&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:true,&quot;clearHistory&quot;:true}'></div>
             </body>
             </html>
         """.trimIndent()

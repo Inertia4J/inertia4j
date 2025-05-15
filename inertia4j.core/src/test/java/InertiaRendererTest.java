@@ -42,7 +42,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"old\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;old&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
         assertEquals(expectedBody, response.getBody());
@@ -51,7 +51,13 @@ public class InertiaRendererTest {
     @Test
     void render_whenNoVersionHeader_returns200WithHtml() {
         var httpRequest = new FakeHttpRequest("GET", Map.of());
-        var options = new InertiaRenderingOptions(false, false, "/page", "Component", null);
+        var options = new InertiaRenderingOptions(
+            false,
+            false,
+            "/page",
+            "Component",
+            Map.of("name", "\"An album\"", "genre", "Drum n' Bass")
+        );
 
         HttpResponse response = render(httpRequest, options);
 
@@ -62,7 +68,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:{&quot;genre&quot;:&quot;Drum n&apos; Bass&quot;,&quot;name&quot;:&quot;\\&quot;An album\\&quot;&quot;},&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
 
@@ -83,7 +89,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page='{\"component\":\"Component\",\"props\":null,\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}'></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
 
