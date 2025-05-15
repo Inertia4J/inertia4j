@@ -20,8 +20,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":inertia4j.core"))
-    api(project(":inertia4j.spi"))
+    implementation("io.github.inertia4j:inertia4j-core:1.0.1")
+    api("io.github.inertia4j:inertia4j-spi:1.0.1")
 
     compileOnly("javax.servlet:javax.servlet-api:4.0.1")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure")
