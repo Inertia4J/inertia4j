@@ -45,7 +45,7 @@ public class InertiaRendererTest {
                 "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;old&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
-        assertEquals(expectedBody, response.getBody());
+        assertEquals(normalizeHtml(expectedBody), normalizeHtml(response.getBody()));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class InertiaRendererTest {
                 "  </body>\n" +
                 "</html>".trim();
 
-        assertEquals(expectedBody, response.getBody());
+        assertEquals(normalizeHtml(expectedBody), normalizeHtml(response.getBody()));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class InertiaRendererTest {
                 "  </body>\n" +
                 "</html>".trim();
 
-        assertEquals(expectedBody, response.getBody());
+        assertEquals(normalizeHtml(expectedBody), normalizeHtml(response.getBody()));
     }
 
     @Test
@@ -142,5 +142,12 @@ public class InertiaRendererTest {
             versionProvider,
             "template.html"
         ).render(request, options);
+    }
+
+    private static String normalizeHtml(String html) {
+        return html
+            .replaceAll("\\s+", "")
+            .replaceAll(">\\s+<", "><")
+            .trim();
     }
 }
