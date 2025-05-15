@@ -10,7 +10,6 @@ repositories {
 
 dependencies {
     implementation(project(":inertia4j.spi"))
-    implementation("org.apache.commons:commons-text:1.13.1")
 
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 

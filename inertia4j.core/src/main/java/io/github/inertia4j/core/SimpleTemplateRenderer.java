@@ -1,7 +1,6 @@
 package io.github.inertia4j.core;
 
 import io.github.inertia4j.spi.TemplateRenderer;
-import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,8 +37,13 @@ public class SimpleTemplateRenderer implements TemplateRenderer {
      */
     @Override
     public String render(String pageObjectJson) {
-        String escapedPageObjectJson = StringEscapeUtils.escapeHtml4(pageObjectJson);
-        return templateMatcher.replaceAll(escapedPageObjectJson);
+        String escapedPageObjectJson = pageObjectJson
+            .replace("\\", "\\\\")
+            .replace("$", "\\$")
+            .replace("\"", "&quot;")
+            .replace("'", "&apos;");
+
+        return templateMatcher.replaceFirst(escapedPageObjectJson);
     }
 
     /**
