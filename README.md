@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Inertia4J/inertia4j/refs/heads/assets/logo.webp" width="280" alt="BetterDisplay" align="center"/></a>
+<img src="https://raw.githubusercontent.com/Inertia4J/inertia4j/refs/heads/assets/logo.webp" width="280" alt="Inertia4J" align="center"/></a>
 
 <h2>Inertia4J</h2> 
 <p>
