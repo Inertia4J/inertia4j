@@ -157,6 +157,6 @@ class InertiaKtorTest {
         return html
             .replace("\\s+".toRegex(), "")
             .replace(">\\s+<".toRegex(), "><")
-            .trim { it <= ' ' }
+            .trim { it < ' ' }
     }
 }

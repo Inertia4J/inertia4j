@@ -42,7 +42,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;old&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:{},&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;old&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
         assertEquals(normalizeHtml(expectedBody), normalizeHtml(response.getBody()));
@@ -89,7 +89,7 @@ public class InertiaRendererTest {
         var expectedBody = "<!doctype html>\n" +
                 "<html lang=\"en\">\n" +
                 "  <body>\n" +
-                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:null,&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
+                "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:{},&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
                 "  </body>\n" +
                 "</html>".trim();
 
@@ -136,6 +136,27 @@ public class InertiaRendererTest {
         assertEquals(expectedJson, response.getBody());
     }
 
+    @Test
+    void render_withFullPageLoad_withNullProps_rendersEmptyObjectProps() {
+        var httpRequest = new FakeHttpRequest("GET", Map.of());
+        var options = new InertiaRenderingOptions(false, false, "/page", "Component", null);
+
+        HttpResponse response = render(httpRequest, options);
+
+        assertEquals(200, response.getCode());
+        assertEquals(Collections.singletonList("text/html"), response.getHeaders().get("Content-Type"));
+        assertFalse(response.getHeaders().containsKey("X-Inertia"));
+
+        var expectedBody = "<!doctype html>\n" +
+            "<html lang=\"en\">\n" +
+            "  <body>\n" +
+            "    <div id=\"app\" data-page=\"{&quot;component&quot;:&quot;Component&quot;,&quot;props&quot;:{},&quot;url&quot;:&quot;/page&quot;,&quot;version&quot;:&quot;1&quot;,&quot;encryptHistory&quot;:false,&quot;clearHistory&quot;:false}\"></div>\n" +
+            "  </body>\n" +
+            "</html>".trim();
+
+        assertEquals(normalizeHtml(expectedBody), normalizeHtml(response.getBody()));
+    }
+
     private HttpResponse render(HttpRequest request, InertiaRenderingOptions options) {
         return new InertiaRenderer(
             pageObjectSerializer,
@@ -146,7 +167,6 @@ public class InertiaRendererTest {
 
     private static String normalizeHtml(String html) {
         return html
-            .replaceAll("\\s+", "")
             .replaceAll(">\\s+<", "><")
             .trim();
     }
