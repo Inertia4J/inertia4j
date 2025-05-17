@@ -157,6 +157,22 @@ public class InertiaRendererTest {
         assertEquals(normalizeHtml(expectedBody), normalizeHtml(response.getBody()));
     }
 
+    @Test
+    void render_withJson_withNullProps_rendersEmptyObjectProps() {
+        var httpRequest = new FakeHttpRequest("GET", Map.of("X-Inertia", "true"));
+        var options = new InertiaRenderingOptions(false, false, "/page", "Component", null);
+
+        HttpResponse response = render(httpRequest, options);
+
+        assertEquals(200, response.getCode());
+        assertEquals(Collections.singletonList("application/json"), response.getHeaders().get("Content-Type"));
+        assert(response.getHeaders().containsKey("X-Inertia"));
+
+        var expectedBody = "{\"component\":\"Component\",\"props\":{},\"url\":\"/page\",\"version\":\"1\",\"encryptHistory\":false,\"clearHistory\":false}";
+
+        assertEquals(expectedBody, response.getBody());
+    }
+
     private HttpResponse render(HttpRequest request, InertiaRenderingOptions options) {
         return new InertiaRenderer(
             pageObjectSerializer,
