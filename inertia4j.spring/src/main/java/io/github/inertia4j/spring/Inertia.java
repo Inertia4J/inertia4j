@@ -55,6 +55,17 @@ public class Inertia {
     }
 
     /**
+     * Renders an Inertia component that has no props.
+     * Uses the current request URI as the page object URL and default rendering options.
+     *
+     * @param component The name of the client-side component.
+     * @return A Spring {@link ResponseEntity} containing the Inertia response.
+     */
+    public ResponseEntity<String> render(String component) {
+        return render(component, null, requestSupplier.get().getRequestURI());
+    }
+
+    /**
      * Renders an Inertia component with the given properties.
      * Uses the current request URI as the page object URL and default rendering options.
      *
