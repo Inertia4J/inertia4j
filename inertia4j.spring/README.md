@@ -13,7 +13,7 @@ Add the Inertia4J dependency to your project, via Gradle or Maven:
 ```kotlin
 // build.gradle.kts
 dependencies {
-  implementation("io.github.inertia4j:inertia4j-spring:1.0.1")
+  implementation("io.github.inertia4j:inertia4j-spring:1.0.2")
 }
 ```
 
@@ -23,7 +23,7 @@ dependencies {
     <dependency>
         <groupId>io.github.inertia4j</groupId>
         <artifactId>inertia4j-spring</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </dependency>
 </dependencies>
 ```
