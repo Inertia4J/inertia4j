@@ -28,7 +28,7 @@ If applicable, add screenshots to help explain your problem.
  - Spring/Ktor version: [e.g. Spring 6.2]
  - JVM/JDK/JRE versions: [e.g. 21.0.6]
  - Build Tool and version: [e.g. Gradle 2.0.1]
- - Inertia4J version: [e.g. 1.0.1]
+ - Inertia4J version: [e.g. 1.0.2]
 
 **Additional context**
 Add any other context about the problem here.
