@@ -7,6 +7,7 @@ import io.github.inertia4j.spi.TemplateRenderer;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -177,7 +178,7 @@ public class InertiaRenderer {
         }
         return new PageObject(
             options.componentName,
-            options.props,
+            options.props != null ? options.props : Map.of(),
             options.url,
             options.encryptHistory,
             options.clearHistory,
