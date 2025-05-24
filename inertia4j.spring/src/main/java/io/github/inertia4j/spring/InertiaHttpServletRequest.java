@@ -1,7 +1,7 @@
 package io.github.inertia4j.spring;
 
 import io.github.inertia4j.core.HttpRequest;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Adapter between the Servlet request object and the core Inertia4j request.
