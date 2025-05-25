@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.inertia4j:inertia4j-spi:1.0.1")
+    implementation("io.github.inertia4j:inertia4j-spi:1.0.2")
 
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 

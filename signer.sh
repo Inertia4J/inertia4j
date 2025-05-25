@@ -1,7 +1,7 @@
 # To use: configure I4J_KEY on env with the following:
 # I4J_KEY=<GPG-4096-KEY>
 
-VERSION="1.0.1"
+VERSION="1.0.3"
 
 # This may be commented if publish is to be run separately.
 ./gradlew clean
