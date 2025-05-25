@@ -2,14 +2,13 @@ package io.github.inertia4j.spring;
 
 import io.github.inertia4j.spi.PageObjectSerializer;
 import io.github.inertia4j.spi.TemplateRenderer;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -143,7 +142,7 @@ public class Inertia {
         String url,
         InertiaSpringRendererOptions options
     ) {
-        HttpServletRequest servletRequest = ((ServletRequestAttributes) request).getRequest();
+        HttpServletRequest servletRequest = getServletRequestFromAttributes(request);
 
         return render(servletRequest, component, props, url, options);
     }
@@ -205,8 +204,14 @@ public class Inertia {
             requestAttributes != null,
             "Could not find current request via RequestContextHolder"
         );
-        Assert.isInstanceOf(ServletRequestAttributes.class, requestAttributes);
-        return ((ServletRequestAttributes) requestAttributes).getRequest();
+        return getServletRequestFromAttributes(requestAttributes);
+    }
+
+    private static HttpServletRequest getServletRequestFromAttributes(RequestAttributes attributes) {
+        return (HttpServletRequest) attributes.getAttribute(
+            RequestAttributes.REFERENCE_REQUEST,
+            RequestAttributes.SCOPE_REQUEST
+        );
     }
 
     public static class Options {

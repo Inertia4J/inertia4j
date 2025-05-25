@@ -1,14 +1,14 @@
 plugins {
     `java-library`
-    id("org.springframework.boot") version "2.7.18" apply false
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("org.springframework.boot") version "3.3.12" apply false
+    id("io.spring.dependency-management") version "1.1.7"
     `maven-publish`
     id("signing")
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 
     withJavadocJar()
@@ -23,7 +23,7 @@ dependencies {
     implementation("io.github.inertia4j:inertia4j-core:1.0.1")
     api("io.github.inertia4j:inertia4j-spi:1.0.1")
 
-    compileOnly("javax.servlet:javax.servlet-api:4.0.1")
+    compileOnly("jakarta.servlet:jakarta.servlet-api")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure")
     compileOnly("org.springframework:spring-web")
 

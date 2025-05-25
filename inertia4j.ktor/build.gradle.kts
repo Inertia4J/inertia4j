@@ -12,8 +12,7 @@ dependencies {
     implementation("io.github.inertia4j:inertia4j-core:1.0.1")
     api("io.github.inertia4j:inertia4j-spi:1.0.1")
 
-    // TODO: refactor this to use version catalog
-    val ktorVersion = "3.1.1"
+    val ktorVersion = "3.0.0"
 
     compileOnly("io.ktor:ktor-server-core-jvm:$ktorVersion")
     compileOnly("io.ktor:ktor-server-netty-jvm:$ktorVersion")
