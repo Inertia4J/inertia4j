@@ -13,7 +13,7 @@ Add the Inertia4J dependency to your project, via Gradle or Maven:
 ```kotlin
 // build.gradle.kts
 dependencies {
-  implementation("io.github.inertia4j:inertia4j-spring:1.0.3")
+  implementation("io.github.inertia4j:inertia4j-spring:1.0.4")
 }
 ```
 
@@ -23,7 +23,7 @@ dependencies {
     <dependency>
         <groupId>io.github.inertia4j</groupId>
         <artifactId>inertia4j-spring</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </dependency>
 </dependencies>
 ```
@@ -99,7 +99,7 @@ inertia.history.encrypt=true
 
 In this case, if you wanted to set the flag to `false` for a specific response, you could then specify that in the options:
 
-```java
+```java**
 inertia.render("Records/Index", records, Options.encryptHistory(false));
 ```
 

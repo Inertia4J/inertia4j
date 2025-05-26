@@ -37,7 +37,7 @@ tasks.withType<Test> {
 }
 
 group = "io.github.inertia4j"
-version = "1.0.3"
+version = "1.0.4"
 
 configure<PublishingExtension> {
     publications {
@@ -82,7 +82,7 @@ configure<PublishingExtension> {
 
     repositories {
         maven {
-            url = layout.buildDirectory.dir("staging-deploy").get().asFile.toURI() // used by JReleaser
+            url = layout.buildDirectory.dir("deploy").get().asFile.toURI()
         }
     }
 }
