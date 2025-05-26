@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
@@ -142,7 +143,7 @@ public class Inertia {
         String url,
         InertiaSpringRendererOptions options
     ) {
-        HttpServletRequest servletRequest = getServletRequestFromAttributes(request);
+        HttpServletRequest servletRequest = ((ServletRequestAttributes) request).getRequest();
 
         return render(servletRequest, component, props, url, options);
     }
@@ -204,14 +205,7 @@ public class Inertia {
             requestAttributes != null,
             "Could not find current request via RequestContextHolder"
         );
-        return getServletRequestFromAttributes(requestAttributes);
-    }
-
-    private static HttpServletRequest getServletRequestFromAttributes(RequestAttributes attributes) {
-        return (HttpServletRequest) attributes.getAttribute(
-            RequestAttributes.REFERENCE_REQUEST,
-            RequestAttributes.SCOPE_REQUEST
-        );
+        return ((ServletRequestAttributes) requestAttributes).getRequest();
     }
 
     public static class Options {
