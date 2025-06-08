@@ -40,7 +40,7 @@ class InertiaKtorRenderer internal constructor(
          */
         suspend fun render(
             name: String,
-            vararg props: Pair<String, Any>,
+            vararg props: Pair<String, Any?>,
             url: String = request.url,
             encryptHistory: Boolean = configuration.encryptHistory,
             clearHistory: Boolean = false
