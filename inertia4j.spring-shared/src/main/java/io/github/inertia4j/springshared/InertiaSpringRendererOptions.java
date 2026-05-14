@@ -1,4 +1,4 @@
-package io.github.inertia4j.spring;
+package io.github.inertia4j.springshared;
 
 import io.github.inertia4j.core.InertiaRenderingOptions;
 
@@ -8,8 +8,8 @@ import java.util.Map;
  * Represents rendering options specific to the Spring integration, primarily focusing on
  * history state flags (`encryptHistory`, `clearHistory`).
  * <p>
- * This class exists separately from {@link Inertia.Options} to avoid conflicts with static methods
- * and provide an instance-based way to configure options, often used with the {@link Inertia} bean.
+ * This class exists separately from {@link AbstractInertia.Options} to avoid conflicts with static methods
+ * and provide an instance-based way to configure options, often used with the {@link AbstractInertia} bean.
  */
 public class InertiaSpringRendererOptions {
     private final boolean encryptHistory;

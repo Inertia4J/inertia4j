@@ -1,4 +1,4 @@
-package io.github.inertia4j.spring;
+package io.github.inertia4j.springshared;
 
 import io.github.inertia4j.core.HttpRequest;
 import jakarta.servlet.http.HttpServletRequest;

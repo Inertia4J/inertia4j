@@ -1,6 +1,6 @@
-# Inertia4J Spring
+# Inertia4J Spring Boot 3
 
-This document describes how to install and use Inertia4J with Spring.
+This document describes how to install and use Inertia4J with Spring Boot 3.
 
 For a complete example, please refer to the [inertia4j-spring-example](https://github.com/Inertia4J/inertia4j-spring-example) repository.
 
